@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/home"
+        android:icon="@drawable/home_icon"
+        android:title="Home"/>
+    <item
+        android:id="@+id/aboutus"
+        android:icon="@drawable/aboutus_icon"
+        android:title="About Us"/>
+    <item
+        android:id="@+id/activity"
+        android:icon="@drawable/activity_icon"
+        android:title="Activities"/>
+    <item
+        android:id="@+id/event"
+        android:icon="@drawable/event_icon"
+        android:title="Event Archives"/>
+    <item
+        android:id="@+id/Gallery"
+        android:icon="@drawable/gallery_icon"
+        android:title="Gallery"/>
+    <item
+        android:id="@+id/contact"
+        android:icon="@drawable/contact_icon"
+        android:title="Contact Us"/>
+</menu>

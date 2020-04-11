@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/drawer"
+    tools:openDrawer="end"
+    tools:context=".home">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <androidx.appcompat.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/toolbar"
+            tools:ignore="MissingConstraints" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="50dp"
+        android:layout_weight="2"
+        android:orientation="vertical">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="350dp"
+            android:src="@drawable/backgroundicon"/>
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:orientation="horizontal">
+                <LinearLayout
+                    android:gravity="center_horizontal"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:orientation="vertical"
+                    android:layout_height="match_parent">
+                    <ImageView
+                        android:id="@+id/headOfficer"
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:clickable="true"
+                        android:src="@drawable/backgroundicon"/>
+                    <TextView
+                        android:layout_width="120dp"
+                        android:layout_height="40dp"
+                        android:text="Thinam oru nalvarthai"
+                        android:textAlignment="center"/>
+
+                    <ImageView
+                        android:id="@+id/electricity"
+                        android:layout_marginTop="10dp"
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:clickable="true"
+                        android:src="@drawable/backgroundicon"/>
+                    <TextView
+                        android:layout_width="120dp"
+                        android:layout_height="40dp"
+                        android:text="108 Azhwargalin manam"
+                        android:textAlignment="center"/>
+
+                    <ImageView
+                        android:id="@+id/gasId"
+                        android:layout_marginTop="10dp"
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:clickable="true"
+                        android:src="@drawable/backgroundicon"/>
+                    <TextView
+                        android:layout_width="120dp"
+                        android:layout_height="40dp"
+                        android:text="Kadhai ketkum neram"
+                        android:textAlignment="center"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:gravity="center_horizontal"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:orientation="vertical"
+                    android:layout_height="match_parent">
+                    <ImageView
+                        android:id="@+id/water"
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:clickable="true"
+                        android:src="@drawable/backgroundicon"/>
+                    <TextView
+                        android:layout_width="120dp"
+                        android:layout_height="40dp"
+                        android:text="Jodhidam"
+                        android:textAlignment="center"/>
+
+                    <ImageView
+                        android:id="@+id/sanitation"
+                        android:layout_marginTop="10dp"
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:clickable="true"
+                        android:src="@drawable/backgroundicon"/>
+                    <TextView
+                        android:layout_width="120dp"
+                        android:layout_height="40dp"
+                        android:text="E-books"
+                        android:textAlignment="center"/>
+
+                    <ImageView
+                        android:id="@+id/kycid"
+                        android:layout_marginTop="10dp"
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:clickable="true"
+                        android:src="@drawable/backgroundicon"/>
+                    <TextView
+                        android:layout_width="120dp"
+                        android:layout_height="40dp"
+                        android:text="Thinachariyai"
+                        android:textAlignment="center"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </ScrollView>
+    </LinearLayout>
+
+    <com.google.android.material.navigation.NavigationView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/navigationbar"
+        app:menu="@menu/menu_item"
+        android:layout_gravity="start"
+        app:headerLayout="@layout/header">
+    </com.google.android.material.navigation.NavigationView>
+
+
+
+</androidx.drawerlayout.widget.DrawerLayout>
