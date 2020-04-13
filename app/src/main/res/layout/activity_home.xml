@@ -32,6 +32,7 @@
             android:src="@drawable/backgroundicon"/>
         <ScrollView
             android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
             android:layout_height="match_parent">
             <LinearLayout
                 android:layout_width="match_parent"
@@ -49,7 +50,7 @@
                         android:layout_width="120dp"
                         android:layout_height="120dp"
                         android:clickable="true"
-                        android:src="@drawable/backgroundicon"/>
+                        android:src="@drawable/kuralicon"/>
                     <TextView
                         android:layout_width="120dp"
                         android:layout_height="40dp"
@@ -62,7 +63,7 @@
                         android:layout_width="120dp"
                         android:layout_height="120dp"
                         android:clickable="true"
-                        android:src="@drawable/backgroundicon"/>
+                        android:src="@drawable/meditation"/>
                     <TextView
                         android:layout_width="120dp"
                         android:layout_height="40dp"
@@ -75,7 +76,7 @@
                         android:layout_width="120dp"
                         android:layout_height="120dp"
                         android:clickable="true"
-                        android:src="@drawable/backgroundicon"/>
+                        android:src="@drawable/reading"/>
                     <TextView
                         android:layout_width="120dp"
                         android:layout_height="40dp"
@@ -93,7 +94,7 @@
                         android:layout_width="120dp"
                         android:layout_height="120dp"
                         android:clickable="true"
-                        android:src="@drawable/backgroundicon"/>
+                        android:src="@drawable/hinduism"/>
                     <TextView
                         android:layout_width="120dp"
                         android:layout_height="40dp"
@@ -106,7 +107,7 @@
                         android:layout_width="120dp"
                         android:layout_height="120dp"
                         android:clickable="true"
-                        android:src="@drawable/backgroundicon"/>
+                        android:src="@drawable/play"/>
                     <TextView
                         android:layout_width="120dp"
                         android:layout_height="40dp"
@@ -119,7 +120,7 @@
                         android:layout_width="120dp"
                         android:layout_height="120dp"
                         android:clickable="true"
-                        android:src="@drawable/backgroundicon"/>
+                        android:src="@drawable/script"/>
                     <TextView
                         android:layout_width="120dp"
                         android:layout_height="40dp"
