@@ -9,6 +9,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 
@@ -40,6 +41,28 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+
+        switch(menuItem.getItemId())
+        {
+            case R.id.home:
+                Toast.makeText(getApplicationContext(),"Home",Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.aboutus:
+                Toast.makeText(getApplicationContext(),"About Us",Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.activity:
+                Toast.makeText(getApplicationContext(),"Activity",Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.event:
+                Toast.makeText(getApplicationContext(),"Eventt",Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.Gallery:
+                Toast.makeText(getApplicationContext(),"Gallery",Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.contact:
+                Toast.makeText(getApplicationContext(),"Contact",Toast.LENGTH_SHORT).show();
+                break;
+        }
         return false;
     }
 }
