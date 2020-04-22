@@ -25,6 +25,7 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
     private ActionBarDrawerToggle toggle;
 
     private ImageView eBooks;
+    private ImageView DailyVoice;
     private Intent nextActivity;
 
     @SuppressLint("RestrictedApi")
@@ -46,6 +47,15 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
         navigationView.setNavigationItemSelectedListener(this);
 
         //------------------------------------------------------------------------------------------
+        DailyVoice = findViewById(R.id.ThinamOrukural);
+        DailyVoice.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                nextActivity = new Intent(home.this,VideoList.class);
+                startActivity(nextActivity);
+            }
+        });
+
         eBooks = findViewById(R.id.ebooks);
         eBooks.setOnClickListener(new View.OnClickListener() {
             @Override
