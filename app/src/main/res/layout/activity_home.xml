@@ -42,7 +42,7 @@
                     android:orientation="vertical"
                     android:layout_height="match_parent">
                     <ImageView
-                        android:id="@+id/headOfficer"
+                        android:id="@+id/ThinamOrukural"
                         android:layout_width="120dp"
                         android:layout_height="120dp"
                         android:clickable="true"
@@ -54,7 +54,7 @@
                         android:textAlignment="center"/>
 
                     <ImageView
-                        android:id="@+id/electricity"
+                        android:id="@+id/azhwargalinManam"
                         android:layout_marginTop="10dp"
                         android:layout_width="120dp"
                         android:layout_height="120dp"
@@ -67,7 +67,7 @@
                         android:textAlignment="center"/>
 
                     <ImageView
-                        android:id="@+id/gasId"
+                        android:id="@+id/KadhaiKekumNeram"
                         android:layout_marginTop="10dp"
                         android:layout_width="120dp"
                         android:layout_height="120dp"
@@ -86,7 +86,7 @@
                     android:orientation="vertical"
                     android:layout_height="match_parent">
                     <ImageView
-                        android:id="@+id/water"
+                        android:id="@+id/Jodhidam"
                         android:layout_width="120dp"
                         android:layout_height="120dp"
                         android:clickable="true"
@@ -98,7 +98,7 @@
                         android:textAlignment="center"/>
 
                     <ImageView
-                        android:id="@+id/sanitation"
+                        android:id="@+id/ebooks"
                         android:layout_marginTop="10dp"
                         android:layout_width="120dp"
                         android:layout_height="120dp"
@@ -111,7 +111,7 @@
                         android:textAlignment="center"/>
 
                     <ImageView
-                        android:id="@+id/kycid"
+                        android:id="@+id/thinahiriyai"
                         android:layout_marginTop="10dp"
                         android:layout_width="120dp"
                         android:layout_height="120dp"
