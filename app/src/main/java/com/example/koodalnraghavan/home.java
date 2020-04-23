@@ -51,7 +51,7 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
         DailyVoice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                nextActivity = new Intent(home.this,VideoList.class);
+                nextActivity = new Intent(home.this,ThinamOruKural.class);
                 startActivity(nextActivity);
             }
         });
