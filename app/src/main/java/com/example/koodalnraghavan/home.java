@@ -73,6 +73,9 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
         {
             case R.id.home:
                 Toast.makeText(getApplicationContext(),"Home",Toast.LENGTH_SHORT).show();
+                nextActivity = new Intent(home.this,home.class);
+                startActivity(nextActivity);
+                finish();
                 break;
             case R.id.aboutus:
                 Toast.makeText(getApplicationContext(),"About Us",Toast.LENGTH_SHORT).show();
