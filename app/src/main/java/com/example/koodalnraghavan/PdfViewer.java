@@ -2,6 +2,9 @@ package com.example.koodalnraghavan;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.DownloadManager;
+import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebChromeClient;
@@ -28,6 +31,8 @@ public class PdfViewer extends AppCompatActivity {
         PDFViewer.getSettings().setJavaScriptEnabled(true);
         PDFViewer.getSettings().setBuiltInZoomControls(true);
         PDFViewer.getSettings().setDisplayZoomControls(true);
+        PDFViewer.getSettings().setLoadWithOverviewMode(true);
+        PDFViewer.getSettings().setUseWideViewPort(true);
 
         PDFViewer.setWebViewClient(new WebViewClient()
         {
@@ -39,5 +44,6 @@ public class PdfViewer extends AppCompatActivity {
             }
         });
         PDFViewer.loadUrl("https://docs.google.com/gview?embedded=true&url="+url);
+
     }
 }
