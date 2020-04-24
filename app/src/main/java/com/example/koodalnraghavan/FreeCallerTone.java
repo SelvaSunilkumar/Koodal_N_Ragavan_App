@@ -1,8 +1,10 @@
 package com.example.koodalnraghavan;
 
 import android.app.DownloadManager;
+import android.content.Context;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -27,6 +29,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.security.spec.ECField;
 import java.util.ArrayList;
+
+import static android.os.Environment.DIRECTORY_DOWNLOADS;
 
 
 public class FreeCallerTone extends Fragment {
@@ -97,7 +101,7 @@ public class FreeCallerTone extends Fragment {
                     @Override
                     public void onItemClick(AdapterView<?> parent, final View view, final int position, long id) {
 
-                        String portalUrl = url.get(position);
+                        final String portalUrl = url.get(position);
 
                         try {
                             mediaPlayer.stop();
@@ -144,6 +148,20 @@ public class FreeCallerTone extends Fragment {
                             @Override
                             public void onClick(View v) {
                                 Toast.makeText(view.getContext(),"Clicked :"+list.get(position),Toast.LENGTH_SHORT).show();
+
+                                Uri uri = Uri.parse(portalUrl);
+
+                                DownloadManager downloadManager = (DownloadManager) view.getContext().getSystemService(Context.DOWNLOAD_SERVICE);
+                                DownloadManager.Request request = new DownloadManager.Request(uri);
+
+                                Context context = view.getContext();
+                                String filename = list.get(position).toString();
+                                String fileExtension = ".mp3";
+
+                                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+                                request.setDestinationInExternalFilesDir(context,DIRECTORY_DOWNLOADS,filename + fileExtension);
+
+                                downloadManager.enqueue(request);
                             }
                         });
                     }
