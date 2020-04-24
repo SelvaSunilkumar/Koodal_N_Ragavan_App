@@ -89,6 +89,11 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
             case R.id.Gallery:
                 Toast.makeText(getApplicationContext(),"Gallery",Toast.LENGTH_SHORT).show();
                 break;
+            case R.id.freedownload:
+                Toast.makeText(getApplicationContext(),"Free Downloads",Toast.LENGTH_SHORT).show();
+                nextActivity = new Intent(home.this,FreeDownload.class);
+                startActivity(nextActivity);
+                break;
             case R.id.contact:
                 Toast.makeText(getApplicationContext(),"Contact",Toast.LENGTH_SHORT).show();
                 break;

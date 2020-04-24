@@ -5,7 +5,6 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import android.annotation.SuppressLint;
@@ -18,7 +17,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 
-public class ThinamOruKural extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class FreeDownload extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout drawerLayout;
     private Toolbar toolbar;
@@ -27,10 +26,10 @@ public class ThinamOruKural extends AppCompatActivity implements NavigationView.
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
-    private TabItem MusicTab;
-    private TabItem VideoTab;
+    private TabItem callertuneTab;
+    private TabItem textTab;
 
-    public PageAdapter pageAdapter;
+    private FreePageAdapter pageAdapter;
 
     private Intent nextActivity;
 
@@ -38,11 +37,11 @@ public class ThinamOruKural extends AppCompatActivity implements NavigationView.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_thinam_oru_kural);
+        setContentView(R.layout.activity_free_download);
 
         tabLayout = findViewById(R.id.tablayout);
-        MusicTab = findViewById(R.id.musictab);
-        VideoTab = findViewById(R.id.videotab);
+        callertuneTab = findViewById(R.id.callertunes);
+        textTab = findViewById(R.id.texts);
         viewPager = findViewById(R.id.viewpager);
 
         drawerLayout = findViewById(R.id.drawer);
@@ -57,7 +56,7 @@ public class ThinamOruKural extends AppCompatActivity implements NavigationView.
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
 
-        pageAdapter = new PageAdapter(getSupportFragmentManager(),tabLayout.getTabCount());
+        pageAdapter = new FreePageAdapter(getSupportFragmentManager(),tabLayout.getTabCount());
         viewPager.setAdapter(pageAdapter);
 
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -91,11 +90,12 @@ public class ThinamOruKural extends AppCompatActivity implements NavigationView.
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+
         switch(menuItem.getItemId())
         {
             case R.id.home:
                 Toast.makeText(getApplicationContext(),"Home",Toast.LENGTH_SHORT).show();
-                nextActivity = new Intent(ThinamOruKural.this,home.class);
+                nextActivity = new Intent(FreeDownload.this,home.class);
                 startActivity(nextActivity);
                 finish();
                 break;
@@ -113,8 +113,9 @@ public class ThinamOruKural extends AppCompatActivity implements NavigationView.
                 break;
             case R.id.freedownload:
                 Toast.makeText(getApplicationContext(),"Free Downloads",Toast.LENGTH_SHORT).show();
-                nextActivity = new Intent(ThinamOruKural.this,FreeDownload.class);
+                nextActivity = new Intent(FreeDownload.this,FreeDownload.class);
                 startActivity(nextActivity);
+                finish();
                 break;
             case R.id.contact:
                 Toast.makeText(getApplicationContext(),"Contact",Toast.LENGTH_SHORT).show();
