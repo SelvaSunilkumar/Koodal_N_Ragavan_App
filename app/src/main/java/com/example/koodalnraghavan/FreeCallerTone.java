@@ -94,6 +94,8 @@ public class FreeCallerTone extends Fragment {
                 }
                 progressBar.setVisibility(View.GONE);
                 DownloadButton.setEnabled(false);
+                Pause.setEnabled(false);
+                Stop.setEnabled(false);
                 listView.setAdapter(adapter);
                 mediaPlayer = new MediaPlayer();
                 mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
@@ -112,6 +114,8 @@ public class FreeCallerTone extends Fragment {
                             mediaPlayer.start();
                             playpauseCounter=0;
                             DownloadButton.setEnabled(true);
+                            Pause.setEnabled(true);
+                            Stop.setEnabled(true);
                         }
                         catch (Exception e)
                         {
@@ -140,6 +144,7 @@ public class FreeCallerTone extends Fragment {
                             @Override
                             public void onClick(View v) {
                                 mediaPlayer.stop();
+                                Pause.setEnabled(false);
                                 return;
                             }
                         });
@@ -158,6 +163,7 @@ public class FreeCallerTone extends Fragment {
                                 String filename = list.get(position).toString();
                                 String fileExtension = ".mp3";
 
+                                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE);
                                 request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
                                 request.setDestinationInExternalFilesDir(context,DIRECTORY_DOWNLOADS,filename + fileExtension);
 
