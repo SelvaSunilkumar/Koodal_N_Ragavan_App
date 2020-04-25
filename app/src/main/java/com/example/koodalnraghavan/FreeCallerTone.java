@@ -64,6 +64,7 @@ public class FreeCallerTone extends Fragment {
     }
 
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -85,6 +86,7 @@ public class FreeCallerTone extends Fragment {
         list = new ArrayList<String>();
         url = new ArrayList<String>();
 
+        mediaPlayer = new MediaPlayer();
 
         adapter = new ArrayAdapter<String >(view.getContext(),R.layout.callertuneinfo,R.id.portal,list);
 
@@ -104,7 +106,7 @@ public class FreeCallerTone extends Fragment {
                 Pause.setEnabled(false);
                 Stop.setEnabled(false);
                 listView.setAdapter(adapter);
-                mediaPlayer = new MediaPlayer();
+
                 mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
                 listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
@@ -181,8 +183,10 @@ public class FreeCallerTone extends Fragment {
                         });
 
 
+
                     }
                 });
+
             }
 
             @Override
@@ -190,6 +194,8 @@ public class FreeCallerTone extends Fragment {
 
             }
         });
+
+
 
         return view;
     }

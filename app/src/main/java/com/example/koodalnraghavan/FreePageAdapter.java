@@ -19,12 +19,15 @@ public class FreePageAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
 
+        FreeCallerTone freeCallerTone = new FreeCallerTone();
+        TextTab textTab = new TextTab();
+
         switch (position)
         {
             case 0:
-                return new FreeCallerTone();
+                return freeCallerTone;
             case 1:
-                return new TextTab();
+                return textTab;
             default:
                 return null;
         }

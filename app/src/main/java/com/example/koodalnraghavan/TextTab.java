@@ -1,5 +1,8 @@
 package com.example.koodalnraghavan;
 
+import android.app.DownloadManager;
+import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -8,9 +11,11 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -19,6 +24,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+
+import static android.os.Environment.DIRECTORY_DOWNLOADS;
 
 
 public class TextTab extends Fragment {
@@ -69,6 +76,30 @@ public class TextTab extends Fragment {
                 }
                 progressBar.setVisibility(View.GONE);
                 listView.setAdapter(adapter);
+
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                        Toast.makeText(getContext(),"Downloading : " + list.get(position),Toast.LENGTH_SHORT).show();
+
+                        Uri uri = Uri.parse(url.get(position));
+
+                        DownloadManager downloadManager = (DownloadManager) view.getContext().getSystemService(Context.DOWNLOAD_SERVICE);
+                        DownloadManager.Request request = new DownloadManager.Request(uri);
+
+                        Context context = view.getContext();
+                        String filename = list.get(position);
+                        String fileExtension = ".pdf";
+
+                        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE);
+                        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+                        request.setDestinationInExternalFilesDir(context,DIRECTORY_DOWNLOADS,filename + fileExtension);
+
+                        downloadManager.enqueue(request);
+
+                    }
+                });
             }
 
             @Override
