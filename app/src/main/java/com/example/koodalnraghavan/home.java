@@ -27,6 +27,7 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
     private ImageView eBooks;
     private ImageView DailyVoice;
     private ImageView Thinachariyai;
+    private ImageView KadhaiKekumNeram;
     private Intent nextActivity;
 
     @SuppressLint("RestrictedApi")
@@ -68,6 +69,15 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
 
         Thinachariyai = findViewById(R.id.thinahiriyai);
         Thinachariyai.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                nextActivity = new Intent(home.this,NotFound.class);
+                startActivity(nextActivity);
+            }
+        });
+
+        KadhaiKekumNeram = findViewById(R.id.KadhaiKekumNeram);
+        KadhaiKekumNeram.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 nextActivity = new Intent(home.this,NotFound.class);
