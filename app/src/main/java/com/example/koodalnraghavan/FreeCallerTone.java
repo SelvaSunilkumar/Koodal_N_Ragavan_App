@@ -78,6 +78,7 @@ public class FreeCallerTone extends Fragment {
         DownloadButton = view.findViewById(R.id.download);
         CurrentSong = view.findViewById(R.id.playinginfo);
         CurrentSong.setSelected(true);
+        DownloadButton.setSelected(true);
 
 
         database = FirebaseDatabase.getInstance();
@@ -127,6 +128,8 @@ public class FreeCallerTone extends Fragment {
                             Stop.setEnabled(true);
                             CurrentSong.setText("Playing now : " + list.get(position));
                             CurrentSong.setSelected(true);
+                            DownloadButton.setText("Download");
+                            DownloadButton.setSelected(true);
                         }
                         catch (Exception e)
                         {
