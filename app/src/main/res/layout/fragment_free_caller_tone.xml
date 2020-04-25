@@ -48,7 +48,7 @@
                 android:layout_height="40dp"
                 android:id="@+id/playinginfo"
                 android:textSize="18sp"
-                android:text="...................................."
+                android:text="---------- SELECT ANY SONG TO PLAY ----------"
                 android:textAlignment="center"
                 android:textColor="@color/colorAccent"
                 android:marqueeRepeatLimit="marquee_forever"

@@ -70,6 +70,7 @@ public class Videotab extends Fragment {
         PlayingSong = view.findViewById(R.id.playinginfo);
 
         PlayingSong.setSelected(true);
+        Download.setEnabled(false);
 
         database = FirebaseDatabase.getInstance();
         reference = database.getReference("DailyMusic");
@@ -115,6 +116,7 @@ public class Videotab extends Fragment {
 
                             PlayingSong.setText("Playing now : " + list.get(position));
                             PlayingSong.setSelected(true);
+                            Download.setEnabled(true);
                         }
                         catch (Exception e)
                         {
