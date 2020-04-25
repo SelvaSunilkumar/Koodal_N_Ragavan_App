@@ -10,6 +10,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -40,6 +42,7 @@ public class FreeCallerTone extends Fragment {
     private ImageView Pause;
     private ImageView Stop;
     private Button DownloadButton;
+    private TextView CurrentSong;
 
     private ArrayList<String> list;
     private ArrayList<String> url;
@@ -72,12 +75,16 @@ public class FreeCallerTone extends Fragment {
         Pause = view.findViewById(R.id.pause);
         Stop = view.findViewById(R.id.stop);
         DownloadButton = view.findViewById(R.id.download);
+        CurrentSong = view.findViewById(R.id.playinginfo);
+        CurrentSong.setSelected(true);
+
 
         database = FirebaseDatabase.getInstance();
         reference = database.getReference("FreeCallerTune");
 
         list = new ArrayList<String>();
         url = new ArrayList<String>();
+
 
         adapter = new ArrayAdapter<String >(view.getContext(),R.layout.callertuneinfo,R.id.portal,list);
 
@@ -116,6 +123,8 @@ public class FreeCallerTone extends Fragment {
                             DownloadButton.setEnabled(true);
                             Pause.setEnabled(true);
                             Stop.setEnabled(true);
+                            CurrentSong.setText("Playing now : " + list.get(position));
+                            CurrentSong.setSelected(true);
                         }
                         catch (Exception e)
                         {
@@ -170,6 +179,8 @@ public class FreeCallerTone extends Fragment {
                                 downloadManager.enqueue(request);
                             }
                         });
+
+
                     }
                 });
             }

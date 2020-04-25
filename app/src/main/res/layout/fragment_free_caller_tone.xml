@@ -14,6 +14,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:layout_marginLeft="50dp"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -28,6 +29,7 @@
                 android:clickable="true"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
+                android:layout_marginLeft="5dp"
                 android:background="@drawable/stop_icon"/>
             <ProgressBar
                 android:id="@+id/progress"
@@ -35,12 +37,27 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="end|left" />
             <Button
-                android:layout_width="150dp"
+                android:layout_width="wrap_content"
                 android:layout_height="40dp"
+                android:layout_marginLeft="5dp"
                 android:id="@+id/download"
                 android:text="Download"
                 android:drawableLeft="@drawable/download_icon"/>
-
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:id="@+id/playinginfo"
+                android:textSize="18sp"
+                android:text="...................................."
+                android:textAlignment="center"
+                android:textColor="@color/colorAccent"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:gravity="center_vertical"
+                android:ellipsize="marquee"
+                android:fadingEdge="horizontal"
+                android:scrollHorizontally="true"
+                android:singleLine="true"
+                tools:ignore="RtlCompat" />
 
         </LinearLayout>
 
