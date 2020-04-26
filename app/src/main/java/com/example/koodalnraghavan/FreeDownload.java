@@ -2,12 +2,14 @@ package com.example.koodalnraghavan;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.viewpager.widget.ViewPager;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -32,6 +34,9 @@ public class FreeDownload extends AppCompatActivity implements NavigationView.On
     private FreePageAdapter pageAdapter;
 
     private Intent nextActivity;
+
+    private AlertDialog.Builder dialog;
+    private AlertDialog alertDialog;
 
     @SuppressLint("RestrictedApi")
     @Override
@@ -101,30 +106,65 @@ public class FreeDownload extends AppCompatActivity implements NavigationView.On
         {
             case R.id.home:
                 Toast.makeText(getApplicationContext(),"Home",Toast.LENGTH_SHORT).show();
-                nextActivity = new Intent(FreeDownload.this,home.class);
+                nextActivity = new Intent(this,home.class);
                 startActivity(nextActivity);
                 finish();
                 break;
             case R.id.aboutus:
                 Toast.makeText(getApplicationContext(),"About Us",Toast.LENGTH_SHORT).show();
+                nextActivity = new Intent(this,AboutUs.class);
+                startActivity(nextActivity);
                 break;
             case R.id.activity:
                 Toast.makeText(getApplicationContext(),"Activity",Toast.LENGTH_SHORT).show();
+                nextActivity = new Intent(this,NotFound.class);
+                startActivity(nextActivity);
                 break;
             case R.id.event:
                 Toast.makeText(getApplicationContext(),"Eventt",Toast.LENGTH_SHORT).show();
+                nextActivity = new Intent(this,NotFound.class);
+                startActivity(nextActivity);
                 break;
             case R.id.Gallery:
                 Toast.makeText(getApplicationContext(),"Gallery",Toast.LENGTH_SHORT).show();
+                nextActivity = new Intent(this,NotFound.class);
+                startActivity(nextActivity);
                 break;
             case R.id.freedownload:
                 Toast.makeText(getApplicationContext(),"Free Downloads",Toast.LENGTH_SHORT).show();
-                nextActivity = new Intent(FreeDownload.this,FreeDownload.class);
+                nextActivity = new Intent(this,FreeDownload.class);
                 startActivity(nextActivity);
-                finish();
                 break;
             case R.id.contact:
                 Toast.makeText(getApplicationContext(),"Contact",Toast.LENGTH_SHORT).show();
+                nextActivity = new Intent(this,NotFound.class);
+                startActivity(nextActivity);
+                break;
+            case R.id.exit:
+                Toast.makeText(getApplicationContext(),"Exit",Toast.LENGTH_SHORT).show();
+
+                dialog = new AlertDialog.Builder(this);
+                dialog.setMessage("Do you wish to quit !");
+                dialog.setTitle("Exit");
+                dialog.setPositiveButton("Quit", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                });
+
+                dialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+
+                alertDialog = dialog.create();
+                alertDialog.show();
+                break;
+            case R.id.logout:
+                Toast.makeText(getApplicationContext(),"Logout",Toast.LENGTH_SHORT).show();
                 break;
         }
         return false;

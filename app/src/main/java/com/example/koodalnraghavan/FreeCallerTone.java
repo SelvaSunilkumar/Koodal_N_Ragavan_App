@@ -185,8 +185,6 @@ public class FreeCallerTone extends Fragment {
                             }
                         });
 
-
-
                     }
                 });
 

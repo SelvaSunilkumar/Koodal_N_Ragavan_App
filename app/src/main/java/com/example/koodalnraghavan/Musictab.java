@@ -82,6 +82,7 @@ public class Musictab extends Fragment {
 
                         nextActivity = new Intent(getContext(),VideoPlayer.class);
                         Bundle bundle = new Bundle();
+                        bundle.putString("list",list.get(position));
                         bundle.putString("url",url.get(position));
                         nextActivity.putExtras(bundle);
                         startActivity(nextActivity);
