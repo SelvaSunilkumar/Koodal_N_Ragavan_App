@@ -45,6 +45,7 @@ public class eBooksDisplay extends AppCompatActivity implements NavigationView.O
     private DatabaseReference reference;
 
     private Intent nextActivity;
+    private Bundle bundle;
 
     private PdfLoader pdfLoader;
 
@@ -61,6 +62,7 @@ public class eBooksDisplay extends AppCompatActivity implements NavigationView.O
         setSupportActionBar(toolbar);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        getSupportActionBar().setTitle("e-Books");
         toggle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.drawerOpen,R.string.drawerClose);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();

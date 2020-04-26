@@ -23,11 +23,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link Musictab#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class Musictab extends Fragment {
 
     private ListView listView;
@@ -85,6 +81,9 @@ public class Musictab extends Fragment {
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                         nextActivity = new Intent(getContext(),VideoPlayer.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putString("url",url.get(position));
+                        nextActivity.putExtras(bundle);
                         startActivity(nextActivity);
 
                     }
