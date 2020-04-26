@@ -25,7 +25,7 @@ public class jodhidam extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.jodhidam);
-        mRecyclerView = findViewById(R.id.recycler_view);
+        mRecyclerView = findViewById(R.id.recycler_vie);
 
         initRecyclerView();
     }
