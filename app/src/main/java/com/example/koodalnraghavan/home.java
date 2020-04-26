@@ -27,6 +27,7 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
     private ImageView DailyVoice;
     private ImageView Thinachariyai;
     private ImageView KadhaiKekumNeram;
+    private ImageView jodhidam;
     private Intent nextActivity;
 
     @SuppressLint("RestrictedApi")
@@ -74,6 +75,16 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
                 startActivity(nextActivity);
             }
         });
+
+        jodhidam = findViewById(R.id.Jodhidam);
+        jodhidam.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                nextActivity = new Intent(home.this,jodhidam.class);
+                startActivity(nextActivity);
+            }
+        });
+
 
         KadhaiKekumNeram = findViewById(R.id.KadhaiKekumNeram);
         KadhaiKekumNeram.setOnClickListener(new View.OnClickListener() {
