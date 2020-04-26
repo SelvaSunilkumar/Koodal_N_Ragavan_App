@@ -30,6 +30,7 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
     private ImageView Thinachariyai;
     private ImageView KadhaiKekumNeram;
     private ImageView jodhidam;
+    private ImageView Kadhaikekumneram;
     private Intent nextActivity;
 
     private AlertDialog.Builder dialog;
@@ -95,7 +96,7 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
         KadhaiKekumNeram.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                nextActivity = new Intent(home.this,NotFound.class);
+                nextActivity = new Intent(home.this,KadhaiKekumNeram.class);
                 startActivity(nextActivity);
             }
         });
