@@ -84,6 +84,7 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
                 startActivity(nextActivity);
             }
         });
+        //__________________________________________________________________________________________
     }
 
     @Override
