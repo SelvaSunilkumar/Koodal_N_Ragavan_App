@@ -99,6 +99,8 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
                 break;
             case R.id.aboutus:
                 Toast.makeText(getApplicationContext(),"About Us",Toast.LENGTH_SHORT).show();
+                nextActivity = new Intent(home.this,AboutUs.class);
+                startActivity(nextActivity);
                 break;
             case R.id.activity:
                 Toast.makeText(getApplicationContext(),"Activity",Toast.LENGTH_SHORT).show();

@@ -187,8 +187,6 @@ public class Videotab extends Fragment {
 
             }
         });
-
-        mediaPlayer.stop();
         return view;
     }
 }
