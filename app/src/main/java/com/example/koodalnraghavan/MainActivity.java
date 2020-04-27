@@ -10,9 +10,13 @@ import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
+
+    private ImageView ImageLoader;
+
 
     private MediaPlayer mediaPlayer;
 
@@ -33,6 +37,11 @@ public class MainActivity extends AppCompatActivity {
 
         if(networkInfo != null && networkInfo.isConnected() == true)
         {
+
+            ImageLoader = findViewById(R.id.mainImage);
+            ImageLoader.animate().scaleYBy(1).setDuration(12000);
+            ImageLoader.animate().scaleXBy(1).setDuration(12000);
+
             Toast.makeText(getApplicationContext(),"Active Network Connection",Toast.LENGTH_SHORT).show();
 
             mediaPlayer = MediaPlayer.create(MainActivity.this,R.raw.backround_music);

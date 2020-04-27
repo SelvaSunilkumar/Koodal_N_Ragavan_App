@@ -7,10 +7,12 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.annotation.IntegerRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
@@ -30,7 +32,7 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
     private ImageView ThinachariyaiButton;
     private ImageView KadhaiKekumNeram;
     private ImageView jodhidam;
-    private ImageView Kadhaikekumneram;
+    private LinearLayout BabyName;
     private Intent nextActivity;
 
     private AlertDialog.Builder dialog;
@@ -49,6 +51,7 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
         setSupportActionBar(toolbar);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        getSupportActionBar().setIcon(R.drawable.toolbar_icon_original);
         toggle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.drawerOpen,R.string.drawerClose);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
@@ -100,6 +103,18 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
                 startActivity(nextActivity);
             }
         });
+
+        BabyName = findViewById(R.id.babyname);
+        BabyName.setClickable(true);
+        BabyName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                nextActivity = new Intent(home.this,NotFound.class);
+                startActivity(nextActivity);
+            }
+        });
+
         //__________________________________________________________________________________________
     }
 

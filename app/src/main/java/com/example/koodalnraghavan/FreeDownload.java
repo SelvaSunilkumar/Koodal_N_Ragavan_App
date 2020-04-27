@@ -56,7 +56,8 @@ public class FreeDownload extends AppCompatActivity implements NavigationView.On
         setSupportActionBar(toolbar);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        getSupportActionBar().setTitle("Free Downloads");
+        getSupportActionBar().setTitle(" Free Downloads");
+        getSupportActionBar().setIcon(R.drawable.toolbar_icon_original);
         toggle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.drawerOpen,R.string.drawerClose);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
