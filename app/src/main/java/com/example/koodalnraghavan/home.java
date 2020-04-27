@@ -27,7 +27,7 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
 
     private ImageView eBooks;
     private ImageView DailyVoice;
-    private ImageView Thinachariyai;
+    private ImageView ThinachariyaiButton;
     private ImageView KadhaiKekumNeram;
     private ImageView jodhidam;
     private ImageView Kadhaikekumneram;
@@ -73,11 +73,11 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
             }
         });
 
-        Thinachariyai = findViewById(R.id.thinahiriyai);
-        Thinachariyai.setOnClickListener(new View.OnClickListener() {
+        ThinachariyaiButton = findViewById(R.id.thinahiriyai);
+        ThinachariyaiButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                nextActivity = new Intent(home.this,NotFound.class);
+                nextActivity = new Intent(home.this,Thinachariyai.class);
                 startActivity(nextActivity);
             }
         });
@@ -153,7 +153,9 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
                 dialog.setPositiveButton("Quit", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        finish();
+
+                        System.exit(0);
+
                     }
                 });
 

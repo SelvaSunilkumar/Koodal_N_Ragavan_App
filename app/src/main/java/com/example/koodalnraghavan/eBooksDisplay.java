@@ -168,7 +168,7 @@ public class eBooksDisplay extends AppCompatActivity implements NavigationView.O
                 dialog.setPositiveButton("Quit", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        finish();
+                        System.exit(0);
                     }
                 });
 

@@ -31,7 +31,7 @@ public class KadhaiKekumNeram extends AppCompatActivity implements NavigationVie
     private TabItem MusicTab;
     private TabItem VideoTab;
 
-    public PageAdapter pageAdapter;
+    public StoryTimePageAdaptor pageAdapter;
 
     private Intent nextActivity;
     private AlertDialog.Builder dialog;
@@ -61,7 +61,8 @@ public class KadhaiKekumNeram extends AppCompatActivity implements NavigationVie
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
 
-        pageAdapter = new PageAdapter(getSupportFragmentManager(),tabLayout.getTabCount());
+        pageAdapter = new StoryTimePageAdaptor(getSupportFragmentManager(),tabLayout.getTabCount());
+        //pageAdapter = new PageAdapter(getSupportFragmentManager(),tabLayout.getTabCount());
         viewPager.setAdapter(pageAdapter);
 
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -142,7 +143,7 @@ public class KadhaiKekumNeram extends AppCompatActivity implements NavigationVie
                 dialog.setPositiveButton("Quit", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        finish();
+                        System.exit(0);
                     }
                 });
 

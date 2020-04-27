@@ -99,7 +99,9 @@ public class AboutUs extends AppCompatActivity implements NavigationView.OnNavig
                 dialog.setPositiveButton("Quit", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        finish();
+
+                        System.exit(0);
+
                     }
                 });
 

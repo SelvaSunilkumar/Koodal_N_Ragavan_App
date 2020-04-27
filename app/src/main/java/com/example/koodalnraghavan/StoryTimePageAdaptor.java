@@ -18,7 +18,16 @@ public class StoryTimePageAdaptor extends FragmentPagerAdapter {
     @NonNull
     @Override
     public Fragment getItem(int position) {
-        return null;
+
+        switch (position)
+        {
+            case 0:
+                return new AudioStory();
+            case 1:
+                return new VideoStory();
+            default:
+                return null;
+        }
     }
 
     @Override
