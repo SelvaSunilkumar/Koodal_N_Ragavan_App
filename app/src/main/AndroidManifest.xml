@@ -2,11 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.koodalnraghavan">
 
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
@@ -16,17 +14,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Thinachariyai"></activity>
-        <activity android:name=".KadhaiKekumNeram" />
+        <activity android:name=".Azhwargalaudio1"></activity>
+        <activity android:name=".AzhwargalinManam" />
         <activity android:name=".FreeDownload" />
         <activity android:name=".ThinamOruKural" />
         <activity android:name=".PdfViewer" />
         <activity android:name=".eBooksDisplay" />
         <activity android:name=".home" />
-        <activity android:name=".jodhidam" />
-        <activity android:name=".NotFound" />
-        <activity android:name=".AboutUs" />
-        <activity android:name=".VideoPlayer" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

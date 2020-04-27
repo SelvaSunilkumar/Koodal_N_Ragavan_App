@@ -5,35 +5,48 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.viewpager.widget.ViewPager;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.tabs.TabItem;
+import com.google.android.material.tabs.TabLayout;
 
-public class home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class AzhwargalinManam extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+
 
     private DrawerLayout drawerLayout;
     private Toolbar toolbar;
     private NavigationView navigationView;
     private ActionBarDrawerToggle toggle;
 
-    private ImageView eBooks;
-    private ImageView DailyVoice;
-    private ImageView azhwargalinManam;
+    private TabLayout tabLayout;
+    private TabItem MusicTab;
+    private TabItem VideoTab;
+    private ViewPager viewPager;
+
+    public AzharwargalAdapter azharwargalAdapter;
+
     private Intent nextActivity;
 
     @SuppressLint("RestrictedApi")
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+        setContentView(R.layout.activity_azhwargalin_manam);
+
+        tabLayout = findViewById(R.id.tablayout);
+        MusicTab = findViewById(R.id.musictab);
+        VideoTab = findViewById(R.id.videotab);
+        viewPager = findViewById(R.id.viewpager);
 
         drawerLayout = findViewById(R.id.drawer);
         toolbar = findViewById(R.id.toolbar);
@@ -47,33 +60,37 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
 
-        //------------------------------------------------------------------------------------------
-        DailyVoice = findViewById(R.id.ThinamOrukural);
-        DailyVoice.setOnClickListener(new View.OnClickListener() {
+
+        azharwargalAdapter=new AzharwargalAdapter(getSupportFragmentManager(),tabLayout.getTabCount());
+        //pageAdapter=new PageAdapter(getSupportFragmentManager(),tabLayout.getTabCount());
+        viewPager.setAdapter(azharwargalAdapter);
+
+        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
-            public void onClick(View v) {
-                nextActivity = new Intent(home.this,ThinamOruKural.class);
-                startActivity(nextActivity);
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewPager.setCurrentItem(tab.getPosition());
+                if(tab.getPosition()==0)
+                {
+                    azharwargalAdapter.notifyDataSetChanged();
+                }
+                else if(tab.getPosition()==1)
+                {
+                    azharwargalAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
             }
         });
 
-        eBooks = findViewById(R.id.ebooks);
-        eBooks.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                nextActivity = new Intent(home.this,eBooksDisplay.class);
-                startActivity(nextActivity);
-            }
-        });
-
-        azhwargalinManam = findViewById(R.id.azhwargalinManam);
-        azhwargalinManam.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                nextActivity=new Intent(home.this,AzhwargalinManam.class);
-                startActivity(nextActivity);
-            }
-        });
+        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
     }
 
     @Override
@@ -83,7 +100,7 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
         {
             case R.id.home:
                 Toast.makeText(getApplicationContext(),"Home",Toast.LENGTH_SHORT).show();
-                nextActivity = new Intent(home.this,home.class);
+                nextActivity = new Intent(AzhwargalinManam.this,home.class);
                 startActivity(nextActivity);
                 finish();
                 break;
@@ -101,7 +118,7 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
                 break;
             case R.id.freedownload:
                 Toast.makeText(getApplicationContext(),"Free Downloads",Toast.LENGTH_SHORT).show();
-                nextActivity = new Intent(home.this,FreeDownload.class);
+                nextActivity = new Intent(AzhwargalinManam.this,FreeDownload.class);
                 startActivity(nextActivity);
                 break;
             case R.id.contact:
