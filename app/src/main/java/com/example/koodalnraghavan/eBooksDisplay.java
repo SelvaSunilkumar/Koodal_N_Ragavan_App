@@ -9,8 +9,11 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.loader.content.Loader;
 
 import android.annotation.SuppressLint;
+import android.app.DownloadManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,6 +31,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+
+import static android.os.Environment.DIRECTORY_DOWNLOADS;
 
 public class eBooksDisplay extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -100,12 +105,33 @@ public class eBooksDisplay extends AppCompatActivity implements NavigationView.O
                 listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        /*------------------------------------------------------------------------------------
+
                         Toast.makeText(getApplicationContext(), url.get(position), Toast.LENGTH_SHORT).show();
                         Intent pdfLayout = new Intent(eBooksDisplay.this, PdfViewer.class);
                         Bundle bundle = new Bundle();
                         bundle.putString("url", url.get(position));
                         pdfLayout.putExtras(bundle);
                         startActivity(pdfLayout);
+
+                        -------------------------------------------------------------------------------------*/
+
+                        Uri uri = Uri.parse(url.get(position));
+
+                        DownloadManager downloadManager = (DownloadManager) view.getContext().getSystemService(Context.DOWNLOAD_SERVICE);
+                        DownloadManager.Request request = new DownloadManager.Request(uri);
+
+                        Context context = view.getContext();
+                        String filename = list.get(position);
+                        String fileExtention = ".pdf";
+
+                        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE);
+                        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+                        request.setDestinationInExternalFilesDir(context,DIRECTORY_DOWNLOADS,filename + fileExtention);
+
+                        Toast.makeText(getApplicationContext(),"Downloading : " + list.get(position),Toast.LENGTH_SHORT).show();
+
+                        downloadManager.enqueue(request);
                     }
                 });
             }

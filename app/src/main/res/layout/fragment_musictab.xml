@@ -6,8 +6,6 @@
     tools:context=".Musictab">
 
     <ListView
-        android:layout_marginTop="65dp"
-        android:layout_marginBottom="55dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/listView"/>
