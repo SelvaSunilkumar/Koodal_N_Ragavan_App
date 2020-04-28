@@ -42,7 +42,7 @@ public class AboutUs extends AppCompatActivity implements NavigationView.OnNavig
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         getSupportActionBar().setTitle(" About us");
-        getSupportActionBar().setIcon(R.drawable.toolbar_icon_original);
+        getSupportActionBar().setIcon(R.mipmap.ic_tool_bar);
         toggle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.drawerOpen,R.string.drawerClose);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
