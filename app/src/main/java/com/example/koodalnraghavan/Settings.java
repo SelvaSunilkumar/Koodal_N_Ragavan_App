@@ -26,7 +26,7 @@ public class Settings extends AppCompatActivity implements NavigationView.OnNavi
     private ActionBarDrawerToggle toggle;
 
     public Switch LanguageSelector;
-    private TextView opted;
+
 
     //public SharedPreferences sharedPreferences;
     //public SharedPreferences.Editor editor;
@@ -38,7 +38,6 @@ public class Settings extends AppCompatActivity implements NavigationView.OnNavi
         setContentView(R.layout.activity_settings);
 
         LanguageSelector = findViewById(R.id.languageSelector);
-        opted = findViewById(R.id.option);
 
         drawerLayout = findViewById(R.id.drawer);
         toolbar = findViewById(R.id.toolbar);
@@ -68,7 +67,6 @@ public class Settings extends AppCompatActivity implements NavigationView.OnNavi
                    editor.putBoolean("value",true);
                    editor.apply();
                    LanguageSelector.setChecked(true);
-                   opted.setText("Tamil");
 
                 }
                 else
@@ -78,7 +76,7 @@ public class Settings extends AppCompatActivity implements NavigationView.OnNavi
                     editor.putBoolean("value",false);
                     editor.apply();;
                     LanguageSelector.setChecked(false);
-                    opted.setText("English");
+
 
                 }
             }
