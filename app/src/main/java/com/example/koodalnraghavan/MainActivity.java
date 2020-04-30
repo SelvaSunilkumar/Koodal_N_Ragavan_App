@@ -12,10 +12,16 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.Display;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+
 public class MainActivity extends AppCompatActivity {
+
+    private ImageView mainImagae;
 
     private MediaPlayer mediaPlayer;
 
@@ -24,6 +30,8 @@ public class MainActivity extends AppCompatActivity {
 
     private AlertDialog.Builder dialog;
     private AlertDialog alertDialog;
+
+    private Animation animation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +44,11 @@ public class MainActivity extends AppCompatActivity {
 
         if(networkInfo != null && networkInfo.isConnected() == true)
         {
+
+            mainImagae = findViewById(R.id.imageAtMain);
+
+            animation = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fadein);
+            mainImagae.startAnimation(animation);
 
             Toast.makeText(getApplicationContext(),"Active Network Connection",Toast.LENGTH_SHORT).show();
 

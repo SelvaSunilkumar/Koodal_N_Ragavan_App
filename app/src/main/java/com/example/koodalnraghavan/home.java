@@ -3,11 +3,13 @@ package com.example.koodalnraghavan;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
@@ -26,6 +28,12 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
     private Toolbar toolbar;
     private NavigationView navigationView;
     private ActionBarDrawerToggle toggle;
+
+    private TextView DhinamOruKural;
+    private TextView Alvargal;
+    private TextView Story;
+    private TextView Astrology;
+    private TextView NameMyBaby;
 
     private ImageView eBooks;
     private ImageView DailyVoice;
@@ -56,6 +64,39 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
+
+        //------------------------------------------------------------------------------------------
+
+        DhinamOruKural = findViewById(R.id.dhinamoru);
+        Alvargal = findViewById(R.id.alvars);
+        Story = findViewById(R.id.storytime);
+        Astrology = findViewById(R.id.astrology);
+        NameMyBaby = findViewById(R.id.nameBaby);
+
+        SharedPreferences sharedPreferences = getSharedPreferences("save",MODE_PRIVATE);
+        Boolean language = sharedPreferences.getBoolean("value",true);
+        Toast.makeText(getApplicationContext(),"Language : " + language,Toast.LENGTH_SHORT ).show();
+
+        if(language)
+        {
+            DhinamOruKural.setText(R.string.thinamorukural);
+            Astrology.setText(R.string.jodhidam_en);
+            Alvargal.setText(R.string.alwargalinManam_en);
+
+            Story.setText(R.string.kadhai);
+
+            NameMyBaby.setText(R.string.babyName_en);
+        }
+        else
+        {
+            DhinamOruKural.setText(R.string.thinamorukuralTamil);
+            Astrology.setText(R.string.jodhidam_tml);
+            Alvargal.setText(R.string.alwargalinManam_tml);
+
+            Story.setText(R.string.kadhai_tml);
+
+            NameMyBaby.setText(R.string.babyName_tml);
+        }
 
         //------------------------------------------------------------------------------------------
         DailyVoice = findViewById(R.id.ThinamOrukural);
@@ -159,6 +200,11 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
                 nextActivity = new Intent(home.this,NotFound.class);
                 startActivity(nextActivity);
                 break;
+            case R.id.settings:
+                Toast.makeText(getApplicationContext(),"Settings",Toast.LENGTH_SHORT).show();
+                nextActivity = new Intent(this,Settings.class);
+                startActivity(nextActivity);
+                break;
             case R.id.exit:
                 Toast.makeText(getApplicationContext(),"Exit",Toast.LENGTH_SHORT).show();
 
@@ -190,4 +236,5 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
         }
         return false;
     }
+
 }

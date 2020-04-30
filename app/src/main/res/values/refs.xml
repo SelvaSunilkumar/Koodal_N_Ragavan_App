@@ -1,2 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+
+    <!-- Menu Tamil -->
+    <string name="thinamorukuralTamil">தினம் ஓரு நல்வார்த்தை</string>
+    <string name="jodhidam_tml">ஜோதிடம்</string>
+    <string name="alwargalinManam_tml">108 Azhwargalin மனம்</string>
+    <string name="kadhai_tml">கதை கேட்கும் நேரம்</string>
+    <string name="thinachariyai_tml">Thinachariyai</string>
+    <string name="babyName_tml">குழந்தை பெயர்கள்</string>
+
+</resources>

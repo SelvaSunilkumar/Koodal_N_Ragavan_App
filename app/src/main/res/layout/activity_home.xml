@@ -53,10 +53,11 @@
                             android:layout_width="100dp"
                             android:layout_height="100dp"
                             android:clickable="true"
-                            android:src="@drawable/thiruvalluvar"/>
+                            android:src="@drawable/pngalwar"/>
                         <TextView
                             android:layout_width="120dp"
                             android:layout_height="40dp"
+                            android:id="@+id/dhinamoru"
                             android:text="Thinam oru nalvarthai"
                             android:textAlignment="center"/>
 
@@ -70,6 +71,7 @@
                         <TextView
                             android:layout_width="120dp"
                             android:layout_height="40dp"
+                            android:id="@+id/alvars"
                             android:text="108 Azhwargalin manam"
                             android:textAlignment="center"/>
 
@@ -83,6 +85,7 @@
                         <TextView
                             android:layout_width="120dp"
                             android:layout_height="40dp"
+                            android:id="@+id/storytime"
                             android:text="Kadhai ketkum neram"
                             android:textAlignment="center"/>
                     </LinearLayout>
@@ -101,6 +104,7 @@
                         <TextView
                             android:layout_width="120dp"
                             android:layout_height="40dp"
+                            android:id="@+id/astrology"
                             android:text="Jodhidam"
                             android:textAlignment="center"/>
 
@@ -164,6 +168,7 @@
                             android:layout_height="match_parent"
                             android:layout_marginLeft="15dp"
                             android:text="Baby Names"
+                            android:id="@+id/nameBaby"
                             android:gravity="center_vertical"
                             android:textSize="26sp"/>
                     </LinearLayout>

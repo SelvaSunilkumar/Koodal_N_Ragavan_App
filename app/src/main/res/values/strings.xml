@@ -9,4 +9,13 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- Menu Strings -->
+    <string name="thinamorukural">Thinam Oru Kural</string>
+    <string name="jodhidam_en">Jodhidam</string>
+    <string name="alwargalinManam_en">108 Azhwargalin Manam</string>
+    <string name="kadhai">Kadhai Kekum Neram</string>
+    <string name="thinachariyai">Thinachariyai</string>
+    <string name="babyName_en">Baby Names</string>
+
 </resources>
