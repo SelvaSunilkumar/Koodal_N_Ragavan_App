@@ -40,10 +40,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Toast.makeText(getApplicationContext(),"Build Successful",Toast.LENGTH_LONG).show();
+
         try {
 
             try {
                 // --------- try catch 1 ----------
+                Toast.makeText(getApplicationContext(),"Connection Establishment Sucessfull",Toast.LENGTH_LONG).show();
                 connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
                 assert connectivityManager != null;
                 networkInfo = connectivityManager.getActiveNetworkInfo();
@@ -58,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
 
                 try {
                     //--------- try catch - 2 ----------
+                    Toast.makeText(getApplicationContext(),"Image Loader Sucessfull",Toast.LENGTH_LONG).show();
                     mainImagae = findViewById(R.id.imageAtMain);
                 }
                 catch (Exception b)
@@ -67,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
 
                 try {
                     //----- try catch - 3 -------
+                    Toast.makeText(getApplicationContext(),"Animation Loader Successful",Toast.LENGTH_LONG).show();
                     animation = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fadein);
                     mainImagae.startAnimation(animation);
                 }
@@ -79,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
 
                 try {
                     //----- try catch 4 -----
+                    Toast.makeText(getApplicationContext(),"Media player Created",Toast.LENGTH_LONG).show();
                     mediaPlayer = new MediaPlayer();
                 }
                 catch (Exception d)
@@ -91,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
 
                     try {
                         //----- try catch 5 -----
+                        Toast.makeText(getApplicationContext(),"Media Loaded",Toast.LENGTH_LONG).show();
                         mediaPlayer = MediaPlayer.create(MainActivity.this,R.raw.backround_music);
                     }
                     catch (Exception f)
@@ -100,6 +107,7 @@ public class MainActivity extends AppCompatActivity {
 
                     try {
                         //---------- try catch 6 ----------------
+                        Toast.makeText(getApplicationContext(),"Music Stream set",Toast.LENGTH_LONG).show();
                         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);;
                     }
                     catch (Exception g)
@@ -109,6 +117,7 @@ public class MainActivity extends AppCompatActivity {
                     //mediaPlayer.prepare();
                     try {
                         //-------- try catch 7------------
+                        Toast.makeText(getApplicationContext(),"Media started",Toast.LENGTH_LONG).show();
                         mediaPlayer.start();
                     }
                     catch(Exception h)
