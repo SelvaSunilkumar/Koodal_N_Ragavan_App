@@ -145,7 +145,10 @@ public class ThinamOruKural extends AppCompatActivity implements NavigationView.
                 dialog.setPositiveButton("Quit", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        System.exit(0);
+
+                        //System.exit(0);
+                        finishAffinity();
+
                     }
                 });
 

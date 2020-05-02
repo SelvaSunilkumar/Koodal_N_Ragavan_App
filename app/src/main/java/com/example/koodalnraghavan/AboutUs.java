@@ -101,7 +101,8 @@ public class AboutUs extends AppCompatActivity implements NavigationView.OnNavig
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
-                        System.exit(0);
+                        //System.exit(0);
+                        finishAffinity();
 
                     }
                 });

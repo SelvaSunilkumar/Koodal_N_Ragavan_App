@@ -227,7 +227,8 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
-                        System.exit(0);
+                        //System.exit(0);
+                        finishAffinity();
 
                     }
                 });

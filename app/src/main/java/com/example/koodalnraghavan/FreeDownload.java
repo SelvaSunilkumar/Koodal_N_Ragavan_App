@@ -150,7 +150,10 @@ public class FreeDownload extends AppCompatActivity implements NavigationView.On
                 dialog.setPositiveButton("Quit", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        System.exit(0);
+
+                        //System.exit(0);
+                        finishAffinity();
+
                     }
                 });
 
