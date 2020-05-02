@@ -40,7 +40,8 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
     private ImageView ThinachariyaiButton;
     private ImageView KadhaiKekumNeram;
     private ImageView jodhidam;
-    private LinearLayout BabyName;
+    private ImageView BabyName;
+    private ImageView Donation;
     private Intent nextActivity;
 
     private AlertDialog.Builder dialog;
@@ -148,6 +149,17 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
         BabyName = findViewById(R.id.babyname);
         BabyName.setClickable(true);
         BabyName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                nextActivity = new Intent(home.this,NotFound.class);
+                startActivity(nextActivity);
+            }
+        });
+
+        Donation = findViewById(R.id.donation);
+        Donation.setClickable(true);
+        Donation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 

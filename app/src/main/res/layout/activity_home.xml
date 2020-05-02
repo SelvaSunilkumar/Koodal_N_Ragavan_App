@@ -50,7 +50,7 @@
                         android:layout_height="match_parent">
                         <ImageView
                             android:id="@+id/ThinamOrukural"
-                            android:layout_width="100dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="100dp"
                             android:clickable="true"
                             android:src="@drawable/pngalwar"/>
@@ -64,7 +64,7 @@
                         <ImageView
                             android:id="@+id/azhwargalinManam"
                             android:layout_marginTop="10dp"
-                            android:layout_width="100dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="100dp"
                             android:clickable="true"
                             android:src="@drawable/meditation"/>
@@ -78,7 +78,7 @@
                         <ImageView
                             android:id="@+id/KadhaiKekumNeram"
                             android:layout_marginTop="10dp"
-                            android:layout_width="100dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="100dp"
                             android:clickable="true"
                             android:src="@drawable/reading"/>
@@ -87,6 +87,20 @@
                             android:layout_height="40dp"
                             android:id="@+id/storytime"
                             android:text="Kadhai ketkum neram"
+                            android:textAlignment="center"/>
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="100dp"
+                            android:layout_marginTop="10dp"
+                            android:clickable="true"
+                            android:src="@drawable/womb"
+                            android:id="@+id/babyname"/>
+                        <TextView
+                            android:layout_width="120dp"
+                            android:layout_height="40dp"
+                            android:id="@+id/nameBaby"
+                            android:text="Baby Names"
                             android:textAlignment="center"/>
                     </LinearLayout>
                     <LinearLayout
@@ -97,7 +111,7 @@
                         android:layout_height="match_parent">
                         <ImageView
                             android:id="@+id/Jodhidam"
-                            android:layout_width="100dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="100dp"
                             android:clickable="true"
                             android:src="@drawable/hinduism"/>
@@ -111,7 +125,7 @@
                         <ImageView
                             android:id="@+id/ebooks"
                             android:layout_marginTop="10dp"
-                            android:layout_width="100dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="100dp"
                             android:clickable="true"
                             android:src="@drawable/play"/>
@@ -124,7 +138,7 @@
                         <ImageView
                             android:id="@+id/thinahiriyai"
                             android:layout_marginTop="10dp"
-                            android:layout_width="100dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="100dp"
                             android:clickable="true"
                             android:src="@drawable/script"/>
@@ -134,44 +148,21 @@
                             android:text="Thinachariyai"
                             android:textAlignment="center"/>
 
-                    </LinearLayout>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="100dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="2"
-                    android:gravity="center"
-                    android:clickable="true"
-                    android:id="@+id/babyname"
-                    android:background="@drawable/backlinearlayou"
-                    android:layout_marginLeft="35dp"
-                    android:layout_marginRight="30dp"
-                    android:orientation="horizontal">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
                         <ImageView
-                            android:layout_width="100dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="100dp"
-                            android:src="@drawable/womb"/>
+                            android:clickable="true"
+                            android:layout_marginTop="10dp"
+                            android:src="@drawable/donation"
+                            android:id="@+id/donation"/>
+                        <TextView
+                            android:layout_width="120dp"
+                            android:layout_height="40dp"
+                            android:textAlignment="center"
+                            android:text="Sambavanai"/>
+
                     </LinearLayout>
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginLeft="15dp"
-                            android:text="Baby Names"
-                            android:id="@+id/nameBaby"
-                            android:gravity="center_vertical"
-                            android:textSize="26sp"/>
-                    </LinearLayout>
                 </LinearLayout>
 
 
