@@ -10,6 +10,7 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.Display;
@@ -40,6 +41,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
+        {
+
+        }
+
         Toast.makeText(getApplicationContext(),"Build Successful",Toast.LENGTH_LONG).show();
 
         try {
@@ -61,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
 
                 try {
                     //--------- try catch - 2 ----------
+                    //-------------------------------
                     Toast.makeText(getApplicationContext(),"Image Loader Sucessfull",Toast.LENGTH_LONG).show();
                     mainImagae = findViewById(R.id.imageAtMain);
                 }

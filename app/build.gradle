@@ -7,7 +7,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.koodalnraghavan"
-        minSdkVersion 21
+        minSdkVersion 16
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -43,12 +43,12 @@ dependencies {
     implementation 'com.google.firebase:firebase-database:16.0.4'
     implementation 'com.google.firebase:firebase-storage:16.0.4'
     implementation 'com.google.firebase:firebase-auth:16.0.5'
-    implementation 'com.google.android.exoplayer:exoplayer:2.10.8'
-    implementation 'com.google.android.exoplayer:exoplayer-core:2.10.8'
-    implementation 'com.google.android.exoplayer:exoplayer-dash:2.10.8'
-    implementation 'com.google.android.exoplayer:exoplayer-hls:2.10.8'
-    implementation 'com.google.android.exoplayer:exoplayer-smoothstreaming:2.10.8'
-    implementation 'com.google.android.exoplayer:exoplayer-ui:2.10.8'
+    //implementation 'com.google.android.exoplayer:exoplayer:2.10.8'
+    //implementation 'com.google.android.exoplayer:exoplayer-core:2.10.8'
+    //implementation 'com.google.android.exoplayer:exoplayer-dash:2.10.8'
+    //implementation 'com.google.android.exoplayer:exoplayer-hls:2.10.8'
+    //implementation 'com.google.android.exoplayer:exoplayer-smoothstreaming:2.10.8'
+    //implementation 'com.google.android.exoplayer:exoplayer-ui:2.10.8'
 
 
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'

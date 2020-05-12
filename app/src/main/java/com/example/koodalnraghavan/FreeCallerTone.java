@@ -204,4 +204,10 @@ public class FreeCallerTone extends Fragment {
 
         return view;
     }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        //getActivity().finishActivity(FreeCallerTone.this);
+    }
 }
