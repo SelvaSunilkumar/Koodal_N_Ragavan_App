@@ -163,7 +163,7 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
             @Override
             public void onClick(View v) {
 
-                nextActivity = new Intent(home.this,NotFound.class);
+                nextActivity = new Intent(home.this,Sambavanai.class);
                 startActivity(nextActivity);
             }
         });

@@ -128,81 +128,73 @@ public class eBooksDisplay extends AppCompatActivity implements NavigationView.O
                 listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        /*------------------------------------------------------------------------------------
-
-                        Toast.makeText(getApplicationContext(), url.get(position), Toast.LENGTH_SHORT).show();
-                        Intent pdfLayout = new Intent(eBooksDisplay.this, PdfViewer.class);
-                        Bundle bundle = new Bundle();
-                        bundle.putString("url", url.get(position));
-                        pdfLayout.putExtras(bundle);
-                        startActivity(pdfLayout);
-
-                        -------------------------------------------------------------------------------------*/
-
-                        /*Uri uri = Uri.parse(url.get(position));
-
-                        DownloadManager downloadManager = (DownloadManager) view.getContext().getSystemService(Context.DOWNLOAD_SERVICE);
-                        DownloadManager.Request request = new DownloadManager.Request(uri);
-
-                        Context context = view.getContext();
-                        String filename = list.get(position);
-                        String fileExtention = ".pdf";
-
-                        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE);
-                        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-                        request.setDestinationInExternalFilesDir(context,DIRECTORY_DOWNLOADS,filename + fileExtention);
-
-                        Toast.makeText(getApplicationContext(),"Downloading : " + list.get(position),Toast.LENGTH_SHORT).show();
-
-                        downloadManager.enqueue(request);*/
 
                         // code for processing payment
 
-                        paymentSelectorButton = new Dialog(eBooksDisplay.this);
-                        paymentSelectorButton.setContentView(R.layout.payment_selector);
+                        if(position == 0)
+                        {
+                            Uri uri = Uri.parse(url.get(position));
 
-                        googlePayGateway = paymentSelectorButton.findViewById(R.id.googlePlayButton);
+                            DownloadManager downloadManager = (DownloadManager) view.getContext().getSystemService(Context.DOWNLOAD_SERVICE);
+                            DownloadManager.Request request = new DownloadManager.Request(uri);
 
-                        googlePayGateway.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Toast.makeText(getApplicationContext(),"Processing to Gpay",Toast.LENGTH_SHORT).show();
+                            Context context = view.getContext();
+                            String filename = list.get(position);
+                            String fileExtention = ".pdf";
 
-                                GooglePayGatewayProcessor = new Dialog(eBooksDisplay.this);
-                                GooglePayGatewayProcessor.setContentView(R.layout.google_pay_account_info);
+                            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE);
+                            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+                            request.setDestinationInExternalFilesDir(context,DIRECTORY_DOWNLOADS,filename + fileExtention);
 
-                                GooglePayNow = GooglePayGatewayProcessor.findViewById(R.id.paynow);
+                            Toast.makeText(getApplicationContext(),"Downloading : " + list.get(position),Toast.LENGTH_SHORT).show();
 
-                                GooglePayNow.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        Toast.makeText(getApplicationContext(),"Payment code pending",Toast.LENGTH_SHORT).show();
+                            downloadManager.enqueue(request);
+                        }
+                        else
+                        {
+                            paymentSelectorButton = new Dialog(eBooksDisplay.this);
+                            paymentSelectorButton.setContentView(R.layout.payment_selector);
 
-                                        NameTextView = GooglePayGatewayProcessor.findViewById(R.id.payee_name);
-                                        UPI_id_TextView = GooglePayGatewayProcessor.findViewById(R.id.payee_upi);
+                            googlePayGateway = paymentSelectorButton.findViewById(R.id.googlePlayButton);
 
-                                        Name = NameTextView.getText().toString();
-                                        UPI_Id = UPI_id_TextView.getText().toString();
-                                        //Name = "Bindhu N P";
-                                        //UPI_Id = "bindhuselve1976@okaxis";
-                                        Amount = "1";
+                            googlePayGateway.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Toast.makeText(getApplicationContext(),"Processing to Gpay",Toast.LENGTH_SHORT).show();
 
-                                        Note = list.get(position);
+                                    GooglePayGatewayProcessor = new Dialog(eBooksDisplay.this);
+                                    GooglePayGatewayProcessor.setContentView(R.layout.google_pay_account_info);
 
-                                        bookUrl = url.get(position);
+                                    GooglePayNow = GooglePayGatewayProcessor.findViewById(R.id.paynow);
 
-                                        payUsingUpi(Amount,UPI_Id,Name,Note,bookUrl);
+                                    GooglePayNow.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            Toast.makeText(getApplicationContext(),"Payment code pending",Toast.LENGTH_SHORT).show();
 
-                                    }
-                                });
+                                            NameTextView = GooglePayGatewayProcessor.findViewById(R.id.payee_name);
+                                            UPI_id_TextView = GooglePayGatewayProcessor.findViewById(R.id.payee_upi);
 
-                                GooglePayGatewayProcessor.show();
-                            }
-                        });
-                        paymentSelectorButton.show();
+                                            Name = NameTextView.getText().toString();
+                                            UPI_Id = UPI_id_TextView.getText().toString();
+                                            Amount = "1";
+
+                                            Note = list.get(position);
+
+                                            bookUrl = url.get(position);
+
+                                            payUsingUpi(Amount,UPI_Id,Name,Note,bookUrl);
+
+                                        }
+                                    });
+
+                                    GooglePayGatewayProcessor.show();
+                                }
+                            });
+                            paymentSelectorButton.show();
+                        }
                     }
                 });
-
 
             }
 
