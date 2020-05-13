@@ -49,11 +49,11 @@
                     <ImageView
                         android:layout_width="75dp"
                         android:layout_height="75dp"
-                        android:src="@drawable/gpay"/>
+                        android:src="@drawable/upi"/>
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="75dp"
-                        android:text="Google Pay"
+                        android:text="UPI"
                         android:gravity="center_horizontal|center_vertical"
                         android:textSize="20sp"/>
                 </LinearLayout>
