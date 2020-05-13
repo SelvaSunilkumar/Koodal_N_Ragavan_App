@@ -19,7 +19,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
+import java.util.UUID;
 
 import static android.os.Environment.DIRECTORY_DOWNLOADS;
 
@@ -32,13 +36,22 @@ public class Sambavanai extends AppCompatActivity {
     private TextView UPI_TextView;
     private EditText NoteEditText;
     private EditText AmountEditText;
+    private EditText PayeeNameEditText;
 
     private String Name;
     private String UPI_Id;
     private String Note;
     private String Amount;
+    private String PayeeName;
+    private String UserDatabaseId;
 
     private Dialog floatBanner;
+
+    private PaymentUserDetails paymentUserDetails;
+
+    private FirebaseDatabase database;
+    private DatabaseReference reference;
+    private UUID uuid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +59,9 @@ public class Sambavanai extends AppCompatActivity {
         setContentView(R.layout.activity_sambavanai);
 
         googlePay = findViewById(R.id.googlePay);
+
+        database = FirebaseDatabase.getInstance();
+        reference = database.getReference("PaymentHistory");
 
         googlePay.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,13 +83,40 @@ public class Sambavanai extends AppCompatActivity {
                         UPI_TextView = floatBanner.findViewById(R.id.payee_upi);
                         NoteEditText = floatBanner.findViewById(R.id.payee_note);
                         AmountEditText = floatBanner.findViewById(R.id.payee_amount);
+                        PayeeNameEditText = floatBanner.findViewById(R.id.payer_name);
 
                         Name = NameTextView.getText().toString();
                         UPI_Id = UPI_TextView.getText().toString();
                         Note = NoteEditText.getText().toString();
                         Amount = AmountEditText.getText().toString();
+                        PayeeName = PayeeNameEditText.getText().toString();
 
-                        payUsingUpi(Amount,UPI_Id,Name,Note);
+                        if(Note.isEmpty() && Amount.isEmpty() && PayeeName.isEmpty())
+                        {
+                            PayeeNameEditText.setError("Please enter your Name");
+                            NoteEditText.setError("Please give a note about the Payment");
+                            AmountEditText.setError("Please fill the amount ");
+                            PayeeNameEditText.requestFocus();
+                        }
+                        else if(PayeeName.isEmpty())
+                        {
+                            PayeeNameEditText.setError("Please enter your Name");
+                            PayeeNameEditText.requestFocus();
+                        }
+                        else if(Note.isEmpty())
+                        {
+                            NoteEditText.setError("Please give a note about the Payment");
+                            NoteEditText.requestFocus();
+                        }
+                        else if(Amount.isEmpty())
+                        {
+                            AmountEditText.setError("Please fill the amount");
+                            AmountEditText.requestFocus();
+                        }
+                        else
+                        {
+                            payUsingUpi(Amount,UPI_Id,Name,Note);
+                        }
 
                     }
                 });
@@ -180,10 +223,15 @@ public class Sambavanai extends AppCompatActivity {
             {
                 Toast.makeText(Sambavanai.this,"Transaction Successful",Toast.LENGTH_SHORT).show();
                 Log.d("UPI","responseStr : " + approvalRefNo);
+                //uuid = UUID.randomUUID();
+
+                paymentUserDetails = new PaymentUserDetails(Amount,PayeeName,approvalRefNo);
+
+                reference.child(approvalRefNo).setValue(paymentUserDetails);
             }
             else if ("Payment cancelled by user.".equals(paymentCancel))
             {
-                Toast.makeText(Sambavanai.this,"Payment cancelled by the user",Toast.LENGTH_SHORT).show();
+                Toast.makeText(Sambavanai.this,"Payment cancelled by the user : " + PayeeName + Amount,Toast.LENGTH_SHORT).show();
             }
             else {
                 Toast.makeText(Sambavanai.this,"Transaction failed.Please try again later",Toast.LENGTH_SHORT).show();
