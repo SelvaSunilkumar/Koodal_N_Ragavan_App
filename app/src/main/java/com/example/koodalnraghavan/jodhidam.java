@@ -14,11 +14,25 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.SeekBar;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.zip.Inflater;
 
 public class jodhidam  extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -27,16 +41,21 @@ public class jodhidam  extends AppCompatActivity implements NavigationView.OnNav
     private NavigationView navigationView;
     private ActionBarDrawerToggle toggle;
 
-    private TabLayout tabLayout;
-    private ViewPager viewPager;
-    private TabItem jodhidammusictab;
-    private TabItem jodhidamvideotab;
-
-    public PageAdapter jodhidampageadapter;
+    private ProgressBar progressBar;
+    private ListView listView;
 
     private Intent nextActivity;
     private AlertDialog.Builder dialog;
     private AlertDialog alertDialog;
+
+    private FirebaseDatabase database;
+    private DatabaseReference reference;
+
+    private ArrayList<String> list;
+    private ArrayList<String> url;
+    private ArrayAdapter<String> adapter;
+
+    private Azhwarmusic1 azhwarmusic;
 
     @SuppressLint("RestrictedApi")
     @Override
@@ -44,57 +63,73 @@ public class jodhidam  extends AppCompatActivity implements NavigationView.OnNav
         super.onCreate(savedInstanceState);
         setContentView(R.layout.jodhidam);
 
-        tabLayout = findViewById(R.id.tablayout);
-        jodhidammusictab = findViewById(R.id.musictab);
-        jodhidamvideotab = findViewById(R.id.videotab);
-        viewPager = findViewById(R.id.viewpager);
 
         drawerLayout = findViewById(R.id.drawer);
         toolbar = findViewById(R.id.toolbar);
         navigationView = findViewById(R.id.navigationbar);
+        progressBar = findViewById(R.id.progress);
+        listView = findViewById(R.id.listviewj);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        getSupportActionBar().setTitle(" jodhidam");
+        getSupportActionBar().setTitle("Jodhidam");
         getSupportActionBar().setIcon(R.mipmap.ic_tool_bar);
         toggle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.drawerOpen,R.string.drawerClose);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
 
-        jodhidampageadapter = new PageAdapter(getSupportFragmentManager(),tabLayout.getTabCount());
-        viewPager.setAdapter(jodhidampageadapter);
+        list = new ArrayList<String>();
+        url = new ArrayList<String>();
 
-        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+        adapter = new ArrayAdapter<String>(getApplicationContext(),R.layout.musicinfo,R.id.portal,list);
+
+        database = FirebaseDatabase.getInstance();
+        reference = database.getReference("Jodhidam");
+
+        reference.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                viewPager.setCurrentItem(tab.getPosition());
-                if(tab.getPosition()==0)
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                azhwarmusic = new Azhwarmusic1();
+                progressBar.setVisibility(View.VISIBLE);
+
+                for(DataSnapshot ds:dataSnapshot.getChildren())
                 {
-                    jodhidampageadapter.notifyDataSetChanged();
+                    azhwarmusic = ds.getValue(Azhwarmusic1.class);
+                    list.add(String.valueOf(azhwarmusic.getTitle()));
+                    url.add(String.valueOf(azhwarmusic.getUrl()));
                 }
-                else if(tab.getPosition()==1)
-                {
-                    jodhidampageadapter.notifyDataSetChanged();
-                }
+
+                progressBar.setVisibility(View.GONE);
+                listView.setAdapter(adapter);
+
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                        Intent videoActivity = new Intent(jodhidam.this,VideoPlayer.class);
+
+                        Bundle bundle = new Bundle();
+                        bundle.putString("list",list.get(position));
+                        bundle.putString("url",url.get(position));
+
+                        videoActivity.putExtras(bundle);
+                        startActivity(videoActivity);
+
+                    }
+                });
+
             }
 
             @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
 
-        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-
     }
-
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
 
@@ -134,6 +169,10 @@ public class jodhidam  extends AppCompatActivity implements NavigationView.OnNav
             case R.id.contact:
                 Toast.makeText(getApplicationContext(),"Contact",Toast.LENGTH_SHORT).show();
                 nextActivity = new Intent(this,NotFound.class);
+                startActivity(nextActivity);
+                break;
+            case R.id.settings:
+                nextActivity = new Intent(this, Settings.class);
                 startActivity(nextActivity);
                 break;
             case R.id.exit:

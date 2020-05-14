@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
 
             try {
                 // --------- try catch 1 ----------
-                Toast.makeText(getApplicationContext(),"Connection Establishment Sucessfull",Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(),"Connection Establishment Sucessfull",Toast.LENGTH_LONG).show();
                 connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
                 assert connectivityManager != null;
                 networkInfo = connectivityManager.getActiveNetworkInfo();
@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     //--------- try catch - 2 ----------
                     //-------------------------------
-                    Toast.makeText(getApplicationContext(),"Image Loader Sucessfull",Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getApplicationContext(),"Image Loader Sucessfull",Toast.LENGTH_LONG).show();
                     mainImagae = findViewById(R.id.imageAtMain);
                 }
                 catch (Exception b)
@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
 
                 try {
                     //----- try catch - 3 -------
-                    Toast.makeText(getApplicationContext(),"Animation Loader Successful",Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getApplicationContext(),"Animation Loader Successful",Toast.LENGTH_LONG).show();
                     animation = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fadein);
                     mainImagae.startAnimation(animation);
                 }
@@ -87,11 +87,11 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(),"(catch 3) Exception : " + c,Toast.LENGTH_LONG).show();
                 }
 
-                Toast.makeText(getApplicationContext(),"Active Network Connection",Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(),"Active Network Connection",Toast.LENGTH_SHORT).show();
 
                 try {
                     //----- try catch 4 -----
-                    Toast.makeText(getApplicationContext(),"Media player Created",Toast.LENGTH_LONG).show();
+                  //  Toast.makeText(getApplicationContext(),"Media player Created",Toast.LENGTH_LONG).show();
                     mediaPlayer = new MediaPlayer();
                 }
                 catch (Exception d)
@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
 
                     try {
                         //----- try catch 5 -----
-                        Toast.makeText(getApplicationContext(),"Media Loaded",Toast.LENGTH_LONG).show();
+                        //Toast.makeText(getApplicationContext(),"Media Loaded",Toast.LENGTH_LONG).show();
                         mediaPlayer = MediaPlayer.create(MainActivity.this,R.raw.backround_music);
                     }
                     catch (Exception f)
@@ -114,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
 
                     try {
                         //---------- try catch 6 ----------------
-                        Toast.makeText(getApplicationContext(),"Music Stream set",Toast.LENGTH_LONG).show();
+                        //Toast.makeText(getApplicationContext(),"Music Stream set",Toast.LENGTH_LONG).show();
                         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);;
                     }
                     catch (Exception g)
@@ -124,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
                     //mediaPlayer.prepare();
                     try {
                         //-------- try catch 7------------
-                        Toast.makeText(getApplicationContext(),"Media started",Toast.LENGTH_LONG).show();
+                        //Toast.makeText(getApplicationContext(),"Media started",Toast.LENGTH_LONG).show();
                         mediaPlayer.start();
                     }
                     catch(Exception h)
@@ -134,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
                     mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                         @Override
                         public void onCompletion(MediaPlayer mp) {
-                            Toast.makeText(getApplicationContext(),"Song Completed",Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(getApplicationContext(),"Song Completed",Toast.LENGTH_SHORT).show();
                             Intent goHome = new Intent(MainActivity.this,home.class);
                             startActivity(goHome);
                             finish();
@@ -156,7 +156,7 @@ public class MainActivity extends AppCompatActivity {
             }
             else
             {
-                Toast.makeText(getApplicationContext(),"Not Network Connection",Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(),"Not Network Connection",Toast.LENGTH_SHORT).show();
 
                 dialog = new AlertDialog.Builder(this);
                 dialog.setMessage("Press 'RESTART' after switching on Internet");

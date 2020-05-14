@@ -77,7 +77,7 @@
                     android:layout_marginTop="5dp"
                     android:layout_marginRight="10dp"
                     android:gravity="center"
-                    android:text="Bindhu N P"
+                    android:text="Koodal Raghavan"
                     android:textSize="18sp" />
             </LinearLayout>
 
@@ -104,7 +104,7 @@
                     android:layout_marginTop="5dp"
                     android:layout_marginRight="10dp"
                     android:gravity="center"
-                    android:text="bindhuselva1976@okaxis"
+                    android:text="Not provided"
                     android:textSize="18sp" />
             </LinearLayout>
 

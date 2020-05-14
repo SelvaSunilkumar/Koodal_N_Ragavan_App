@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -59,6 +60,9 @@ public class Settings extends AppCompatActivity implements NavigationView.OnNavi
 
         SharedPreferences sharedPreferences = getSharedPreferences("save",MODE_PRIVATE);
         LanguageSelector.setChecked(sharedPreferences.getBoolean("value",false));
+        boolean editor = sharedPreferences.getBoolean("value",false);
+
+        Toast.makeText(getApplicationContext()," " + editor,Toast.LENGTH_SHORT).show();
 
         LanguageSelector.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -133,6 +137,11 @@ public class Settings extends AppCompatActivity implements NavigationView.OnNavi
                 Toast.makeText(getApplicationContext(),"Contact",Toast.LENGTH_SHORT).show();
                 nextActivity = new Intent(this,NotFound.class);
                 startActivity(nextActivity);
+                break;
+            case R.id.settings:
+                nextActivity = new Intent(this, Settings.class);
+                startActivity(nextActivity);
+                finish();
                 break;
             case R.id.exit:
                 Toast.makeText(getApplicationContext(),"Exit",Toast.LENGTH_SHORT).show();

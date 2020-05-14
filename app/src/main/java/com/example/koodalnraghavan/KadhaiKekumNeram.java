@@ -135,6 +135,10 @@ public class KadhaiKekumNeram extends AppCompatActivity implements NavigationVie
                 nextActivity = new Intent(this,NotFound.class);
                 startActivity(nextActivity);
                 break;
+            case R.id.settings:
+                nextActivity = new Intent(this,Settings.class);
+                startActivity(nextActivity);
+                break;
             case R.id.exit:
                 Toast.makeText(getApplicationContext(),"Exit",Toast.LENGTH_SHORT).show();
 

@@ -3,10 +3,13 @@ package com.example.koodalnraghavan;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
@@ -30,11 +33,26 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
     private ImageView ThinachariyaiButton;
     private ImageView KadhaiKekumNeram;
     private ImageView jodhidam;
-    private ImageView Kadhaikekumneram;
+    private ImageView AlvargalinManam;
+    private ImageView BabyName;
+    private ImageView Donation;
+
+    private TextView DailyKural;
+    private TextView Jodhidam;
+    private TextView Alwargal;
+    private TextView ebooks;
+    private TextView StoryTime;
+    private TextView dhinachariyai;
+    private TextView babyName;
+    //private TextView donation;
+
     private Intent nextActivity;
 
     private AlertDialog.Builder dialog;
     private AlertDialog alertDialog;
+
+    private SharedPreferences sharedPreferences;
+    private boolean LanguageSelector;
 
     @SuppressLint("RestrictedApi")
     @Override
@@ -49,11 +67,51 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
         setSupportActionBar(toolbar);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        getSupportActionBar().setIcon(R.mipmap.ic_tool_bar);
         toggle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.drawerOpen,R.string.drawerClose);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
 
+        //------------------------------- Layout Initialization ------------------------------------
+
+        DailyKural = findViewById(R.id.dhinamoru);
+        Jodhidam = findViewById(R.id.astrology);
+        Alwargal = findViewById(R.id.alvars);
+        ebooks = findViewById(R.id.books);
+        StoryTime = findViewById(R.id.storytime);
+        dhinachariyai = findViewById(R.id.routine);
+        babyName = findViewById(R.id.nameBaby);
+        //donation = findViewById(R.id.)
+
+        //------------------------------------------------------------------------------------------
+        sharedPreferences = getSharedPreferences("save",MODE_PRIVATE);
+
+        LanguageSelector = sharedPreferences.getBoolean("value",false);
+        //Toast.makeText(getApplicationContext()," " + LanguageSelector,Toast.LENGTH_SHORT).show();
+
+        if(LanguageSelector)
+        {
+            //------------- Language Selected is English -----------------
+            DailyKural.setText(R.string.thinamorukural);
+            Jodhidam.setText(R.string.jodhidam_en);
+            Alwargal.setText(R.string.alwargalinManam_en);
+            StoryTime.setText(R.string.kadhai);
+            babyName.setText(R.string.babyName_en);
+            ebooks.setText(R.string.ebooks_en);
+            dhinachariyai.setText(R.string.thinachariyai);
+        }
+        else
+        {
+            //------------- Language Selected is Tamil ------------------
+            DailyKural.setText(R.string.thinamorukuralTamil);
+            Jodhidam.setText(R.string.jodhidam_tml);
+            Alwargal.setText(R.string.alwargalinManam_tml);
+            StoryTime.setText(R.string.kadhai_tml);
+            babyName.setText(R.string.babyName_tml);
+            ebooks.setText(R.string.ebooks_tml);
+            dhinachariyai.setText(R.string.thinachariyai_tml);
+        }
         //------------------------------------------------------------------------------------------
         DailyVoice = findViewById(R.id.ThinamOrukural);
         DailyVoice.setOnClickListener(new View.OnClickListener() {
@@ -100,6 +158,33 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
                 startActivity(nextActivity);
             }
         });
+
+        AlvargalinManam = findViewById(R.id.azhwargalinManam);
+        AlvargalinManam.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                nextActivity = new Intent(home.this,Azhwarmanam.class);
+                startActivity(nextActivity);
+            }
+        });
+
+        BabyName = findViewById(R.id.babyname);
+        BabyName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                nextActivity = new Intent(home.this,NotFound.class);
+                startActivity(nextActivity);
+            }
+        });
+
+        Donation = findViewById(R.id.donation);
+        Donation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                nextActivity = new Intent(home.this,Sambavanai.class);
+                startActivity(nextActivity);
+            }
+        });
         //__________________________________________________________________________________________
     }
 
@@ -142,6 +227,10 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
             case R.id.contact:
                 Toast.makeText(getApplicationContext(),"Contact",Toast.LENGTH_SHORT).show();
                 nextActivity = new Intent(home.this,NotFound.class);
+                startActivity(nextActivity);
+                break;
+            case R.id.settings:
+                nextActivity = new Intent(this, Settings.class);
                 startActivity(nextActivity);
                 break;
             case R.id.exit:

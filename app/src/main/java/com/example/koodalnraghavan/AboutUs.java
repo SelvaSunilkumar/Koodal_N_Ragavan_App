@@ -91,6 +91,10 @@ public class AboutUs extends AppCompatActivity implements NavigationView.OnNavig
                 nextActivity = new Intent(this,NotFound.class);
                 startActivity(nextActivity);
                 break;
+            case R.id.settings:
+                nextActivity = new Intent(this,Settings.class);
+                startActivity(nextActivity);
+                break;
             case R.id.exit:
                 Toast.makeText(getApplicationContext(),"Exit",Toast.LENGTH_SHORT).show();
 

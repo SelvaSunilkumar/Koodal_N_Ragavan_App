@@ -16,7 +16,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Thinachariyai"></activity>
+        <activity android:name=".MusicLister"/>
+        <activity android:name=".Settings"/>
+        <activity android:name=".Sambavanai" />
+        <activity android:name=".Thinachariyai" />
+        <activity android:name=".Azhwarmanam" />
         <activity android:name=".KadhaiKekumNeram" />
         <activity android:name=".FreeDownload" />
         <activity android:name=".ThinamOruKural" />

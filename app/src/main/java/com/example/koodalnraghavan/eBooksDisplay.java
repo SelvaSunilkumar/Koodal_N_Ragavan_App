@@ -170,14 +170,14 @@ public class eBooksDisplay extends AppCompatActivity implements NavigationView.O
                                     GooglePayNow.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
-                                            Toast.makeText(getApplicationContext(),"Payment code pending",Toast.LENGTH_SHORT).show();
+                                            //Toast.makeText(getApplicationContext(),"Payment code pending",Toast.LENGTH_SHORT).show();
 
                                             NameTextView = GooglePayGatewayProcessor.findViewById(R.id.payee_name);
                                             UPI_id_TextView = GooglePayGatewayProcessor.findViewById(R.id.payee_upi);
 
                                             Name = NameTextView.getText().toString();
                                             UPI_Id = UPI_id_TextView.getText().toString();
-                                            Amount = "1";
+                                            Amount = "100";
 
                                             Note = list.get(position);
 
@@ -246,6 +246,10 @@ public class eBooksDisplay extends AppCompatActivity implements NavigationView.O
             case R.id.contact:
                 Toast.makeText(getApplicationContext(),"Contact",Toast.LENGTH_SHORT).show();
                 nextActivity = new Intent(this,NotFound.class);
+                startActivity(nextActivity);
+                break;
+            case R.id.settings:
+                nextActivity = new Intent(this,Settings.class);
                 startActivity(nextActivity);
                 break;
             case R.id.exit:

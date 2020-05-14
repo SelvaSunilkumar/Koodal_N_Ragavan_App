@@ -11,38 +11,28 @@
     tools:openDrawer="end"
     tools:context=".jodhidam">
 
-
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
         <androidx.appcompat.widget.Toolbar
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:id="@+id/toolbar" />
-        <com.google.android.material.tabs.TabLayout
-            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/tablayout"
-            app:tabTextColor="@android:color/white"
-            android:background="@color/colorPrimary">
-
-            <com.google.android.material.tabs.TabItem
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/musictab"
-                android:text="Music"/>
-            <com.google.android.material.tabs.TabItem
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Videos"
-                android:id="@+id/videotab"/>
-        </com.google.android.material.tabs.TabLayout>
-
-        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/toolbar"
+            tools:ignore="MissingConstraints" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:layout_marginTop="65dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/progress"/>
+        <ListView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/viewpager"/>
+            android:id="@+id/listviewj"/>
     </LinearLayout>
 
     <com.google.android.material.navigation.NavigationView
