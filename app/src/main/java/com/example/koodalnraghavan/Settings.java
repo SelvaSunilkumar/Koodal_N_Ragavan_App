@@ -59,7 +59,7 @@ public class Settings extends AppCompatActivity implements NavigationView.OnNavi
         navigationView.setNavigationItemSelectedListener(this);
 
         SharedPreferences sharedPreferences = getSharedPreferences("save",MODE_PRIVATE);
-        LanguageSelector.setChecked(sharedPreferences.getBoolean("value",false));
+        LanguageSelector.setChecked(sharedPreferences.getBoolean("value",true));
         boolean editor = sharedPreferences.getBoolean("value",false);
 
         Toast.makeText(getApplicationContext()," " + editor,Toast.LENGTH_SHORT).show();

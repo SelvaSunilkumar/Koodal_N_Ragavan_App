@@ -87,7 +87,7 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
         //------------------------------------------------------------------------------------------
         sharedPreferences = getSharedPreferences("save",MODE_PRIVATE);
 
-        LanguageSelector = sharedPreferences.getBoolean("value",false);
+        LanguageSelector = sharedPreferences.getBoolean("value",true);
         //Toast.makeText(getApplicationContext()," " + LanguageSelector,Toast.LENGTH_SHORT).show();
 
         if(LanguageSelector)
