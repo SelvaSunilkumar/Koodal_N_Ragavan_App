@@ -70,7 +70,7 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
         azhwargalinManam.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                nextActivity=new Intent(home.this,AzhwargalinManam.class);
+                nextActivity=new Intent(home.this,Azhwarmanam.class);
                 startActivity(nextActivity);
             }
         });

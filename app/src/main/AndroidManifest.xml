@@ -14,13 +14,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Azhwargalaudio1"></activity>
-        <activity android:name=".AzhwargalinManam" />
+        <activity android:name=".Azhwaraudiopart2"></activity>
+        <activity android:name=".SongViewer" />
+        <activity android:name=".Azhwaraudiopart1" />
+        <activity android:name=".Azhwarmanam" />
         <activity android:name=".FreeDownload" />
         <activity android:name=".ThinamOruKural" />
         <activity android:name=".PdfViewer" />
         <activity android:name=".eBooksDisplay" />
         <activity android:name=".home" />
+        <activity android:name=".VideoPlayer"/>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
