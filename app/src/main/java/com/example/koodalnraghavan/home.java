@@ -1,21 +1,22 @@
 package com.example.koodalnraghavan;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.drawerlayout.widget.DrawerLayout;
-
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 public class home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -26,8 +27,14 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
 
     private ImageView eBooks;
     private ImageView DailyVoice;
-    private ImageView azhwargalinManam;
+    private ImageView ThinachariyaiButton;
+    private ImageView KadhaiKekumNeram;
+    private ImageView jodhidam;
+    private ImageView Kadhaikekumneram;
     private Intent nextActivity;
+
+    private AlertDialog.Builder dialog;
+    private AlertDialog alertDialog;
 
     @SuppressLint("RestrictedApi")
     @Override
@@ -66,14 +73,34 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
             }
         });
 
-        azhwargalinManam = findViewById(R.id.azhwargalinManam);
-        azhwargalinManam.setOnClickListener(new View.OnClickListener() {
+        ThinachariyaiButton = findViewById(R.id.thinahiriyai);
+        ThinachariyaiButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                nextActivity=new Intent(home.this,Azhwarmanam.class);
+                nextActivity = new Intent(home.this,Thinachariyai.class);
                 startActivity(nextActivity);
             }
         });
+
+        jodhidam = findViewById(R.id.Jodhidam);
+        jodhidam.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                nextActivity = new Intent(home.this,jodhidam.class);
+                startActivity(nextActivity);
+            }
+        });
+
+
+        KadhaiKekumNeram = findViewById(R.id.KadhaiKekumNeram);
+        KadhaiKekumNeram.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                nextActivity = new Intent(home.this,KadhaiKekumNeram.class);
+                startActivity(nextActivity);
+            }
+        });
+        //__________________________________________________________________________________________
     }
 
     @Override
@@ -89,15 +116,23 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
                 break;
             case R.id.aboutus:
                 Toast.makeText(getApplicationContext(),"About Us",Toast.LENGTH_SHORT).show();
+                nextActivity = new Intent(home.this,AboutUs.class);
+                startActivity(nextActivity);
                 break;
             case R.id.activity:
                 Toast.makeText(getApplicationContext(),"Activity",Toast.LENGTH_SHORT).show();
+                nextActivity = new Intent(home.this,NotFound.class);
+                startActivity(nextActivity);
                 break;
             case R.id.event:
                 Toast.makeText(getApplicationContext(),"Eventt",Toast.LENGTH_SHORT).show();
+                nextActivity = new Intent(home.this,NotFound.class);
+                startActivity(nextActivity);
                 break;
             case R.id.Gallery:
                 Toast.makeText(getApplicationContext(),"Gallery",Toast.LENGTH_SHORT).show();
+                nextActivity = new Intent(home.this,NotFound.class);
+                startActivity(nextActivity);
                 break;
             case R.id.freedownload:
                 Toast.makeText(getApplicationContext(),"Free Downloads",Toast.LENGTH_SHORT).show();
@@ -106,6 +141,36 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
                 break;
             case R.id.contact:
                 Toast.makeText(getApplicationContext(),"Contact",Toast.LENGTH_SHORT).show();
+                nextActivity = new Intent(home.this,NotFound.class);
+                startActivity(nextActivity);
+                break;
+            case R.id.exit:
+                Toast.makeText(getApplicationContext(),"Exit",Toast.LENGTH_SHORT).show();
+
+                dialog = new AlertDialog.Builder(home.this);
+                dialog.setMessage("Do you wish to quit !");
+                dialog.setTitle("Exit");
+                dialog.setPositiveButton("Quit", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        System.exit(0);
+
+                    }
+                });
+
+                dialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+
+                alertDialog = dialog.create();
+                alertDialog.show();
+                break;
+            case R.id.logout:
+                Toast.makeText(getApplicationContext(),"Logout",Toast.LENGTH_SHORT).show();
                 break;
         }
         return false;

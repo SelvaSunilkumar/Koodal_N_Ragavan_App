@@ -55,7 +55,8 @@ public class KadhaiKekumNeram extends AppCompatActivity implements NavigationVie
         setSupportActionBar(toolbar);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        getSupportActionBar().setTitle("Kadhai Kekum Neram");
+        getSupportActionBar().setTitle(" Kadhai Kekum Neram");
+        getSupportActionBar().setIcon(R.mipmap.ic_tool_bar);
         toggle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.drawerOpen,R.string.drawerClose);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
@@ -143,7 +144,10 @@ public class KadhaiKekumNeram extends AppCompatActivity implements NavigationVie
                 dialog.setPositiveButton("Quit", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        System.exit(0);
+
+                        //System.exit(0);
+                        finishAffinity();
+
                     }
                 });
 

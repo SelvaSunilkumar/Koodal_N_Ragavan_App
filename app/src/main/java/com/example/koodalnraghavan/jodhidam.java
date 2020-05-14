@@ -1,78 +1,169 @@
 package com.example.koodalnraghavan;
 
-import android.os.Bundle;
-
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.RequestManager;
-import com.bumptech.glide.request.RequestOptions;
-import com.example.koodalnraghavan.models.MediaObject;
-import com.example.koodalnraghavan.util.Resources;
-import com.example.koodalnraghavan.util.VerticalSpacingItemDecorator;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
-public class jodhidam extends AppCompatActivity {
+import android.annotation.SuppressLint;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.MenuItem;
+import android.widget.Toast;
 
-    private static final String TAG = "jodhidam";
+import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.tabs.TabItem;
+import com.google.android.material.tabs.TabLayout;
 
-    private VideoPlayerRecyclerView mRecyclerView;
+public class jodhidam  extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+    private DrawerLayout drawerLayout;
+    private Toolbar toolbar;
+    private NavigationView navigationView;
+    private ActionBarDrawerToggle toggle;
+
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
+    private TabItem jodhidammusictab;
+    private TabItem jodhidamvideotab;
+
+    public PageAdapter jodhidampageadapter;
+
+    private Intent nextActivity;
+    private AlertDialog.Builder dialog;
+    private AlertDialog alertDialog;
+
+    @SuppressLint("RestrictedApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.jodhidam);
-        mRecyclerView = findViewById(R.id.recycler_vie);
 
-        initRecyclerView();
+        tabLayout = findViewById(R.id.tablayout);
+        jodhidammusictab = findViewById(R.id.musictab);
+        jodhidamvideotab = findViewById(R.id.videotab);
+        viewPager = findViewById(R.id.viewpager);
+
+        drawerLayout = findViewById(R.id.drawer);
+        toolbar = findViewById(R.id.toolbar);
+        navigationView = findViewById(R.id.navigationbar);
+
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        getSupportActionBar().setTitle(" jodhidam");
+        getSupportActionBar().setIcon(R.mipmap.ic_tool_bar);
+        toggle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.drawerOpen,R.string.drawerClose);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+        navigationView.setNavigationItemSelectedListener(this);
+
+        jodhidampageadapter = new PageAdapter(getSupportFragmentManager(),tabLayout.getTabCount());
+        viewPager.setAdapter(jodhidampageadapter);
+
+        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewPager.setCurrentItem(tab.getPosition());
+                if(tab.getPosition()==0)
+                {
+                    jodhidampageadapter.notifyDataSetChanged();
+                }
+                else if(tab.getPosition()==1)
+                {
+                    jodhidampageadapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
+        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+
     }
-
-    private void initRecyclerView(){
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(layoutManager);
-        VerticalSpacingItemDecorator itemDecorator = new VerticalSpacingItemDecorator(10);
-        mRecyclerView.addItemDecoration(itemDecorator);
-
-        ArrayList<MediaObject> mediaObjects = new ArrayList<MediaObject>(Arrays.asList(Resources.MEDIA_OBJECTS));
-        mRecyclerView.setMediaObjects(mediaObjects);
-        VideoPlayerRecyclerAdapter adapter = new VideoPlayerRecyclerAdapter(mediaObjects, initGlide());
-        mRecyclerView.setAdapter(adapter);
-    }
-
-    private RequestManager initGlide(){
-        RequestOptions options = new RequestOptions()
-                .placeholder(R.drawable.white_background)
-                .error(R.drawable.white_background);
-
-        return Glide.with(this)
-                .setDefaultRequestOptions(options);
-    }
-
 
     @Override
-    protected void onDestroy() {
-        if(mRecyclerView!=null)
-            mRecyclerView.releasePlayer();
-        super.onDestroy();
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+
+        switch(menuItem.getItemId())
+        {
+            case R.id.home:
+                Toast.makeText(getApplicationContext(),"Home",Toast.LENGTH_SHORT).show();
+                nextActivity = new Intent(this,home.class);
+                startActivity(nextActivity);
+                finish();
+                break;
+            case R.id.aboutus:
+                Toast.makeText(getApplicationContext(),"About Us",Toast.LENGTH_SHORT).show();
+                nextActivity = new Intent(this,AboutUs.class);
+                startActivity(nextActivity);
+                break;
+            case R.id.activity:
+                Toast.makeText(getApplicationContext(),"Activity",Toast.LENGTH_SHORT).show();
+                nextActivity = new Intent(this,NotFound.class);
+                startActivity(nextActivity);
+                break;
+            case R.id.event:
+                Toast.makeText(getApplicationContext(),"Eventt",Toast.LENGTH_SHORT).show();
+                nextActivity = new Intent(this,NotFound.class);
+                startActivity(nextActivity);
+                break;
+            case R.id.Gallery:
+                Toast.makeText(getApplicationContext(),"Gallery",Toast.LENGTH_SHORT).show();
+                nextActivity = new Intent(this,NotFound.class);
+                startActivity(nextActivity);
+                break;
+            case R.id.freedownload:
+                Toast.makeText(getApplicationContext(),"Free Downloads",Toast.LENGTH_SHORT).show();
+                nextActivity = new Intent(this,FreeDownload.class);
+                startActivity(nextActivity);
+                break;
+            case R.id.contact:
+                Toast.makeText(getApplicationContext(),"Contact",Toast.LENGTH_SHORT).show();
+                nextActivity = new Intent(this,NotFound.class);
+                startActivity(nextActivity);
+                break;
+            case R.id.exit:
+                Toast.makeText(getApplicationContext(),"Exit",Toast.LENGTH_SHORT).show();
+
+                dialog = new AlertDialog.Builder(this);
+                dialog.setMessage("Do you wish to quit !");
+                dialog.setTitle("Exit");
+                dialog.setPositiveButton("Quit", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        System.exit(0);
+                    }
+                });
+
+                dialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+
+                alertDialog = dialog.create();
+                alertDialog.show();
+                break;
+            case R.id.logout:
+                Toast.makeText(getApplicationContext(),"Logout",Toast.LENGTH_SHORT).show();
+                break;
+        }
+        return false;
+
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

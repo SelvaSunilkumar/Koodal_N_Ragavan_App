@@ -22,112 +22,154 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="80dp"
         android:layout_weight="2"
         android:orientation="vertical">
         <ScrollView
             android:layout_width="match_parent"
             android:layout_marginTop="10dp"
+            android:layout_weight="2"
             android:layout_height="match_parent">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="2"
-                android:orientation="horizontal">
+                android:orientation="vertical">
                 <LinearLayout
-                    android:gravity="center_horizontal"
-                    android:layout_weight="1"
-                    android:layout_width="0dp"
-                    android:orientation="vertical"
-                    android:layout_height="match_parent">
-                    <ImageView
-                        android:id="@+id/ThinamOrukural"
-                        android:layout_width="120dp"
-                        android:layout_height="120dp"
-                        android:clickable="true"
-                        android:src="@drawable/thiruvalluvar"/>
-                    <TextView
-                        android:layout_width="120dp"
-                        android:layout_height="40dp"
-                        android:text="Thinam oru nalvarthai"
-                        android:textAlignment="center"/>
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:orientation="horizontal">
+                    <LinearLayout
+                        android:gravity="center_horizontal"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:orientation="vertical"
+                        android:layout_height="match_parent">
+                        <ImageView
+                            android:id="@+id/ThinamOrukural"
+                            android:layout_width="wrap_content"
+                            android:layout_height="100dp"
+                            android:clickable="true"
+                            android:src="@drawable/pngalwar"/>
+                        <TextView
+                            android:layout_width="120dp"
+                            android:layout_height="40dp"
+                            android:id="@+id/dhinamoru"
+                            android:text="Thinam oru nalvarthai"
+                            android:textAlignment="center"/>
 
-                    <ImageView
-                        android:id="@+id/azhwargalinManam"
-                        android:layout_marginTop="10dp"
-                        android:layout_width="120dp"
-                        android:layout_height="120dp"
-                        android:clickable="true"
-                        android:src="@drawable/meditation"/>
-                    <TextView
-                        android:layout_width="120dp"
-                        android:layout_height="40dp"
-                        android:text="108 Azhwargalin manam"
-                        android:textAlignment="center"/>
+                        <ImageView
+                            android:id="@+id/azhwargalinManam"
+                            android:layout_marginTop="10dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="100dp"
+                            android:clickable="true"
+                            android:src="@drawable/meditation"/>
+                        <TextView
+                            android:layout_width="120dp"
+                            android:layout_height="40dp"
+                            android:id="@+id/alvars"
+                            android:text="108 Azhwargalin manam"
+                            android:textAlignment="center"/>
 
-                    <ImageView
-                        android:id="@+id/KadhaiKekumNeram"
-                        android:layout_marginTop="10dp"
-                        android:layout_width="120dp"
-                        android:layout_height="120dp"
-                        android:clickable="true"
-                        android:src="@drawable/reading"/>
-                    <TextView
-                        android:layout_width="120dp"
-                        android:layout_height="40dp"
-                        android:text="Kadhai ketkum neram"
-                        android:textAlignment="center"/>
+                        <ImageView
+                            android:id="@+id/KadhaiKekumNeram"
+                            android:layout_marginTop="10dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="100dp"
+                            android:clickable="true"
+                            android:src="@drawable/reading"/>
+                        <TextView
+                            android:layout_width="120dp"
+                            android:layout_height="40dp"
+                            android:id="@+id/storytime"
+                            android:text="Kadhai ketkum neram"
+                            android:textAlignment="center"/>
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="100dp"
+                            android:layout_marginTop="10dp"
+                            android:clickable="true"
+                            android:src="@drawable/womb"
+                            android:id="@+id/babyname"/>
+                        <TextView
+                            android:layout_width="120dp"
+                            android:layout_height="40dp"
+                            android:id="@+id/nameBaby"
+                            android:text="Baby Names"
+                            android:textAlignment="center"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:gravity="center_horizontal"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:orientation="vertical"
+                        android:layout_height="match_parent">
+                        <ImageView
+                            android:id="@+id/Jodhidam"
+                            android:layout_width="wrap_content"
+                            android:layout_height="100dp"
+                            android:clickable="true"
+                            android:src="@drawable/hinduism"/>
+                        <TextView
+                            android:layout_width="120dp"
+                            android:layout_height="40dp"
+                            android:id="@+id/astrology"
+                            android:text="Jodhidam"
+                            android:textAlignment="center"/>
+
+                        <ImageView
+                            android:id="@+id/ebooks"
+                            android:layout_marginTop="10dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="100dp"
+                            android:clickable="true"
+                            android:src="@drawable/play"/>
+                        <TextView
+                            android:layout_width="120dp"
+                            android:layout_height="40dp"
+                            android:text="E-books"
+                            android:textAlignment="center"/>
+
+                        <ImageView
+                            android:id="@+id/thinahiriyai"
+                            android:layout_marginTop="10dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="100dp"
+                            android:clickable="true"
+                            android:src="@drawable/script"/>
+                        <TextView
+                            android:layout_width="120dp"
+                            android:layout_height="40dp"
+                            android:text="Thinachariyai"
+                            android:textAlignment="center"/>
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="100dp"
+                            android:clickable="true"
+                            android:layout_marginTop="10dp"
+                            android:src="@drawable/donation"
+                            android:id="@+id/donation"/>
+                        <TextView
+                            android:layout_width="120dp"
+                            android:layout_height="40dp"
+                            android:textAlignment="center"
+                            android:text="Sambavanai"/>
+
+                    </LinearLayout>
+
                 </LinearLayout>
-                <LinearLayout
-                    android:gravity="center_horizontal"
-                    android:layout_weight="1"
-                    android:layout_width="0dp"
-                    android:orientation="vertical"
-                    android:layout_height="match_parent">
-                    <ImageView
-                        android:id="@+id/Jodhidam"
-                        android:layout_width="120dp"
-                        android:layout_height="120dp"
-                        android:clickable="true"
-                        android:src="@drawable/hinduism"/>
-                    <TextView
-                        android:layout_width="120dp"
-                        android:layout_height="40dp"
-                        android:text="Jodhidam"
-                        android:textAlignment="center"/>
 
-                    <ImageView
-                        android:id="@+id/ebooks"
-                        android:layout_marginTop="10dp"
-                        android:layout_width="120dp"
-                        android:layout_height="120dp"
-                        android:clickable="true"
-                        android:src="@drawable/play"/>
-                    <TextView
-                        android:layout_width="120dp"
-                        android:layout_height="40dp"
-                        android:text="E-books"
-                        android:textAlignment="center"/>
-
-                    <ImageView
-                        android:id="@+id/thinahiriyai"
-                        android:layout_marginTop="10dp"
-                        android:layout_width="120dp"
-                        android:layout_height="120dp"
-                        android:clickable="true"
-                        android:src="@drawable/script"/>
-                    <TextView
-                        android:layout_width="120dp"
-                        android:layout_height="40dp"
-                        android:text="Thinachariyai"
-                        android:textAlignment="center"/>
-
-                </LinearLayout>
 
             </LinearLayout>
 
         </ScrollView>
+
     </LinearLayout>
 
     <com.google.android.material.navigation.NavigationView

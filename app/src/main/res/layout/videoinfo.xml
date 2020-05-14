@@ -22,9 +22,10 @@
 
             <TextView
                 android:id="@+id/portal"
-                android:layout_width="250dp"
+                android:layout_width="match_parent"
                 android:layout_height="45dp"
-                android:layout_marginLeft="5dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
                 android:gravity="center_vertical"
                 android:textSize="18dp" />
 

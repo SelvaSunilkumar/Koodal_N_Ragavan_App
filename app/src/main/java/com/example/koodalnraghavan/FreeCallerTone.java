@@ -2,6 +2,7 @@ package com.example.koodalnraghavan;
 
 import android.app.DownloadManager;
 import android.content.Context;
+import android.media.AudioAttributes;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -89,6 +90,7 @@ public class FreeCallerTone extends Fragment {
 
         mediaPlayer = new MediaPlayer();
 
+
         adapter = new ArrayAdapter<String >(view.getContext(),R.layout.callertuneinfo,R.id.portal,list);
 
         reference.addValueEventListener(new ValueEventListener() {
@@ -108,7 +110,9 @@ public class FreeCallerTone extends Fragment {
                 Stop.setEnabled(false);
                 listView.setAdapter(adapter);
 
-                mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+                //mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+                mediaPlayer.setAudioAttributes(new AudioAttributes.Builder().setContentType(AudioAttributes.CONTENT_TYPE_MUSIC).build());
+
                 listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, final View view, final int position, long id) {
@@ -116,6 +120,7 @@ public class FreeCallerTone extends Fragment {
                         final String portalUrl = url.get(position);
 
                         try {
+                            //mediaPlayer.release();
                             mediaPlayer.stop();
                             mediaPlayer.reset();
                             mediaPlayer.setDataSource(portalUrl);
@@ -197,7 +202,12 @@ public class FreeCallerTone extends Fragment {
         });
 
 
-
         return view;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        //getActivity().finishActivity(FreeCallerTone.this);
     }
 }

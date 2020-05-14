@@ -28,6 +28,7 @@ public class PdfViewer extends AppCompatActivity {
         bundle = getIntent().getExtras();
 
         String url = bundle.getString("url");
+        //------------------------------------------------------------------------------------------
         PDFViewer.getSettings().setJavaScriptEnabled(true);
         PDFViewer.getSettings().setBuiltInZoomControls(true);
         PDFViewer.getSettings().setDisplayZoomControls(true);
@@ -44,6 +45,8 @@ public class PdfViewer extends AppCompatActivity {
             }
         });
         PDFViewer.loadUrl("https://docs.google.com/gview?embedded=true&url="+url);
+
+        //-------------------------------------------------------------------------------------------
 
     }
 }
