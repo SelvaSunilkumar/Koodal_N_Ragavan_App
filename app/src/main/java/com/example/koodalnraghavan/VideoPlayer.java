@@ -3,6 +3,7 @@ package com.example.koodalnraghavan;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DownloadManager;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -48,10 +49,11 @@ public class VideoPlayer extends AppCompatActivity {
         Playing.setText("Currently Playing : " + playingNow);
         Playing.setSelected(true);
 
-        progressBar.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.GONE);
         videoView.setVideoURI(uri);
         videoView.start();
-        progressBar.setVisibility(View.GONE);
+
+        //progressBar.setVisibility(View.VISIBLE);
 
         download = findViewById(R.id.download);
         download.setOnClickListener(new View.OnClickListener() {
