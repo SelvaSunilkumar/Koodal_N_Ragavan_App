@@ -73,6 +73,12 @@ public class MusicLister extends AppCompatActivity {
     private Bundle bundle;
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        mediaPlayer.release();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_music_lister);

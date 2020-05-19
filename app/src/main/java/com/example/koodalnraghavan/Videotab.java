@@ -58,6 +58,12 @@ public class Videotab extends Fragment {
     int icons[] ={R.drawable.pause_icon,R.drawable.play_icon};
 
     @Override
+    public void onPause() {
+        super.onPause();
+        mediaPlayer.release();
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_videotab, container, false);

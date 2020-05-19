@@ -56,7 +56,7 @@ public class ThinamOruKural extends AppCompatActivity implements NavigationView.
         setSupportActionBar(toolbar);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        getSupportActionBar().setTitle(" Thinam Oru Kural");
+        getSupportActionBar().setTitle(" Thinam Oru Nalvarthai");
         getSupportActionBar().setIcon(R.mipmap.ic_tool_bar);
         toggle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.drawerOpen,R.string.drawerClose);
         drawerLayout.addDrawerListener(toggle);
@@ -165,9 +165,6 @@ public class ThinamOruKural extends AppCompatActivity implements NavigationView.
 
                 alertDialog = dialog.create();
                 alertDialog.show();
-                break;
-            case R.id.logout:
-                Toast.makeText(getApplicationContext(),"Logout",Toast.LENGTH_SHORT).show();
                 break;
         }
         return false;

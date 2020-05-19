@@ -36,6 +36,14 @@ public class Settings extends AppCompatActivity implements NavigationView.OnNavi
     //public SharedPreferences sharedPreferences;
     //public SharedPreferences.Editor editor;
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(Settings.this,home.class);
+        startActivity(intent);
+        //finish();
+    }
+
     @SuppressLint("RestrictedApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -168,9 +176,6 @@ public class Settings extends AppCompatActivity implements NavigationView.OnNavi
 
                 alertDialog = dialog.create();
                 alertDialog.show();
-                break;
-            case R.id.logout:
-                Toast.makeText(getApplicationContext(),"Logout",Toast.LENGTH_SHORT).show();
                 break;
         }
         return false;

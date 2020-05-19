@@ -41,10 +41,6 @@
                 android:id="@+id/exit"
                 android:icon="@drawable/exit_icon"
                 android:title="Exit"/>
-            <item
-                android:id="@+id/logout"
-                android:icon="@drawable/logout_icon"
-                android:title="Logout"/>
         </menu>
     </item>
 </menu>

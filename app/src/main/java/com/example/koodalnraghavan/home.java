@@ -154,7 +154,8 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
         KadhaiKekumNeram.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                nextActivity = new Intent(home.this,KadhaiKekumNeram.class);
+                //nextActivity = new Intent(home.this,KadhaiKekumNeram.class);
+                nextActivity = new Intent(home.this,NotFound.class);
                 startActivity(nextActivity);
             }
         });
@@ -257,9 +258,6 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
 
                 alertDialog = dialog.create();
                 alertDialog.show();
-                break;
-            case R.id.logout:
-                Toast.makeText(getApplicationContext(),"Logout",Toast.LENGTH_SHORT).show();
                 break;
         }
         return false;

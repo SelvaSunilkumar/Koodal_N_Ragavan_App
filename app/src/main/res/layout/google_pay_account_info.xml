@@ -104,7 +104,7 @@
                     android:layout_marginTop="5dp"
                     android:layout_marginRight="10dp"
                     android:gravity="center"
-                    android:text="Not Provided"
+                    android:text="Koodaln.raghavan@oksbi"
                     android:textSize="18sp" />
             </LinearLayout>
 

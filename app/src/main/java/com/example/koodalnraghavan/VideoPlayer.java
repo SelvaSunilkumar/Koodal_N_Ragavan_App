@@ -49,9 +49,33 @@ public class VideoPlayer extends AppCompatActivity {
         Playing.setText("Currently Playing : " + playingNow);
         Playing.setSelected(true);
 
-        progressBar.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
         videoView.setVideoURI(uri);
-        videoView.start();
+        //videoView.start();
+        //progressBar.setVisibility(View.GONE);
+
+        videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                videoView.start();
+                progressBar.setVisibility(View.GONE);
+                if(videoView.isPlaying())
+                    progressBar.setVisibility(View.GONE);
+                if(!videoView.isPlaying())
+                    progressBar.setVisibility(View.VISIBLE);
+                mp.setOnInfoListener(new MediaPlayer.OnInfoListener() {
+                    @Override
+                    public boolean onInfo(MediaPlayer mp, int what, int extra) {
+
+                        if(what == MediaPlayer.MEDIA_INFO_BUFFERING_START)
+                            progressBar.setVisibility(View.VISIBLE);
+                        if(what == MediaPlayer.MEDIA_INFO_BUFFERING_END)
+                            progressBar.setVisibility(View.GONE);
+                        return false;
+                    }
+                });
+            }
+        });
 
         //progressBar.setVisibility(View.VISIBLE);
 

@@ -171,9 +171,6 @@ public class FreeDownload extends AppCompatActivity implements NavigationView.On
                 alertDialog = dialog.create();
                 alertDialog.show();
                 break;
-            case R.id.logout:
-                Toast.makeText(getApplicationContext(),"Logout",Toast.LENGTH_SHORT).show();
-                break;
         }
         return false;
     }

@@ -198,9 +198,6 @@ public class jodhidam  extends AppCompatActivity implements NavigationView.OnNav
                 alertDialog = dialog.create();
                 alertDialog.show();
                 break;
-            case R.id.logout:
-                Toast.makeText(getApplicationContext(),"Logout",Toast.LENGTH_SHORT).show();
-                break;
         }
         return false;
 

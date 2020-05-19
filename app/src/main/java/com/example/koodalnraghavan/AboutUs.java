@@ -97,6 +97,16 @@ public class AboutUs extends AppCompatActivity implements NavigationView.OnNavig
 
             }
         });
+        website.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                ClipboardManager clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData clipData = ClipData.newPlainText("label",websiteLink);
+                clipboardManager.setPrimaryClip(clipData);
+                Toast.makeText(getApplicationContext(),"Copied to Clipboard",Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        });
 
         contact.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,6 +131,19 @@ public class AboutUs extends AppCompatActivity implements NavigationView.OnNavig
                 });
                 alertDialog = dialog.create();
                 alertDialog.show();
+            }
+        });
+
+        contact.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+
+                ClipboardManager clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData clipData = ClipData.newPlainText("label",ContactNumber);
+                clipboardManager.setPrimaryClip(clipData);
+                Toast.makeText(getApplicationContext(),"Copied to ClipBoard",Toast.LENGTH_SHORT).show();
+
+                return false;
             }
         });
 
@@ -206,9 +229,6 @@ public class AboutUs extends AppCompatActivity implements NavigationView.OnNavig
 
                 alertDialog = dialog.create();
                 alertDialog.show();
-                break;
-            case R.id.logout:
-                Toast.makeText(getApplicationContext(),"Logout",Toast.LENGTH_SHORT).show();
                 break;
         }
         return false;

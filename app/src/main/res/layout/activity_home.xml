@@ -53,7 +53,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="100dp"
                             android:clickable="true"
-                            android:src="@drawable/pngalwar"/>
+                            android:src="@drawable/client_thinam_oru_nalvarthai"/>
                         <TextView
                             android:gravity="center"
                             android:layout_width="match_parent"
@@ -68,7 +68,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="100dp"
                             android:clickable="true"
-                            android:src="@drawable/meditation"/>
+                            android:src="@drawable/client_alwargalin_manam"/>
                         <TextView
                             android:gravity="center"
                             android:layout_width="match_parent"
@@ -83,7 +83,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="100dp"
                             android:clickable="true"
-                            android:src="@drawable/reading"/>
+                            android:src="@drawable/client_kadhai_kekum_neram"/>
                         <TextView
                             android:gravity="center"
                             android:layout_width="match_parent"
@@ -97,7 +97,7 @@
                             android:layout_height="100dp"
                             android:layout_marginTop="10dp"
                             android:clickable="true"
-                            android:src="@drawable/womb"
+                            android:src="@drawable/client_baby_names"
                             android:id="@+id/babyname"/>
                         <TextView
                             android:gravity="center"
@@ -118,7 +118,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="100dp"
                             android:clickable="true"
-                            android:src="@drawable/hinduism"/>
+                            android:src="@drawable/client_jodhidam"/>
                         <TextView
                             android:gravity="center"
                             android:layout_width="match_parent"
@@ -133,7 +133,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="100dp"
                             android:clickable="true"
-                            android:src="@drawable/play"/>
+                            android:src="@drawable/client_ebooks"/>
                         <TextView
                             android:gravity="center"
                             android:id="@+id/books"
@@ -148,7 +148,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="100dp"
                             android:clickable="true"
-                            android:src="@drawable/script"/>
+                            android:src="@drawable/client_dhinacharyai"/>
                         <TextView
                             android:gravity="center"
                             android:id="@+id/routine"
@@ -162,7 +162,7 @@
                             android:layout_height="100dp"
                             android:clickable="true"
                             android:layout_marginTop="10dp"
-                            android:src="@drawable/donation"
+                            android:src="@drawable/client_sambavanai"
                             android:id="@+id/donation"/>
                         <TextView
                             android:gravity="center"

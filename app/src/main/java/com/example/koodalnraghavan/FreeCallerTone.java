@@ -65,6 +65,11 @@ public class FreeCallerTone extends Fragment {
     }
 
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        mediaPlayer.release();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -123,7 +128,8 @@ public class FreeCallerTone extends Fragment {
                             //mediaPlayer.release();
                             mediaPlayer.stop();
                             mediaPlayer.reset();
-                            mediaPlayer.setDataSource(portalUrl);
+                            mediaPlayer.setDataSource(getActivity(),Uri.parse(portalUrl));
+                            //mediaPlayer.setDataSource(portalUrl);
                             mediaPlayer.prepare();
                             Toast.makeText(view.getContext(),"Play",Toast.LENGTH_SHORT).show();
                             mediaPlayer.start();
@@ -190,15 +196,19 @@ public class FreeCallerTone extends Fragment {
                             }
                         });
 
+
                     }
+
                 });
 
+                //mediaPlayer.stop();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
+
         });
 
 
@@ -210,4 +220,5 @@ public class FreeCallerTone extends Fragment {
         super.onStop();
         //getActivity().finishActivity(FreeCallerTone.this);
     }
+
 }

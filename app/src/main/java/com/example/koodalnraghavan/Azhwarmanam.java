@@ -143,7 +143,6 @@ public class Azhwarmanam extends AppCompatActivity implements NavigationView.OnN
                 Toast.makeText(getApplicationContext(), "Exit", Toast.LENGTH_SHORT).show();
                 break;
         }
-
-                return false;
+        return false;
     }
 }
