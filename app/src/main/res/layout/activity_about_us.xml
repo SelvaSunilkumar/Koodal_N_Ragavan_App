@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.drawerlayout.widget.DrawerLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/drawer"
-    tools:openDrawer="end"
-    tools:context=".AboutUs">
+    tools:context=".AboutUs"
+    tools:openDrawer="end">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/toolbar"
             tools:ignore="MissingConstraints" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -29,25 +29,121 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="65dp">
+            android:layout_marginTop="65dp"
+            android:layout_marginRight="10dp">
 
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/aboutusinfo"
-                android:text="About the president: Kavigna koodal N. Raghavan is a born Kavignar. He has written so many social poems on Important issues of society. He has written so many Theme kavithas (poems) on Divyadesams. His main Objective is to bring songs for each divyadesams based on Alwars Nalayira divya prabhandams i.e., the inner meaning of Alwars prabhandams relative to the particular divyadesam in light music sung by famous musicions.We are bringing songs for all 108 divyadesams one by one. Now we have brought CDS for the following divyadesams under the common title, ' 108'l Alwargalin Manam '"
-                android:textSize="20sp"/>
+                android:layout_weight="4"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/aboutusinfo"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="Srimathea Ramanujaya Nama :\n\n Kavigna Koodal N Raghavan Swamy is known for his upanyasams, poems( Divyaprabhanda songs), Bharatanatyam songs, social activities and mainly for his Astrological approach towards problem  salvation for people(Ramanujar vaakku siddhar). \n\n1.Upanyasams: Koodal Raghavan swamy is a wellkown upanyasakartha of Divyaprabhandam in all Divyadesams regularly. He daily gives speech on Divyaprabandams (Thinam oru nal vaarthai thirumalai pattri) through whatsapp since 2013 and more than 2600 episodes recorded. He has strong belief in Alwargalin Arulicheyals. He always says that only Alwars give proper solution to our day to day problems and involve us in Bhagavath kainkaryas to attain the Supreme Power Sriman Narayanan. He is involving so many bhakthas to participate in Kaingaryams in so many temples and in Divyadesams everywhere. \n\n2.Kavigna Koodal N Raghavan swamy is a born Kavignar. He is involved in bringing the inner meaning of Alwar’s Divyaprabandam related to divyadesams and Alwar Acharyar Vaibhavams and composed it in light music with famous singers and brought it in CD and pendrive forms. This is very famous in vaishnavas world. \n\n3.Sri koodal Azhagar Perumal of Madurai divyadesam blessed him to write Mangalasasanam on him and it is very famous throughout the world. People from various countries are benefited and blessed with Koodal Azhagar anugraham without seeing Kavignar swamy. He has written Mangalasasanam not only for Koodal Azhagar but also for Vadagarai Thiruvenkadamudayan, Sri Karivaradharajan, Malaysia Klang Sundarraja perumal, Madurai Veeraraghava perumal, Acharyar Thiruvaimozhi Pillai,  Acharyar Sri Azhagiya Manavalamamunigal and of 74 Simhasanathipathigal during Sri Bhagavath Ramanujar 1000th year celebration. \n\n4.He has written songs in Bharathanatyam style for Divyadesa Perumals like Pushpanchali,Thillana in various Ragas. \n
+\n5.He is a well known Todhida Nipunar and he is doing it as Kaingaryam and  says no Pariharams but only Thirumanjanams and other sathupadis as directed by Sri Bhagavath Ramanujar. \n\n6.Now a days he is directly giving live lectures in social medias like facebook, twitter, whatsapp and telegram. \n\n7.He has written so many books on Vaishnava Samprathayams and writing regular articles in monthly Vaishnava magazines. \n\n8.Swamy is doing everything as kaingaryam with his family. \n\n9.Nowadays Bakthas and Kaingaryaparas want to participate in Swamy’s Kaingaryams. They can contribute their offerings(Sambhavanai) through IOB bank account given in his website  "
+                        android:textSize="20sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:layout_weight="2"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="Website"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/websiteLink"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:gravity="center"
+                        android:text="@string/website_link"
+                        android:textColor="#3E619A"
+                        android:textSize="18sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:layout_weight="2"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="Contact No"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/contactNumber"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:gravity="center"
+                        android:text="@string/phone_number"
+                        android:textColor="#3E619A"
+                        android:textSize="18sp" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_marginTop="15dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_weight="2">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="And also in Google Pay"
+                        android:textSize="18sp"
+                        android:gravity="center"/>
+                    <TextView
+                        android:id="@+id/googlePayNumber"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="18sp"
+                        android:gravity="center"
+                        android:text="@string/phone_number"
+                        android:textColor="#3E619A"
+                        android:clickable="true"/>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="#787373"/>
+            </LinearLayout>
+
         </ScrollView>
+
     </LinearLayout>
 
     <com.google.android.material.navigation.NavigationView
+        android:id="@+id/navigationbar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/navigationbar"
-        app:menu="@menu/menu_item"
         android:layout_gravity="start"
-        app:headerLayout="@layout/header">
-    </com.google.android.material.navigation.NavigationView>
+        app:headerLayout="@layout/header"
+        app:menu="@menu/menu_item"></com.google.android.material.navigation.NavigationView>
 
 </androidx.drawerlayout.widget.DrawerLayout>

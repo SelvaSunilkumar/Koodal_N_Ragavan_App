@@ -55,7 +55,8 @@
                             android:clickable="true"
                             android:src="@drawable/pngalwar"/>
                         <TextView
-                            android:layout_width="120dp"
+                            android:gravity="center"
+                            android:layout_width="match_parent"
                             android:layout_height="40dp"
                             android:id="@+id/dhinamoru"
                             android:text="Thinam oru nalvarthai"
@@ -69,7 +70,8 @@
                             android:clickable="true"
                             android:src="@drawable/meditation"/>
                         <TextView
-                            android:layout_width="120dp"
+                            android:gravity="center"
+                            android:layout_width="match_parent"
                             android:layout_height="40dp"
                             android:id="@+id/alvars"
                             android:text="108 Azhwargalin manam"
@@ -83,7 +85,8 @@
                             android:clickable="true"
                             android:src="@drawable/reading"/>
                         <TextView
-                            android:layout_width="120dp"
+                            android:gravity="center"
+                            android:layout_width="match_parent"
                             android:layout_height="40dp"
                             android:id="@+id/storytime"
                             android:text="Kadhai ketkum neram"
@@ -97,7 +100,8 @@
                             android:src="@drawable/womb"
                             android:id="@+id/babyname"/>
                         <TextView
-                            android:layout_width="120dp"
+                            android:gravity="center"
+                            android:layout_width="match_parent"
                             android:layout_height="40dp"
                             android:id="@+id/nameBaby"
                             android:text="Baby Names"
@@ -116,7 +120,8 @@
                             android:clickable="true"
                             android:src="@drawable/hinduism"/>
                         <TextView
-                            android:layout_width="120dp"
+                            android:gravity="center"
+                            android:layout_width="match_parent"
                             android:layout_height="40dp"
                             android:id="@+id/astrology"
                             android:text="Jodhidam"
@@ -130,8 +135,9 @@
                             android:clickable="true"
                             android:src="@drawable/play"/>
                         <TextView
+                            android:gravity="center"
                             android:id="@+id/books"
-                            android:layout_width="120dp"
+                            android:layout_width="match_parent"
                             android:layout_height="40dp"
                             android:text="E-books"
                             android:textAlignment="center"/>
@@ -144,8 +150,9 @@
                             android:clickable="true"
                             android:src="@drawable/script"/>
                         <TextView
+                            android:gravity="center"
                             android:id="@+id/routine"
-                            android:layout_width="120dp"
+                            android:layout_width="match_parent"
                             android:layout_height="40dp"
                             android:text="Thinachariyai"
                             android:textAlignment="center"/>
@@ -158,7 +165,8 @@
                             android:src="@drawable/donation"
                             android:id="@+id/donation"/>
                         <TextView
-                            android:layout_width="120dp"
+                            android:gravity="center"
+                            android:layout_width="match_parent"
                             android:layout_height="40dp"
                             android:textAlignment="center"
                             android:text="Sambavanai"/>

@@ -2,12 +2,12 @@
 <resources>
 
     <!-- Menu Tamil -->
-    <string name="thinamorukuralTamil">தினம் ஓரு நல்வார்த்தை</string>
+    <string name="thinamorukuralTamil">தினம் ஒரு நல்வார்த்தை திருமாலைப் பற்றி</string>
     <string name="jodhidam_tml">ஜோதிடம்</string>
-    <string name="alwargalinManam_tml">108 Azhwargalin மனம்</string>
+    <string name="alwargalinManam_tml">108ல் ஆழ்வார்களின் மனம்</string>
     <string name="kadhai_tml">கதை கேட்கும் நேரம்</string>
-    <string name="thinachariyai_tml">தினாச்சார்யா</string>
+    <string name="thinachariyai_tml">தினசர்யை</string>
     <string name="babyName_tml">குழந்தை பெயர்கள்</string>
-    <string name="ebooks_tml">மின் புத்தகங்கள்</string>
+    <string name="ebooks_tml">ஈ புத்தகம்</string>
 
 </resources>

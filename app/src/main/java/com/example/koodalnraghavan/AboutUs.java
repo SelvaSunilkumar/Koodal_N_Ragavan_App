@@ -8,10 +8,16 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.annotation.SuppressLint;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
@@ -28,6 +34,15 @@ public class AboutUs extends AppCompatActivity implements NavigationView.OnNavig
     private AlertDialog.Builder dialog;
     private AlertDialog alertDialog;
 
+    private TextView website;
+    private TextView contact;
+    private TextView googlePay;
+
+    private String websiteLink;
+    private String ContactNumber;
+    private String GooglePayNumber;
+
+
     @SuppressLint("RestrictedApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +53,10 @@ public class AboutUs extends AppCompatActivity implements NavigationView.OnNavig
         toolbar = findViewById(R.id.toolbar);
         navigationView = findViewById(R.id.navigationbar);
 
+        website = findViewById(R.id.websiteLink);
+        contact = findViewById(R.id.contactNumber);
+        googlePay = findViewById(R.id.googlePayNumber);
+
         setSupportActionBar(toolbar);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
@@ -47,6 +66,73 @@ public class AboutUs extends AppCompatActivity implements NavigationView.OnNavig
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
+
+        websiteLink = "http://www.kavignakoodalnraghavan.com/";
+        ContactNumber = GooglePayNumber = "9894063660";
+
+        website.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+               dialog = new AlertDialog.Builder(AboutUs.this);
+               dialog.setMessage("Wesite : " + websiteLink );
+               dialog.setTitle("Redirecting ...");
+               dialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                   @Override
+                   public void onClick(DialogInterface dialog, int which) {
+                       Uri uri = Uri.parse(websiteLink);
+                       Intent launchBrowser = new Intent(Intent.ACTION_VIEW,uri);
+                       startActivity(launchBrowser);
+                   }
+               });
+               dialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                   @Override
+                   public void onClick(DialogInterface dialog, int which) {
+                       return;
+                   }
+               });
+
+               alertDialog = dialog.create();
+               alertDialog.show();
+
+            }
+        });
+
+        contact.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog = new AlertDialog.Builder(AboutUs.this);
+                dialog.setMessage("want to call : " + ContactNumber);
+                dialog.setTitle("Redirecting ...");
+
+                dialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent callThem = new Intent(Intent.ACTION_DIAL);
+                        callThem.setData(Uri.parse("tel:" + ContactNumber));
+                        startActivity(callThem);
+                    }
+                });
+                dialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        return;
+                    }
+                });
+                alertDialog = dialog.create();
+                alertDialog.show();
+            }
+        });
+
+        googlePay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ClipboardManager clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData clipData = ClipData.newPlainText("label",GooglePayNumber);
+                clipboardManager.setPrimaryClip(clipData);
+                Toast.makeText(getApplicationContext(),"Number copied to Clipboard",Toast.LENGTH_SHORT).show();
+            }
+        });
 
     }
 
