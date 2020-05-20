@@ -54,6 +54,9 @@ public class eBooksDisplay extends AppCompatActivity implements NavigationView.O
     private Button GooglePayNow;
     private TextView NameTextView;
     private TextView UPI_id_TextView;
+    private TextView AmountPayable;
+    private TextView TitleTootlbar;
+    private Button Donation;
 
 
     private String Name;
@@ -92,10 +95,14 @@ public class eBooksDisplay extends AppCompatActivity implements NavigationView.O
         toolbar = findViewById(R.id.toolbar);
         navigationView = findViewById(R.id.navigationbar);
 
+        TitleTootlbar = findViewById(R.id.titleId);
+        TitleTootlbar.setText(R.string.ebooks_en);
+        TitleTootlbar.setSelected(true);
+
         setSupportActionBar(toolbar);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        getSupportActionBar().setTitle(" e-Books");
+        //getSupportActionBar().setTitle(" e-Books");
         getSupportActionBar().setIcon(R.mipmap.ic_tool_bar);
         toggle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.drawerOpen,R.string.drawerClose);
         drawerLayout.addDrawerListener(toggle);
@@ -111,6 +118,15 @@ public class eBooksDisplay extends AppCompatActivity implements NavigationView.O
         url = new ArrayList<String>();
 
         adapter = new ArrayAdapter<String>(this, R.layout.pdfinfo, R.id.portal, list);
+
+        Donation = findViewById(R.id.donation);
+        Donation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(eBooksDisplay.this,Sambavanai.class);
+                startActivity(intent);
+            }
+        });
 
         reference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -167,6 +183,9 @@ public class eBooksDisplay extends AppCompatActivity implements NavigationView.O
 
                                     GooglePayNow = GooglePayGatewayProcessor.findViewById(R.id.paynow);
 
+                                    AmountPayable = GooglePayGatewayProcessor.findViewById(R.id.amountPayable);
+                                    AmountPayable.setText("Rs. 200");
+
                                     GooglePayNow.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
@@ -177,7 +196,7 @@ public class eBooksDisplay extends AppCompatActivity implements NavigationView.O
 
                                             Name = NameTextView.getText().toString();
                                             UPI_Id = UPI_id_TextView.getText().toString();
-                                            Amount = "100";
+                                            Amount = "200";
 
                                             Note = list.get(position);
 

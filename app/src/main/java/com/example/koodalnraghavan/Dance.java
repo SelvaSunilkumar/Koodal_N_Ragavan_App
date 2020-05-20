@@ -10,175 +10,192 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.DragAndDropPermissions;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.SeekBar;
-import android.widget.Switch;
+import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
-public class Settings extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+import java.util.ArrayList;
+
+public class Dance extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout drawerLayout;
     private Toolbar toolbar;
     private NavigationView navigationView;
     private ActionBarDrawerToggle toggle;
 
-    public Switch LanguageSelector;
+    private AlertDialog.Builder dialog;
+    private AlertDialog alertDialog;
+
+    private ListView listView;
+    private ProgressBar progressBar;
+    private Intent nextActivity;
     private TextView TitleTootlbar;
     private Button Donation;
 
+    private PdfLoader pdfLoader;
+    private ArrayList<String> list;
+    private ArrayList<String> url;
+    private ArrayAdapter<String> adapter;
+    private Bundle bundle;
+    private Intent intent;
 
-    //public SharedPreferences sharedPreferences;
-    //public SharedPreferences.Editor editor;
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        Intent intent = new Intent(Settings.this,home.class);
-        startActivity(intent);
-        //finish();
-    }
+    private FirebaseDatabase firebaseDatabase;
+    private DatabaseReference reference;
 
     @SuppressLint("RestrictedApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_settings);
-
-        LanguageSelector = findViewById(R.id.languageSelector);
+        setContentView(R.layout.activity_dance);
 
         drawerLayout = findViewById(R.id.drawer);
         toolbar = findViewById(R.id.toolbar);
         navigationView = findViewById(R.id.navigationbar);
 
         TitleTootlbar = findViewById(R.id.titleId);
-        TitleTootlbar.setText("Settings");
+        TitleTootlbar.setText("Dance");
         TitleTootlbar.setSelected(true);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        getSupportActionBar().setTitle(" Settings");
         getSupportActionBar().setIcon(R.mipmap.ic_tool_bar);
         toggle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.drawerOpen,R.string.drawerClose);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
 
-        SharedPreferences sharedPreferences = getSharedPreferences("save",MODE_PRIVATE);
-        LanguageSelector.setChecked(sharedPreferences.getBoolean("value",true));
-        boolean editor = sharedPreferences.getBoolean("value",false);
+        listView = findViewById(R.id.listView);
+        progressBar = findViewById(R.id.progress);
 
-        Toast.makeText(getApplicationContext()," " + editor,Toast.LENGTH_SHORT).show();
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        reference = firebaseDatabase.getReference("Dance");
+
+        list = new ArrayList<String>();
+        url = new ArrayList<String>();
+        adapter = new ArrayAdapter<String>(getApplicationContext(),R.layout.musicinfo,R.id.portal,list);
 
         Donation = findViewById(R.id.donation);
         Donation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Settings.this,Sambavanai.class);
+                Intent intent = new Intent(Dance.this,Sambavanai.class);
                 startActivity(intent);
             }
         });
 
-        LanguageSelector.setOnClickListener(new View.OnClickListener() {
+        reference.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onClick(View v) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                if(LanguageSelector.isChecked())
+                pdfLoader = new PdfLoader();
+
+                for(DataSnapshot ds:dataSnapshot.getChildren())
                 {
-
-                   SharedPreferences.Editor editor = getSharedPreferences("save",MODE_PRIVATE).edit();
-                   editor.putBoolean("value",true);
-                   editor.apply();
-                   LanguageSelector.setChecked(true);
-
+                    progressBar.setVisibility(View.VISIBLE);
+                    pdfLoader = ds.getValue(PdfLoader.class);
+                    list.add(String.valueOf(pdfLoader.getPortal()));
+                    url.add(String.valueOf(pdfLoader.getUrl()));
                 }
-                else
-                {
 
-                    SharedPreferences.Editor editor = getSharedPreferences("save",MODE_PRIVATE).edit();
-                    editor.putBoolean("value",false);
-                    editor.apply();;
-                    LanguageSelector.setChecked(false);
+                progressBar.setVisibility(View.GONE);
 
+                listView.setAdapter(adapter);
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                }
+                        intent = new Intent(Dance.this,VideoPlayer.class);
+
+                        bundle = new Bundle();
+                        bundle.putString("list",list.get(position));
+                        bundle.putString("url",url.get(position));
+
+                        intent.putExtras(bundle);
+                        startActivity(intent);
+
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
             }
         });
-
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
 
-        Intent nextActivity;
-
-        AlertDialog.Builder dialog;
-        AlertDialog alertDialog;
-
         switch(menuItem.getItemId())
         {
             case R.id.home:
                 Toast.makeText(getApplicationContext(),"Home",Toast.LENGTH_SHORT).show();
-                nextActivity = new Intent(this,home.class);
+                nextActivity = new Intent(Dance.this,home.class);
                 startActivity(nextActivity);
                 finish();
                 break;
             case R.id.aboutus:
                 Toast.makeText(getApplicationContext(),"About Us",Toast.LENGTH_SHORT).show();
-                nextActivity = new Intent(this,AboutUs.class);
+                nextActivity = new Intent(Dance.this,AboutUs.class);
                 startActivity(nextActivity);
                 break;
             case R.id.activity:
                 Toast.makeText(getApplicationContext(),"Activity",Toast.LENGTH_SHORT).show();
-                nextActivity = new Intent(this,NotFound.class);
+                nextActivity = new Intent(Dance.this,NotFound.class);
                 startActivity(nextActivity);
                 break;
             case R.id.event:
                 Toast.makeText(getApplicationContext(),"Eventt",Toast.LENGTH_SHORT).show();
-                nextActivity = new Intent(this,NotFound.class);
+                nextActivity = new Intent(Dance.this,NotFound.class);
                 startActivity(nextActivity);
                 break;
             case R.id.Gallery:
                 Toast.makeText(getApplicationContext(),"Gallery",Toast.LENGTH_SHORT).show();
-                nextActivity = new Intent(this,NotFound.class);
+                nextActivity = new Intent(Dance.this,NotFound.class);
                 startActivity(nextActivity);
                 break;
             case R.id.freedownload:
                 Toast.makeText(getApplicationContext(),"Free Downloads",Toast.LENGTH_SHORT).show();
-                nextActivity = new Intent(this,FreeDownload.class);
+                nextActivity = new Intent(Dance.this,FreeDownload.class);
                 startActivity(nextActivity);
                 break;
             case R.id.contact:
                 Toast.makeText(getApplicationContext(),"Contact",Toast.LENGTH_SHORT).show();
-                nextActivity = new Intent(this,NotFound.class);
+                nextActivity = new Intent(Dance.this,NotFound.class);
                 startActivity(nextActivity);
                 break;
             case R.id.settings:
                 nextActivity = new Intent(this, Settings.class);
                 startActivity(nextActivity);
-                finish();
                 break;
             case R.id.exit:
                 Toast.makeText(getApplicationContext(),"Exit",Toast.LENGTH_SHORT).show();
 
-                dialog = new AlertDialog.Builder(this);
+                dialog = new AlertDialog.Builder(Dance.this);
                 dialog.setMessage("Do you wish to quit !");
                 dialog.setTitle("Exit");
                 dialog.setPositiveButton("Quit", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
-                        //System.exit(0);
-                        finishAffinity();
+                        System.exit(0);
 
                     }
                 });
@@ -195,6 +212,5 @@ public class Settings extends AppCompatActivity implements NavigationView.OnNavi
                 break;
         }
         return false;
-
     }
 }

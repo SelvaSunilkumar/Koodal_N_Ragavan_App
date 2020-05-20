@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:id="@+id/drawer"
     tools:openDrawer="end"
-    tools:context=".Settings">
+    tools:context=".Dance">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -21,7 +21,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/exo_media_button_height"
                 android:layout_weight="2"
-                android:weightSum="1.1"
+                android:weightSum="1"
                 android:orientation="horizontal">
 
                 <TextView
@@ -42,70 +42,30 @@
                     android:layout_height="@dimen/exo_media_button_height"
                     android:background="@drawable/client_sambavanai"
                     android:gravity="right"
-                    android:layout_weight="0.3"
+                    android:layout_weight="0.2"
                     android:layout_gravity="right"/>
             </LinearLayout>
         </androidx.appcompat.widget.Toolbar>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <ScrollView
-        android:layout_marginTop="80dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="4"
-        android:orientation="vertical">
-
-        <LinearLayout
-            android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_marginTop="60dp">
+        <ProgressBar
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:orientation="vertical">
+            android:id="@+id/progress"
+            tools:ignore="MissingConstraints" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Language Settings"
-                    android:textStyle="bold"
-                    android:textSize="20sp"/>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_marginTop="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="3"
-                android:gravity="center_horizontal"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="தமிழ்"
-                    android:textSize="18sp"/>
-                <Switch
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:theme="@style/ThemeOverlay.AppCompat.DayNight"
-                    android:id="@+id/languageSelector"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="English"
-                    android:textSize="18sp"/>
-
-            </LinearLayout>
-            <View
-                android:layout_marginTop="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@android:color/darker_gray"/>
-        </LinearLayout>
-    </ScrollView>
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/listView"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"/>
+    </LinearLayout>
 
     <com.google.android.material.navigation.NavigationView
         android:layout_width="match_parent"

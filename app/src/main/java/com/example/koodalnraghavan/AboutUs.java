@@ -17,6 +17,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,10 +34,12 @@ public class AboutUs extends AppCompatActivity implements NavigationView.OnNavig
 
     private AlertDialog.Builder dialog;
     private AlertDialog alertDialog;
+    private TextView TitleTootlbar;
 
     private TextView website;
     private TextView contact;
     private TextView googlePay;
+    private Button Donation;
 
     private String websiteLink;
     private String ContactNumber;
@@ -53,6 +56,10 @@ public class AboutUs extends AppCompatActivity implements NavigationView.OnNavig
         toolbar = findViewById(R.id.toolbar);
         navigationView = findViewById(R.id.navigationbar);
 
+        TitleTootlbar = findViewById(R.id.titleId);
+        TitleTootlbar.setText("About Us");
+        TitleTootlbar.setSelected(true);
+
         website = findViewById(R.id.websiteLink);
         contact = findViewById(R.id.contactNumber);
         googlePay = findViewById(R.id.googlePayNumber);
@@ -60,7 +67,7 @@ public class AboutUs extends AppCompatActivity implements NavigationView.OnNavig
         setSupportActionBar(toolbar);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        getSupportActionBar().setTitle(" About us");
+        //getSupportActionBar().setTitle(" About us");
         getSupportActionBar().setIcon(R.mipmap.ic_tool_bar);
         toggle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.drawerOpen,R.string.drawerClose);
         drawerLayout.addDrawerListener(toggle);
@@ -69,6 +76,15 @@ public class AboutUs extends AppCompatActivity implements NavigationView.OnNavig
 
         websiteLink = "http://www.kavignakoodalnraghavan.com/";
         ContactNumber = GooglePayNumber = "9894063660";
+
+        Donation = findViewById(R.id.donation);
+        Donation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AboutUs.this,Sambavanai.class);
+                startActivity(intent);
+            }
+        });
 
         website.setOnClickListener(new View.OnClickListener() {
             @Override

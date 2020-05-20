@@ -17,9 +17,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
@@ -43,6 +45,8 @@ public class jodhidam  extends AppCompatActivity implements NavigationView.OnNav
 
     private ProgressBar progressBar;
     private ListView listView;
+    private TextView TitleTootlbar;
+    private Button Donation;
 
     private Intent nextActivity;
     private AlertDialog.Builder dialog;
@@ -63,6 +67,9 @@ public class jodhidam  extends AppCompatActivity implements NavigationView.OnNav
         super.onCreate(savedInstanceState);
         setContentView(R.layout.jodhidam);
 
+        TitleTootlbar = findViewById(R.id.titleId);
+        TitleTootlbar.setText(R.string.jodhidam_en);
+        TitleTootlbar.setSelected(true);
 
         drawerLayout = findViewById(R.id.drawer);
         toolbar = findViewById(R.id.toolbar);
@@ -88,6 +95,15 @@ public class jodhidam  extends AppCompatActivity implements NavigationView.OnNav
         database = FirebaseDatabase.getInstance();
         reference = database.getReference("Jodhidam");
 
+        Donation = findViewById(R.id.donation);
+        Donation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(jodhidam.this,Sambavanai.class);
+                startActivity(intent);
+            }
+        });
+
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -109,7 +125,7 @@ public class jodhidam  extends AppCompatActivity implements NavigationView.OnNav
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                        Intent videoActivity = new Intent(jodhidam.this,VideoPlayer.class);
+                        Intent videoActivity = new Intent(jodhidam.this,JodhidamContactVideoPLayer.class);
 
                         Bundle bundle = new Bundle();
                         bundle.putString("list",list.get(position));

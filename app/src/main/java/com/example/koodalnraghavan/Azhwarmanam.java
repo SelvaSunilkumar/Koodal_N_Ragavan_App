@@ -10,11 +10,14 @@ import androidx.viewpager.widget.ViewPager;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
@@ -39,7 +42,8 @@ public class Azhwarmanam extends AppCompatActivity implements NavigationView.OnN
     private ViewPager viewPager;
     private TabItem MusicTab;
     private TabItem VideoTab;
-
+    private Button Donation;
+    private TextView TitleTootlbar;
     public AzhwarAdapter azhwarAdapter;
 
     private Intent nextActivity;
@@ -55,6 +59,10 @@ public class Azhwarmanam extends AppCompatActivity implements NavigationView.OnN
         VideoTab = findViewById(R.id.videotab);
         viewPager = findViewById(R.id.viewpager);
 
+        TitleTootlbar = findViewById(R.id.titleId);
+        TitleTootlbar.setText(R.string.alwargalinManam_en);
+        TitleTootlbar.setSelected(true);
+
         drawerLayout = findViewById(R.id.drawer);
         toolbar = findViewById(R.id.toolbar);
         navigationView = findViewById(R.id.navigationbar);
@@ -63,11 +71,21 @@ public class Azhwarmanam extends AppCompatActivity implements NavigationView.OnN
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         getSupportActionBar().setTitle("108 Azhwargalin Manam");
+
         getSupportActionBar().setIcon(R.mipmap.ic_tool_bar);
         toggle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.drawerOpen,R.string.drawerClose);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
+
+        Donation = findViewById(R.id.donation);
+        Donation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Azhwarmanam.this,Sambavanai.class);
+                startActivity(intent);
+            }
+        });
 
         azhwarAdapter = new AzhwarAdapter(getSupportFragmentManager(),tabLayout.getTabCount());
         viewPager.setAdapter(azhwarAdapter);

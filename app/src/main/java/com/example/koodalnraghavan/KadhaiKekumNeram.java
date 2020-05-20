@@ -13,6 +13,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
@@ -30,6 +33,8 @@ public class KadhaiKekumNeram extends AppCompatActivity implements NavigationVie
     private ViewPager viewPager;
     private TabItem MusicTab;
     private TabItem VideoTab;
+    private TextView TitleTootlbar;
+    private Button Donation;
 
     public StoryTimePageAdaptor pageAdapter;
 
@@ -42,6 +47,10 @@ public class KadhaiKekumNeram extends AppCompatActivity implements NavigationVie
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_kadhai_kekum_neram);
+
+        TitleTootlbar = findViewById(R.id.titleId);
+        TitleTootlbar.setText("Dance");
+        TitleTootlbar.setSelected(true);
 
         tabLayout = findViewById(R.id.tablayout);
         MusicTab = findViewById(R.id.musictab);
@@ -65,6 +74,15 @@ public class KadhaiKekumNeram extends AppCompatActivity implements NavigationVie
         pageAdapter = new StoryTimePageAdaptor(getSupportFragmentManager(),tabLayout.getTabCount());
         //pageAdapter = new PageAdapter(getSupportFragmentManager(),tabLayout.getTabCount());
         viewPager.setAdapter(pageAdapter);
+
+        Donation = findViewById(R.id.donation);
+        Donation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(KadhaiKekumNeram.this,Sambavanai.class);
+                startActivity(intent);
+            }
+        });
 
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override

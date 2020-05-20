@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -35,7 +36,8 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
     private ImageView jodhidam;
     private ImageView AlvargalinManam;
     private ImageView BabyName;
-    private ImageView Donation;
+    private ImageView DanceIcon;
+    private Button Donation;
 
     private TextView DailyKural;
     private TextView Jodhidam;
@@ -44,6 +46,8 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
     private TextView StoryTime;
     private TextView dhinachariyai;
     private TextView babyName;
+    private TextView Dance;
+    private TextView TitleTootlbar;
     //private TextView donation;
 
     private Intent nextActivity;
@@ -82,6 +86,7 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
         StoryTime = findViewById(R.id.storytime);
         dhinachariyai = findViewById(R.id.routine);
         babyName = findViewById(R.id.nameBaby);
+        Dance = findViewById(R.id.danceId);
         //donation = findViewById(R.id.)
 
         //------------------------------------------------------------------------------------------
@@ -100,6 +105,7 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
             babyName.setText(R.string.babyName_en);
             ebooks.setText(R.string.ebooks_en);
             dhinachariyai.setText(R.string.thinachariyai);
+            Dance.setText(R.string.dance_en);
         }
         else
         {
@@ -111,6 +117,7 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
             babyName.setText(R.string.babyName_tml);
             ebooks.setText(R.string.ebooks_tml);
             dhinachariyai.setText(R.string.thinachariyai_tml);
+            Dance.setText(R.string.dance_tml);
         }
         //------------------------------------------------------------------------------------------
         DailyVoice = findViewById(R.id.ThinamOrukural);
@@ -178,6 +185,17 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
             }
         });
 
+        DanceIcon = findViewById(R.id.dance);
+        DanceIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                nextActivity = new Intent(home.this,Dance.class);
+                startActivity(nextActivity);
+            }
+        });
+
+        //Donation = getSupportActionBar().getCustomView().findViewById(R.id.donation);
         Donation = findViewById(R.id.donation);
         Donation.setOnClickListener(new View.OnClickListener() {
             @Override

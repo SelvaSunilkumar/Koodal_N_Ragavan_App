@@ -48,6 +48,7 @@ public class MusicLister extends AppCompatActivity {
     private TextView NameTextView;
     private TextView UPI_id_TextView;
     private Button PayNow;
+    private TextView AmountToPay;
 
     private ArrayList<String> list;
     private ArrayList<String> url;
@@ -227,13 +228,15 @@ public class MusicLister extends AppCompatActivity {
                                     GooglePayProcessor.setContentView(R.layout.google_pay_account_info);
 
                                     PayNow = GooglePayProcessor.findViewById(R.id.paynow);
+                                    AmountToPay = GooglePayProcessor.findViewById(R.id.amountPayable);
+                                    AmountToPay.setText("Rs. 100");
 
                                     PayNow.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
 
-                                            NameTextView = PayNow.findViewById(R.id.payer_name);
-                                            UPI_id_TextView = PayNow.findViewById(R.id.payee_upi);
+                                            NameTextView = GooglePayProcessor.findViewById(R.id.payee_name);
+                                            UPI_id_TextView = GooglePayProcessor.findViewById(R.id.payee_upi);
 
                                             //Storing the data from layout to the sting variables
                                             Name = NameTextView.getText().toString();

@@ -16,7 +16,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/toolbar"
-            tools:ignore="MissingConstraints" />
+            tools:ignore="MissingConstraints">
+            <Button
+                android:id="@+id/donation"
+                android:layout_width="@dimen/exo_media_button_width"
+                android:layout_height="@dimen/exo_media_button_height"
+                android:background="@drawable/client_sambavanai"
+                android:gravity="right"
+                android:layout_gravity="right"/>
+        </androidx.appcompat.widget.Toolbar>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
@@ -162,9 +170,10 @@
                             android:layout_height="100dp"
                             android:clickable="true"
                             android:layout_marginTop="10dp"
-                            android:src="@drawable/client_sambavanai"
-                            android:id="@+id/donation"/>
+                            android:src="@drawable/client_dance"
+                            android:id="@+id/dance"/>
                         <TextView
+                            android:id="@+id/danceId"
                             android:gravity="center"
                             android:layout_width="match_parent"
                             android:layout_height="40dp"
