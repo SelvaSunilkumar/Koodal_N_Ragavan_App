@@ -15,6 +15,7 @@ import android.app.DownloadManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -81,6 +82,7 @@ public class eBooksDisplay extends AppCompatActivity implements NavigationView.O
     private Bundle bundle;
 
     private PdfLoader pdfLoader;
+    private eBooksDatabaseHelper databaseHelper;
 
     private AlertDialog.Builder dialog;
     private AlertDialog alertDialog;
@@ -116,6 +118,7 @@ public class eBooksDisplay extends AppCompatActivity implements NavigationView.O
         reference = database.getReference("ebooks");
         list = new ArrayList<String>();
         url = new ArrayList<String>();
+        databaseHelper = new eBooksDatabaseHelper(this);
 
         adapter = new ArrayAdapter<String>(this, R.layout.pdfinfo, R.id.portal, list);
 
@@ -147,7 +150,7 @@ public class eBooksDisplay extends AppCompatActivity implements NavigationView.O
 
                         // code for processing payment
 
-                        if(position == 0)
+                        if(position == 0 || isBookAvailable(list.get(position)))
                         {
                             Uri uri = Uri.parse(url.get(position));
 
@@ -168,49 +171,72 @@ public class eBooksDisplay extends AppCompatActivity implements NavigationView.O
                         }
                         else
                         {
-                            paymentSelectorButton = new Dialog(eBooksDisplay.this);
-                            paymentSelectorButton.setContentView(R.layout.payment_selector);
+                            /*if(isBookAvailable(list.get(position)))
+                            {
+                                //Toast.makeText(getApplicationContext(),"Book Availbale for free inside the app",Toast.LENGTH_SHORT).show();
+                                Uri uri_book = Uri.parse(url.get(position));
 
-                            googlePayGateway = paymentSelectorButton.findViewById(R.id.googlePlayButton);
+                                DownloadManager downloadManager; //(DownloadManager) view.getContext().getSystemService(Context.DOWNLOAD_SERVICE);
+                                downloadManager = (DownloadManager) getApplicationContext().getSystemService(Context.DOWNLOAD_SERVICE);
+                                DownloadManager.Request request = new DownloadManager.Request(uri_book);
 
-                            googlePayGateway.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    Toast.makeText(getApplicationContext(),"Processing to Gpay",Toast.LENGTH_SHORT).show();
+                                Context context = getApplicationContext();
+                                String filename = list.get(position);
+                                String fileExtention = ".pdf";
 
-                                    GooglePayGatewayProcessor = new Dialog(eBooksDisplay.this);
-                                    GooglePayGatewayProcessor.setContentView(R.layout.google_pay_account_info);
+                                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE);
+                                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+                                request.setDestinationInExternalFilesDir(context,DIRECTORY_DOWNLOADS,filename + fileExtention);
 
-                                    GooglePayNow = GooglePayGatewayProcessor.findViewById(R.id.paynow);
+                                Toast.makeText(getApplicationContext(),"Downloading : " + Note,Toast.LENGTH_SHORT).show();
 
-                                    AmountPayable = GooglePayGatewayProcessor.findViewById(R.id.amountPayable);
-                                    AmountPayable.setText("Rs. 200");
+                                downloadManager.enqueue(request);
+                            }
+                            else {*/
+                                paymentSelectorButton = new Dialog(eBooksDisplay.this);
+                                paymentSelectorButton.setContentView(R.layout.payment_selector);
 
-                                    GooglePayNow.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            //Toast.makeText(getApplicationContext(),"Payment code pending",Toast.LENGTH_SHORT).show();
+                                googlePayGateway = paymentSelectorButton.findViewById(R.id.googlePlayButton);
 
-                                            NameTextView = GooglePayGatewayProcessor.findViewById(R.id.payee_name);
-                                            UPI_id_TextView = GooglePayGatewayProcessor.findViewById(R.id.payee_upi);
+                                googlePayGateway.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        Toast.makeText(getApplicationContext(),"Processing to Gpay",Toast.LENGTH_SHORT).show();
 
-                                            Name = NameTextView.getText().toString();
-                                            UPI_Id = UPI_id_TextView.getText().toString();
-                                            Amount = "200";
+                                        GooglePayGatewayProcessor = new Dialog(eBooksDisplay.this);
+                                        GooglePayGatewayProcessor.setContentView(R.layout.google_pay_account_info);
 
-                                            Note = list.get(position);
+                                        GooglePayNow = GooglePayGatewayProcessor.findViewById(R.id.paynow);
 
-                                            bookUrl = url.get(position);
+                                        AmountPayable = GooglePayGatewayProcessor.findViewById(R.id.amountPayable);
+                                        AmountPayable.setText("Rs. 200");
 
-                                            payUsingUpi(Amount,UPI_Id,Name,Note,bookUrl);
+                                        GooglePayNow.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                //Toast.makeText(getApplicationContext(),"Payment code pending",Toast.LENGTH_SHORT).show();
 
-                                        }
-                                    });
+                                                NameTextView = GooglePayGatewayProcessor.findViewById(R.id.payee_name);
+                                                UPI_id_TextView = GooglePayGatewayProcessor.findViewById(R.id.payee_upi);
 
-                                    GooglePayGatewayProcessor.show();
-                                }
-                            });
-                            paymentSelectorButton.show();
+                                                Name = NameTextView.getText().toString();
+                                                UPI_Id = UPI_id_TextView.getText().toString();
+                                                Amount = "1";
+
+                                                Note = list.get(position);
+
+                                                bookUrl = url.get(position);
+
+                                                payUsingUpi(Amount,UPI_Id,Name,Note,bookUrl);
+
+                                            }
+                                        });
+
+                                        GooglePayGatewayProcessor.show();
+                                    }
+                                });
+                                paymentSelectorButton.show();
+                            //}
                         }
                     }
                 });
@@ -280,8 +306,7 @@ public class eBooksDisplay extends AppCompatActivity implements NavigationView.O
                 dialog.setPositiveButton("Quit", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
-                        finishAffinity();
+                        //System.finishAffinity();
                         //System.exit(0);
 
                     }
@@ -396,6 +421,8 @@ public class eBooksDisplay extends AppCompatActivity implements NavigationView.O
 
             if(status.equals("success"))
             {
+                AddData(Note);
+
                 Toast.makeText(eBooksDisplay.this,"Transaction Successful",Toast.LENGTH_SHORT).show();
                 Log.d("UPI","responseStr : " + approvalRefNo);
 
@@ -441,6 +468,33 @@ public class eBooksDisplay extends AppCompatActivity implements NavigationView.O
             NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
 
             if(networkInfo != null && networkInfo.isConnected() && networkInfo.isConnectedOrConnecting() && networkInfo.isAvailable())
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void AddData(String bookName)
+    {
+        boolean insertBook = databaseHelper.insertBook(bookName);
+
+        if(insertBook)
+        {
+            Toast.makeText(getApplicationContext(),"Book available ",Toast.LENGTH_SHORT).show();
+        }
+        else {
+            Toast.makeText(getApplicationContext(),"Database Error",Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public boolean isBookAvailable(String bookName)
+    {
+        Cursor data = databaseHelper.fetchBooks();
+
+        while(data.moveToNext())
+        {
+            if(bookName.equals(data.getString(0)))
             {
                 return true;
             }

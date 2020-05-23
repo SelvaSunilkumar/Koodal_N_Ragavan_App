@@ -166,10 +166,8 @@ public class AboutUs extends AppCompatActivity implements NavigationView.OnNavig
         googlePay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ClipboardManager clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                ClipData clipData = ClipData.newPlainText("label",GooglePayNumber);
-                clipboardManager.setPrimaryClip(clipData);
-                Toast.makeText(getApplicationContext(),"Number copied to Clipboard",Toast.LENGTH_SHORT).show();
+                nextActivity = new Intent(AboutUs.this,Sambavanai.class);
+                startActivity(nextActivity);
             }
         });
 

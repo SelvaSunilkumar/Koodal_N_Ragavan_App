@@ -8,6 +8,8 @@ import android.app.Dialog;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
@@ -57,6 +59,7 @@ public class MusicLister extends AppCompatActivity {
     private FirebaseDatabase database;
     private DatabaseReference reference;
     private Azhwarmusic1 azhwarmusic;
+    private AlvargalinManamDatabaseHelper databaseHelper;
 
     private String folderReference;
     private int pausePlayCounter;
@@ -104,6 +107,7 @@ public class MusicLister extends AppCompatActivity {
 
         list = new ArrayList<String >();
         url = new ArrayList<String>();
+        databaseHelper = new AlvargalinManamDatabaseHelper(this);
 
         mediaPlayer = new MediaPlayer();
 
@@ -132,7 +136,7 @@ public class MusicLister extends AppCompatActivity {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                        if(position == 0 )
+                        if(position == 0 || isAudioAvailable(list.get(position)))
                         {
                             String MusicUrl = url.get(position);
 
@@ -241,7 +245,7 @@ public class MusicLister extends AppCompatActivity {
                                             //Storing the data from layout to the sting variables
                                             Name = NameTextView.getText().toString();
                                             UPI_Id = UPI_id_TextView.getText().toString();
-                                            Amount = "100";
+                                            Amount = "1";
 
                                             Note = list.get(position);
 
@@ -367,6 +371,7 @@ public class MusicLister extends AppCompatActivity {
 
             if(status.equals("success"))
             {
+                isSongUpdated(Note);
                 Toast.makeText(MusicLister.this,"Transaction Successful",Toast.LENGTH_SHORT).show();
                 Log.d("UPI","responseStr : " + approvalRefNo);
 
@@ -412,6 +417,33 @@ public class MusicLister extends AppCompatActivity {
             NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
 
             if(networkInfo != null && networkInfo.isConnected() && networkInfo.isConnectedOrConnecting() && networkInfo.isAvailable())
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void isSongUpdated(String songName)
+    {
+        boolean isInsertDataSuccessful = databaseHelper.insertAudio(songName);
+
+        if(isInsertDataSuccessful)
+        {
+            Toast.makeText(getApplicationContext(),"Inserted Successfully",Toast.LENGTH_SHORT).show();
+        }
+        else {
+            Toast.makeText(getApplicationContext(),"Failed to insert Data",Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public boolean isAudioAvailable(String audioName)
+    {
+        Cursor data = databaseHelper.fetchSongList();
+
+        while(data.moveToNext())
+        {
+            if(audioName.equals(data.getString(0)))
             {
                 return true;
             }
