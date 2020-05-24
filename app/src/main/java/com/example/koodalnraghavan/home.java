@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,14 +30,14 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
     private NavigationView navigationView;
     private ActionBarDrawerToggle toggle;
 
-    private ImageView eBooks;
-    private ImageView DailyVoice;
-    private ImageView ThinachariyaiButton;
-    private ImageView KadhaiKekumNeram;
-    private ImageView jodhidam;
-    private ImageView AlvargalinManam;
-    private ImageView BabyName;
-    private ImageView DanceIcon;
+    private LinearLayout eBooks;
+    private LinearLayout DailyVoice;
+    private LinearLayout ThinachariyaiButton;
+    private LinearLayout KadhaiKekumNeram;
+    private LinearLayout jodhidam;
+    private LinearLayout AlvargalinManam;
+    private LinearLayout BabyName;
+    private LinearLayout DanceIcon;
     private Button Donation;
 
     private TextView DailyKural;

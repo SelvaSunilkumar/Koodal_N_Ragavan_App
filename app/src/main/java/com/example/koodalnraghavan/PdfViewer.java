@@ -4,18 +4,32 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DownloadManager;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
+import android.widget.Toast;
+
+import com.github.barteksc.pdfviewer.PDFView;
+
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 public class PdfViewer extends AppCompatActivity {
 
-    private WebView PDFViewer;
+    private String pdfUrl;
+
     private ProgressBar progressBar;
+    private PDFView pdfView;
     private Bundle bundle;
 
     @Override
@@ -23,30 +37,48 @@ public class PdfViewer extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pdf_viewer);
 
-        PDFViewer = findViewById(R.id.viewPDF);
+        pdfView = findViewById(R.id.pdfViewer);
         progressBar = findViewById(R.id.progress);
+
+        //get pdf url from the other activity
         bundle = getIntent().getExtras();
+        pdfUrl = bundle.getString("url");
 
-        String url = bundle.getString("url");
-        //------------------------------------------------------------------------------------------
-        PDFViewer.getSettings().setJavaScriptEnabled(true);
-        PDFViewer.getSettings().setBuiltInZoomControls(true);
-        PDFViewer.getSettings().setDisplayZoomControls(true);
-        PDFViewer.getSettings().setLoadWithOverviewMode(true);
-        PDFViewer.getSettings().setUseWideViewPort(true);
-
-        PDFViewer.setWebViewClient(new WebViewClient()
-        {
-            @Override
-            public void onPageFinished(WebView webView,String url)
-            {
-                webView.loadUrl("javascript:(function() { document.querySelector('[role=\"toolbar\"]').remove();})()");
-                progressBar.setVisibility(View.GONE);
-            }
-        });
-        PDFViewer.loadUrl("https://docs.google.com/gview?embedded=true&url="+url);
+        progressBar.setVisibility(View.VISIBLE);
+        new PDFLoader().execute(pdfUrl);
 
         //-------------------------------------------------------------------------------------------
 
+    }
+
+    class PDFLoader extends AsyncTask<String,Void,InputStream>
+    {
+        InputStream inputStream;
+
+        @Override
+        protected InputStream doInBackground(String... strings) {
+
+            try {
+                URL linkUrl = new URL(strings[0]);
+                HttpURLConnection urlConnection = (HttpURLConnection) linkUrl.openConnection();
+
+                if(urlConnection.getResponseCode() == 200)
+                {
+                    inputStream = new BufferedInputStream(urlConnection.getInputStream());
+                    //pdfView.fromStream(inputStream).load();
+                }
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return inputStream;
+        }
+
+        @Override
+        protected void onPostExecute(InputStream inputStream) {
+            pdfView.fromStream(inputStream).load();
+            progressBar.setVisibility(View.GONE);
+        }
     }
 }

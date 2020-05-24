@@ -2,6 +2,7 @@ package com.example.koodalnraghavan;
 
 import android.app.DownloadManager;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -81,7 +82,15 @@ public class TextTab extends Fragment {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                        Toast.makeText(getContext(),"Downloading : " + list.get(position),Toast.LENGTH_SHORT).show();
+                        Intent nextActivity = new Intent(view.getContext(),PdfViewer.class);
+
+                        Bundle bundle = new Bundle();
+                        bundle.putString("url",url.get(position));
+
+                        nextActivity.putExtras(bundle);
+                        startActivity(nextActivity);
+
+                        /*Toast.makeText(getContext(),"Downloading : " + list.get(position),Toast.LENGTH_SHORT).show();
 
                         Uri uri = Uri.parse(url.get(position));
 
@@ -96,7 +105,7 @@ public class TextTab extends Fragment {
                         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
                         request.setDestinationInExternalFilesDir(context,DIRECTORY_DOWNLOADS,filename + fileExtension);
 
-                        downloadManager.enqueue(request);
+                        downloadManager.enqueue(request);*/
 
                     }
                 });

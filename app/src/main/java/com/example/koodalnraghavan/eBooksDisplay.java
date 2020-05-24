@@ -152,7 +152,14 @@ public class eBooksDisplay extends AppCompatActivity implements NavigationView.O
 
                         if(position == 0 || isBookAvailable(list.get(position)))
                         {
-                            Uri uri = Uri.parse(url.get(position));
+                            nextActivity = new Intent(eBooksDisplay.this,PdfViewer.class);
+
+                            bundle = new Bundle();
+                            bundle.putString("url",url.get(position));
+
+                            nextActivity.putExtras(bundle);
+                            startActivity(nextActivity);
+                            /*Uri uri = Uri.parse(url.get(position));
 
                             DownloadManager downloadManager = (DownloadManager) view.getContext().getSystemService(Context.DOWNLOAD_SERVICE);
                             DownloadManager.Request request = new DownloadManager.Request(uri);
@@ -167,7 +174,7 @@ public class eBooksDisplay extends AppCompatActivity implements NavigationView.O
 
                             Toast.makeText(getApplicationContext(),"Downloading : " + list.get(position),Toast.LENGTH_SHORT).show();
 
-                            downloadManager.enqueue(request);
+                            downloadManager.enqueue(request);*/
                         }
                         else
                         {
@@ -426,7 +433,15 @@ public class eBooksDisplay extends AppCompatActivity implements NavigationView.O
                 Toast.makeText(eBooksDisplay.this,"Transaction Successful",Toast.LENGTH_SHORT).show();
                 Log.d("UPI","responseStr : " + approvalRefNo);
 
-                Uri uri_book = Uri.parse(bookUrl);
+                nextActivity = new Intent(eBooksDisplay.this,PdfViewer.class);
+
+                bundle = new Bundle();
+                bundle.putString("url",bookUrl);
+
+                nextActivity.putExtras(bundle);
+                startActivity(nextActivity);
+
+                /*Uri uri_book = Uri.parse(bookUrl);
 
                 DownloadManager downloadManager; //(DownloadManager) view.getContext().getSystemService(Context.DOWNLOAD_SERVICE);
                 downloadManager = (DownloadManager) getApplicationContext().getSystemService(Context.DOWNLOAD_SERVICE);
@@ -442,7 +457,7 @@ public class eBooksDisplay extends AppCompatActivity implements NavigationView.O
 
                 Toast.makeText(getApplicationContext(),"Downloading : " + Note,Toast.LENGTH_SHORT).show();
 
-                downloadManager.enqueue(request);
+                downloadManager.enqueue(request);*/
 
             }
             else if ("Payment cancelled by user.".equals(paymentCancel))
