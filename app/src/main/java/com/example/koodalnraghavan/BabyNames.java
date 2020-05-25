@@ -23,7 +23,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 
-public class KadhaiKekumNeram extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class BabyNames extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout drawerLayout;
     private Toolbar toolbar;
@@ -32,12 +32,12 @@ public class KadhaiKekumNeram extends AppCompatActivity implements NavigationVie
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
-    private TabItem MusicTab;
-    private TabItem VideoTab;
-    private TextView TitleTootlbar;
+    private TabItem BoyNameTab;
+    private TabItem GirlNameTab;
     private Button Donation;
+    private TextView TitleTootlbar;
 
-    public StoryTimePageAdaptor pageAdapter;
+    private BabyNameAdapter nameAdapter;
 
     private Intent nextActivity;
     private AlertDialog.Builder dialog;
@@ -47,16 +47,16 @@ public class KadhaiKekumNeram extends AppCompatActivity implements NavigationVie
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_kadhai_kekum_neram);
-
-        TitleTootlbar = findViewById(R.id.titleId);
-        TitleTootlbar.setText("Dance");
-        TitleTootlbar.setSelected(true);
+        setContentView(R.layout.activity_baby_names);
 
         tabLayout = findViewById(R.id.tablayout);
-        MusicTab = findViewById(R.id.musictab);
-        VideoTab = findViewById(R.id.videotab);
+        BoyNameTab = findViewById(R.id.boyName);
+        GirlNameTab = findViewById(R.id.girlName);
         viewPager = findViewById(R.id.viewpager);
+
+        TitleTootlbar = findViewById(R.id.titleId);
+        TitleTootlbar.setText(R.string.babyName_en);
+        TitleTootlbar.setSelected(true);
 
         drawerLayout = findViewById(R.id.drawer);
         toolbar = findViewById(R.id.toolbar);
@@ -65,38 +65,36 @@ public class KadhaiKekumNeram extends AppCompatActivity implements NavigationVie
         setSupportActionBar(toolbar);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        getSupportActionBar().setTitle(" Kadhai Kekum Neram");
+
         getSupportActionBar().setIcon(R.mipmap.ic_tool_bar);
         toggle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.drawerOpen,R.string.drawerClose);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
 
-        pageAdapter = new StoryTimePageAdaptor(getSupportFragmentManager(),tabLayout.getTabCount());
-        //pageAdapter = new PageAdapter(getSupportFragmentManager(),tabLayout.getTabCount());
-        viewPager.setAdapter(pageAdapter);
-
         Donation = findViewById(R.id.donation);
         Donation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(KadhaiKekumNeram.this,Sambavanai.class);
+                Intent intent = new Intent(BabyNames.this,Sambavanai.class);
                 startActivity(intent);
             }
         });
 
+        nameAdapter = new BabyNameAdapter(getSupportFragmentManager(),tabLayout.getTabCount());
+        viewPager.setAdapter(nameAdapter);
+
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-
                 viewPager.setCurrentItem(tab.getPosition());
-                if(tab.getPosition()==0)
+
+                if(tab.getPosition() == 0)
                 {
-                    pageAdapter.notifyDataSetChanged();
+                    nameAdapter.notifyDataSetChanged();
                 }
-                else if(tab.getPosition()==1)
-                {
-                    pageAdapter.notifyDataSetChanged();
+                else {
+                    nameAdapter.notifyDataSetChanged();
                 }
             }
 
@@ -111,47 +109,46 @@ public class KadhaiKekumNeram extends AppCompatActivity implements NavigationVie
             }
         });
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        //iewPager.addOnAdapterChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-
-        switch(menuItem.getItemId())
-        {
+        switch(menuItem.getItemId()) {
             case R.id.home:
-                Toast.makeText(getApplicationContext(),"Home",Toast.LENGTH_SHORT).show();
-                nextActivity = new Intent(this,home.class);
+                Toast.makeText(getApplicationContext(), "Home", Toast.LENGTH_SHORT).show();
+                nextActivity = new Intent(this, home.class);
                 startActivity(nextActivity);
                 finish();
                 break;
             case R.id.aboutus:
-                Toast.makeText(getApplicationContext(),"About Us",Toast.LENGTH_SHORT).show();
-                nextActivity = new Intent(this,AboutUs.class);
+                Toast.makeText(getApplicationContext(), "About Us", Toast.LENGTH_SHORT).show();
+                nextActivity = new Intent(this, AboutUs.class);
                 startActivity(nextActivity);
                 break;
             case R.id.activity:
-                Toast.makeText(getApplicationContext(),"Activity",Toast.LENGTH_SHORT).show();
-                nextActivity = new Intent(this,NotFound.class);
+                Toast.makeText(getApplicationContext(), "Activity", Toast.LENGTH_SHORT).show();
+                nextActivity = new Intent(this, NotFound.class);
                 startActivity(nextActivity);
                 break;
             case R.id.event:
-                Toast.makeText(getApplicationContext(),"Eventt",Toast.LENGTH_SHORT).show();
-                nextActivity = new Intent(this,NotFound.class);
+                Toast.makeText(getApplicationContext(), "Eventt", Toast.LENGTH_SHORT).show();
+                nextActivity = new Intent(this, NotFound.class);
                 startActivity(nextActivity);
                 break;
             case R.id.Gallery:
-                Toast.makeText(getApplicationContext(),"Gallery",Toast.LENGTH_SHORT).show();
-                nextActivity = new Intent(this,NotFound.class);
+                Toast.makeText(getApplicationContext(), "Gallery", Toast.LENGTH_SHORT).show();
+                nextActivity = new Intent(this, NotFound.class);
                 startActivity(nextActivity);
                 break;
             case R.id.freedownload:
-                Toast.makeText(getApplicationContext(),"Free Downloads",Toast.LENGTH_SHORT).show();
-                nextActivity = new Intent(this,FreeDownload.class);
+                Toast.makeText(getApplicationContext(), "Free Downloads", Toast.LENGTH_SHORT).show();
+                nextActivity = new Intent(this, FreeDownload.class);
                 startActivity(nextActivity);
                 break;
             case R.id.contact:
-                Toast.makeText(getApplicationContext(),"Contact",Toast.LENGTH_SHORT).show();
-                nextActivity = new Intent(this,NotFound.class);
+                Toast.makeText(getApplicationContext(), "Contact", Toast.LENGTH_SHORT).show();
+                nextActivity = new Intent(this, NotFound.class);
                 startActivity(nextActivity);
                 break;
             case R.id.google:
@@ -249,7 +246,6 @@ public class KadhaiKekumNeram extends AppCompatActivity implements NavigationVie
                 nextActivity = new Intent(this,Settings.class);
                 startActivity(nextActivity);
                 break;
-
         }
         return false;
     }

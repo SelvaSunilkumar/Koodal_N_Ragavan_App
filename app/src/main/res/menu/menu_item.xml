@@ -35,16 +35,33 @@
             android:title="Others"/>
     </group>
 
+    <item
+        android:title="Social">
+        <menu>
+            <item
+                android:id="@+id/google"
+                android:icon="@drawable/google"
+                android:title="Google"/>
+            <item
+                android:title="Facebook"
+                android:id="@+id/facebook"
+                android:icon="@drawable/facebook"/>
+            <item
+                android:id="@+id/twitter"
+                android:title="Twitter"
+                android:icon="@drawable/twitter"/>
+            <item
+                android:id="@+id/youtube"
+                android:title="Youtube"
+                android:icon="@drawable/youtube"/>
+        </menu>
+    </item>
     <item>
         <menu>
             <item
                 android:id="@+id/settings"
                 android:icon="@drawable/settings_icon"
                 android:title="Settings"/>
-            <item
-                android:id="@+id/exit"
-                android:icon="@drawable/exit_icon"
-                android:title="Exit"/>
         </menu>
     </item>
 </menu>

@@ -2,13 +2,16 @@ package com.example.koodalnraghavan;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.viewpager.widget.ViewPager;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.MenuItem;
@@ -47,6 +50,8 @@ public class Azhwarmanam extends AppCompatActivity implements NavigationView.OnN
     public AzhwarAdapter azhwarAdapter;
 
     private Intent nextActivity;
+    private AlertDialog.Builder dialog;
+    private AlertDialog alertDialog;
 
     @SuppressLint("RestrictedApi")
     @Override
@@ -157,8 +162,100 @@ public class Azhwarmanam extends AppCompatActivity implements NavigationView.OnN
                 nextActivity = new Intent(this, NotFound.class);
                 startActivity(nextActivity);
                 break;
-            case R.id.exit:
-                Toast.makeText(getApplicationContext(), "Exit", Toast.LENGTH_SHORT).show();
+            case R.id.google:
+                dialog = new AlertDialog.Builder(this);
+                dialog.setMessage("Taking you to Google");
+                dialog.setTitle("Google");
+                dialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        Uri uri = Uri.parse("http://www.kavignakoodalnraghavan.com");
+                        Intent launchBrowser = new Intent(Intent.ACTION_VIEW,uri);
+                        startActivity(launchBrowser);
+                    }
+                });
+                dialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        return;
+                    }
+                });
+                alertDialog = dialog.create();
+                alertDialog.show();
+                break;
+            case R.id.facebook:
+                dialog = new AlertDialog.Builder(this);
+                dialog.setMessage("Taking you to Facebook");
+                dialog.setTitle("Facebook");
+                dialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        Uri uri = Uri.parse("https://www.facebook.com/kavignakoodal.n.raghavan");
+                        Intent launchBrowser = new Intent(Intent.ACTION_VIEW,uri);
+                        startActivity(launchBrowser);
+                    }
+                });
+                dialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        return;
+                    }
+                });
+                alertDialog = dialog.create();
+                alertDialog.show();
+                break;
+            case R.id.twitter:
+                dialog = new AlertDialog.Builder(this);
+                dialog.setMessage("Taking you to Twitter");
+                dialog.setTitle("Twitter");
+                dialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        Uri uri = Uri.parse("https://twitter.com/koodalraghavan?lang=en");
+                        Intent launchBrowser = new Intent(Intent.ACTION_VIEW,uri);
+                        startActivity(launchBrowser);
+                    }
+                });
+
+                dialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        return;
+                    }
+                });
+                alertDialog = dialog.create();
+                alertDialog.show();
+                break;
+            case R.id.youtube:
+                dialog = new AlertDialog.Builder(this);
+                dialog.setMessage("Taking you to Youtube");
+                dialog.setTitle("Youtube");
+                dialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        Uri uri = Uri.parse("https://www.youtube.com/user/RANGASRI4");
+                        Intent launchBrowser = new Intent(Intent.ACTION_VIEW,uri);
+                        startActivity(launchBrowser);
+                    }
+                });
+
+                dialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        return;
+                    }
+                });
+
+                alertDialog = dialog.create();
+                alertDialog.show();
+                break;
+            case R.id.settings:
+                nextActivity = new Intent(this,Settings.class);
+                startActivity(nextActivity);
                 break;
         }
         return false;

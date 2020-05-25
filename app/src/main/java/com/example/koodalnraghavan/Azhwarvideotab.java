@@ -55,6 +55,7 @@ public class Azhwarvideotab extends Fragment {
 
     private ArrayList<String> list;
     private ArrayList<String> url;
+    private ArrayList<String> price;
     private ArrayAdapter<String> adapter;
     private String Name;
     private String UPI_Id;
@@ -71,7 +72,8 @@ public class Azhwarvideotab extends Fragment {
     private Dialog GooglePayProcessor;
     private View view;
 
-    public PdfLoader pdfLoader;
+    //public PdfLoader pdfLoader;
+    private NamePriceList priceList;
     private AzhwarVideoDatabaseHelper databaseHelper;
 
 
@@ -95,6 +97,7 @@ public class Azhwarvideotab extends Fragment {
 
         list = new ArrayList<String>();
         url = new ArrayList<String>();
+        price = new ArrayList<String>();
         databaseHelper = new AzhwarVideoDatabaseHelper(view.getContext());
 
         adapter = new ArrayAdapter<String >(view.getContext(),R.layout.musicinfo,R.id.portal,list);
@@ -102,12 +105,15 @@ public class Azhwarvideotab extends Fragment {
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                priceList = new NamePriceList();
                 for(DataSnapshot ds:dataSnapshot.getChildren())
                 {
                    // progressBar.setVisibility(View.VISIBLE);
-                    pdfLoader = ds.getValue(PdfLoader.class);
-                    list.add(String.valueOf(pdfLoader.getPortal()));
-                    url.add(String.valueOf(pdfLoader.getUrl()));
+                    priceList = ds.getValue(NamePriceList.class);
+                    list.add(String.valueOf(priceList.getPortal()));
+                    url.add(String.valueOf(priceList.getUrl()));
+                    price.add(String.valueOf(priceList.getValue()));
                 }
                 //progressBar.setVisibility(View.GONE);
                 listView.setAdapter(adapter);
@@ -140,7 +146,7 @@ public class Azhwarvideotab extends Fragment {
 
                                     Paynow = GooglePayProcessor.findViewById(R.id.paynow);
                                     AmountToPay = GooglePayProcessor.findViewById(R.id.amountPayable);
-                                    AmountToPay.setText("Rs. 100");
+                                    AmountToPay.setText(price.get(position));
 
                                     Paynow.setOnClickListener(new View.OnClickListener() {
                                         @Override
@@ -152,7 +158,7 @@ public class Azhwarvideotab extends Fragment {
                                             //Storing the data from layout to the sting variables
                                             Name = NameTextView.getText().toString();
                                             UPI_Id = UPI_id_TextView.getText().toString();
-                                            Amount = "1";
+                                            Amount = price.get(position);
 
                                             Note = list.get(position);
 

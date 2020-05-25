@@ -6,11 +6,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/drawer"
-    tools:context=".FreeDownload">
+    tools:openDrawer="end"
+    tools:context=".BabyNames">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
         <androidx.appcompat.widget.Toolbar
             android:layout_width="match_parent"
@@ -50,19 +51,18 @@
             android:layout_height="wrap_content"
             android:id="@+id/tablayout"
             app:tabTextColor="@android:color/white"
-            android:background="@color/colorPrimary"
-            tools:ignore="MissingConstraints">
+            android:background="@color/colorPrimary">
 
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/callertunes"
-                android:text="Ringtones"/>
+                android:id="@+id/boyName"
+                android:text="Boy"/>
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/texts"
-                android:text="Texts"/>
+                android:text="Girl"
+                android:id="@+id/girlName"/>
         </com.google.android.material.tabs.TabLayout>
 
         <androidx.viewpager.widget.ViewPager

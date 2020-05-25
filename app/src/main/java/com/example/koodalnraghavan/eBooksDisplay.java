@@ -68,6 +68,7 @@ public class eBooksDisplay extends AppCompatActivity implements NavigationView.O
 
     private ArrayList<String> list;
     private ArrayList<String> url;
+    private ArrayList<String> price;
     private ArrayAdapter<String> adapter;
 
     private FirebaseDatabase database;
@@ -81,7 +82,8 @@ public class eBooksDisplay extends AppCompatActivity implements NavigationView.O
     private Intent nextActivity;
     private Bundle bundle;
 
-    private PdfLoader pdfLoader;
+    //private PdfLoader pdfLoader;
+    private NamePriceList priceList;
     private eBooksDatabaseHelper databaseHelper;
 
     private AlertDialog.Builder dialog;
@@ -118,6 +120,7 @@ public class eBooksDisplay extends AppCompatActivity implements NavigationView.O
         reference = database.getReference("ebooks");
         list = new ArrayList<String>();
         url = new ArrayList<String>();
+        price = new ArrayList<String>();
         databaseHelper = new eBooksDatabaseHelper(this);
 
         adapter = new ArrayAdapter<String>(this, R.layout.pdfinfo, R.id.portal, list);
@@ -134,13 +137,15 @@ public class eBooksDisplay extends AppCompatActivity implements NavigationView.O
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                pdfLoader = new PdfLoader();
+                //pdfLoader = new PdfLoader();
+                priceList = new NamePriceList();
 
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     progressBar.setVisibility(View.VISIBLE);
-                    pdfLoader = ds.getValue(PdfLoader.class);
-                    list.add(String.valueOf(pdfLoader.getPortal()));
-                    url.add(String.valueOf(pdfLoader.getUrl()));
+                    priceList = ds.getValue(NamePriceList.class);
+                    list.add(String.valueOf(priceList.getPortal()));
+                    url.add(String.valueOf(priceList.getUrl()));
+                    price.add(String.valueOf(priceList.getValue()));
                 }
                 progressBar.setVisibility(View.GONE);
                 listView.setAdapter(adapter);
@@ -216,7 +221,7 @@ public class eBooksDisplay extends AppCompatActivity implements NavigationView.O
                                         GooglePayNow = GooglePayGatewayProcessor.findViewById(R.id.paynow);
 
                                         AmountPayable = GooglePayGatewayProcessor.findViewById(R.id.amountPayable);
-                                        AmountPayable.setText("Rs. 200");
+                                        AmountPayable.setText(price.get(position));
 
                                         GooglePayNow.setOnClickListener(new View.OnClickListener() {
                                             @Override
@@ -228,7 +233,7 @@ public class eBooksDisplay extends AppCompatActivity implements NavigationView.O
 
                                                 Name = NameTextView.getText().toString();
                                                 UPI_Id = UPI_id_TextView.getText().toString();
-                                                Amount = "1";
+                                                Amount = price.get(position);
 
                                                 Note = list.get(position);
 
@@ -300,34 +305,100 @@ public class eBooksDisplay extends AppCompatActivity implements NavigationView.O
                 nextActivity = new Intent(this,NotFound.class);
                 startActivity(nextActivity);
                 break;
-            case R.id.settings:
-                nextActivity = new Intent(this,Settings.class);
-                startActivity(nextActivity);
-                break;
-            case R.id.exit:
-                Toast.makeText(getApplicationContext(),"Exit",Toast.LENGTH_SHORT).show();
-
+            case R.id.google:
                 dialog = new AlertDialog.Builder(this);
-                dialog.setMessage("Do you wish to quit !");
-                dialog.setTitle("Exit");
-                dialog.setPositiveButton("Quit", new DialogInterface.OnClickListener() {
+                dialog.setMessage("Taking you to Google");
+                dialog.setTitle("Google");
+                dialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        //System.finishAffinity();
-                        //System.exit(0);
 
+                        Uri uri = Uri.parse("http://www.kavignakoodalnraghavan.com");
+                        Intent launchBrowser = new Intent(Intent.ACTION_VIEW,uri);
+                        startActivity(launchBrowser);
+                    }
+                });
+                dialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        return;
+                    }
+                });
+                alertDialog = dialog.create();
+                alertDialog.show();
+                break;
+            case R.id.facebook:
+                dialog = new AlertDialog.Builder(this);
+                dialog.setMessage("Taking you to Facebook");
+                dialog.setTitle("Facebook");
+                dialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        Uri uri = Uri.parse("https://www.facebook.com/kavignakoodal.n.raghavan");
+                        Intent launchBrowser = new Intent(Intent.ACTION_VIEW,uri);
+                        startActivity(launchBrowser);
+                    }
+                });
+                dialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        return;
+                    }
+                });
+                alertDialog = dialog.create();
+                alertDialog.show();
+                break;
+            case R.id.twitter:
+                dialog = new AlertDialog.Builder(this);
+                dialog.setMessage("Taking you to Twitter");
+                dialog.setTitle("Twitter");
+                dialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        Uri uri = Uri.parse("https://twitter.com/koodalraghavan?lang=en");
+                        Intent launchBrowser = new Intent(Intent.ACTION_VIEW,uri);
+                        startActivity(launchBrowser);
                     }
                 });
 
                 dialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        return;
+                    }
+                });
+                alertDialog = dialog.create();
+                alertDialog.show();
+                break;
+            case R.id.youtube:
+                dialog = new AlertDialog.Builder(this);
+                dialog.setMessage("Taking you to Youtube");
+                dialog.setTitle("Youtube");
+                dialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
 
+                        Uri uri = Uri.parse("https://www.youtube.com/user/RANGASRI4");
+                        Intent launchBrowser = new Intent(Intent.ACTION_VIEW,uri);
+                        startActivity(launchBrowser);
+                    }
+                });
+
+                dialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        return;
                     }
                 });
 
                 alertDialog = dialog.create();
                 alertDialog.show();
+                break;
+            case R.id.settings:
+                nextActivity = new Intent(this,Settings.class);
+                startActivity(nextActivity);
                 break;
         }
         return false;

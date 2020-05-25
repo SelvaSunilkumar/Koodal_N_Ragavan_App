@@ -54,11 +54,13 @@ public class MusicLister extends AppCompatActivity {
 
     private ArrayList<String> list;
     private ArrayList<String> url;
+    private ArrayList<String> price;
     private ArrayAdapter<String> adapter;
 
     private FirebaseDatabase database;
     private DatabaseReference reference;
-    private Azhwarmusic1 azhwarmusic;
+    //private Azhwarmusic1 azhwarmusic;
+    private NamePriceList priceList;
     private AlvargalinManamDatabaseHelper databaseHelper;
 
     private String folderReference;
@@ -107,6 +109,7 @@ public class MusicLister extends AppCompatActivity {
 
         list = new ArrayList<String >();
         url = new ArrayList<String>();
+        price = new ArrayList<String>();
         databaseHelper = new AlvargalinManamDatabaseHelper(this);
 
         mediaPlayer = new MediaPlayer();
@@ -117,14 +120,16 @@ public class MusicLister extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                azhwarmusic = new Azhwarmusic1();
+                //azhwarmusic = new Azhwarmusic1();
+                priceList = new NamePriceList();
 
                 for (DataSnapshot ds:dataSnapshot.getChildren()){
 
                     progressBar.setVisibility(View.VISIBLE);
-                    azhwarmusic = ds.getValue(Azhwarmusic1.class);
-                    list.add(String.valueOf(azhwarmusic.getTitle()));
-                    url.add(String.valueOf(azhwarmusic.getUrl()));
+                    priceList = ds.getValue(NamePriceList.class);
+                    list.add(String.valueOf(priceList.getPortal()));
+                    url.add(String.valueOf(priceList.getUrl()));
+                    price.add(String.valueOf(priceList.getValue()));
                 }
 
                 progressBar.setVisibility(View.GONE);
@@ -233,7 +238,7 @@ public class MusicLister extends AppCompatActivity {
 
                                     PayNow = GooglePayProcessor.findViewById(R.id.paynow);
                                     AmountToPay = GooglePayProcessor.findViewById(R.id.amountPayable);
-                                    AmountToPay.setText("Rs. 100");
+                                    AmountToPay.setText(price.get(position));
 
                                     PayNow.setOnClickListener(new View.OnClickListener() {
                                         @Override
@@ -245,7 +250,7 @@ public class MusicLister extends AppCompatActivity {
                                             //Storing the data from layout to the sting variables
                                             Name = NameTextView.getText().toString();
                                             UPI_Id = UPI_id_TextView.getText().toString();
-                                            Amount = "1";
+                                            Amount = price.get(position);
 
                                             Note = list.get(position);
 
