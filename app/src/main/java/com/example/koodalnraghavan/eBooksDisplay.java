@@ -270,39 +270,39 @@ public class eBooksDisplay extends AppCompatActivity implements NavigationView.O
         switch(menuItem.getItemId())
         {
             case R.id.home:
-                Toast.makeText(getApplicationContext(),"Home",Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(),"Home",Toast.LENGTH_SHORT).show();
                 nextActivity = new Intent(this,home.class);
                 startActivity(nextActivity);
                 finish();
                 break;
             case R.id.aboutus:
-                Toast.makeText(getApplicationContext(),"About Us",Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(),"About Us",Toast.LENGTH_SHORT).show();
                 nextActivity = new Intent(this,AboutUs.class);
                 startActivity(nextActivity);
                 break;
             case R.id.activity:
-                Toast.makeText(getApplicationContext(),"Activity",Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(),"Activity",Toast.LENGTH_SHORT).show();
                 nextActivity = new Intent(this,NotFound.class);
                 startActivity(nextActivity);
                 break;
             case R.id.event:
-                Toast.makeText(getApplicationContext(),"Eventt",Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(),"Eventt",Toast.LENGTH_SHORT).show();
                 nextActivity = new Intent(this,NotFound.class);
                 startActivity(nextActivity);
                 break;
             case R.id.Gallery:
-                Toast.makeText(getApplicationContext(),"Gallery",Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(),"Gallery",Toast.LENGTH_SHORT).show();
                 nextActivity = new Intent(this,NotFound.class);
                 startActivity(nextActivity);
                 break;
             case R.id.freedownload:
-                Toast.makeText(getApplicationContext(),"Free Downloads",Toast.LENGTH_SHORT).show();
+                ///Toast.makeText(getApplicationContext(),"Free Downloads",Toast.LENGTH_SHORT).show();
                 nextActivity = new Intent(this,FreeDownload.class);
                 startActivity(nextActivity);
                 break;
             case R.id.contact:
-                Toast.makeText(getApplicationContext(),"Contact",Toast.LENGTH_SHORT).show();
-                nextActivity = new Intent(this,NotFound.class);
+                //Toast.makeText(getApplicationContext(),"Contact",Toast.LENGTH_SHORT).show();
+                nextActivity = new Intent(this,ContactUs.class);
                 startActivity(nextActivity);
                 break;
             case R.id.google:
@@ -501,6 +501,9 @@ public class eBooksDisplay extends AppCompatActivity implements NavigationView.O
             {
                 AddData(Note);
 
+                paymentSelectorButton.dismiss();
+                GooglePayGatewayProcessor.dismiss();
+
                 Toast.makeText(eBooksDisplay.this,"Transaction Successful",Toast.LENGTH_SHORT).show();
                 Log.d("UPI","responseStr : " + approvalRefNo);
 
@@ -533,7 +536,9 @@ public class eBooksDisplay extends AppCompatActivity implements NavigationView.O
             }
             else if ("Payment cancelled by user.".equals(paymentCancel))
             {
-                Toast.makeText(eBooksDisplay.this,"Payment cancelled by the user" + bookUrl,Toast.LENGTH_SHORT).show();
+                GooglePayGatewayProcessor.dismiss();
+                paymentSelectorButton.dismiss();
+                Toast.makeText(eBooksDisplay.this,"Payment cancelled by the user",Toast.LENGTH_SHORT).show();
             }
             else {
                 Toast.makeText(eBooksDisplay.this,"Transaction failed.Please try again later",Toast.LENGTH_SHORT).show();

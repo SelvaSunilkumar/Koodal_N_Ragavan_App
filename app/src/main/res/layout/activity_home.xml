@@ -185,12 +185,12 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
+                            android:clickable="true"
                             android:id="@+id/thinahiriyai">
                             <ImageView
                                 android:layout_marginTop="10dp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="120dp"
-                                android:clickable="true"
                                 android:src="@drawable/client_dhinacharyai"/>
                             <TextView
                                 android:gravity="center"

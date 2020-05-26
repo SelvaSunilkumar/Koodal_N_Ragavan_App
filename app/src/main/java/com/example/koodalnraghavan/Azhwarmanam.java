@@ -127,39 +127,39 @@ public class Azhwarmanam extends AppCompatActivity implements NavigationView.OnN
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch(menuItem.getItemId()) {
             case R.id.home:
-                Toast.makeText(getApplicationContext(), "Home", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "Home", Toast.LENGTH_SHORT).show();
                 nextActivity = new Intent(this, home.class);
                 startActivity(nextActivity);
                 finish();
                 break;
             case R.id.aboutus:
-                Toast.makeText(getApplicationContext(), "About Us", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "About Us", Toast.LENGTH_SHORT).show();
                 nextActivity = new Intent(this, AboutUs.class);
                 startActivity(nextActivity);
                 break;
             case R.id.activity:
-                Toast.makeText(getApplicationContext(), "Activity", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "Activity", Toast.LENGTH_SHORT).show();
                 nextActivity = new Intent(this, NotFound.class);
                 startActivity(nextActivity);
                 break;
             case R.id.event:
-                Toast.makeText(getApplicationContext(), "Eventt", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "Eventt", Toast.LENGTH_SHORT).show();
                 nextActivity = new Intent(this, NotFound.class);
                 startActivity(nextActivity);
                 break;
             case R.id.Gallery:
-                Toast.makeText(getApplicationContext(), "Gallery", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "Gallery", Toast.LENGTH_SHORT).show();
                 nextActivity = new Intent(this, NotFound.class);
                 startActivity(nextActivity);
                 break;
             case R.id.freedownload:
-                Toast.makeText(getApplicationContext(), "Free Downloads", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "Free Downloads", Toast.LENGTH_SHORT).show();
                 nextActivity = new Intent(this, FreeDownload.class);
                 startActivity(nextActivity);
                 break;
             case R.id.contact:
-                Toast.makeText(getApplicationContext(), "Contact", Toast.LENGTH_SHORT).show();
-                nextActivity = new Intent(this, NotFound.class);
+                //Toast.makeText(getApplicationContext(), "Contact", Toast.LENGTH_SHORT).show();
+                nextActivity = new Intent(this, ContactUs.class);
                 startActivity(nextActivity);
                 break;
             case R.id.google:

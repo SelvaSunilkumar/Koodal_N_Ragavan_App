@@ -158,7 +158,8 @@ public class Azhwarvideotab extends Fragment {
                                             //Storing the data from layout to the sting variables
                                             Name = NameTextView.getText().toString();
                                             UPI_Id = UPI_id_TextView.getText().toString();
-                                            Amount = price.get(position);
+                                            //Amount = price.get(position);
+                                            Amount = "1";
 
                                             Note = list.get(position);
 
@@ -286,8 +287,19 @@ public class Azhwarvideotab extends Fragment {
                 isVideoUpdated(Note);
                 Toast.makeText(view.getContext(),"Transaction Successful",Toast.LENGTH_SHORT).show();
                 Log.d("UPI","responseStr : " + approvalRefNo);
+                GooglePayProcessor.dismiss();
+                payementSelector.dismiss();
 
-                Uri uri_book = Uri.parse(URL_Music);
+                nextActivity = new Intent(view.getContext(),VideoPlayer.class);
+
+                bundle = new Bundle();
+                bundle.putString("list",Note);
+                bundle.putString("url",URL_Music);
+
+                nextActivity.putExtras(bundle);
+                startActivity(nextActivity);
+
+                /*Uri uri_book = Uri.parse(URL_Music);
 
                 DownloadManager downloadManager; //(DownloadManager) view.getContext().getSystemService(Context.DOWNLOAD_SERVICE);
                 downloadManager = (DownloadManager) view.getContext().getSystemService(Context.DOWNLOAD_SERVICE);
@@ -303,11 +315,13 @@ public class Azhwarvideotab extends Fragment {
 
                 Toast.makeText(view.getContext(),"Downloading : " + Note,Toast.LENGTH_SHORT).show();
 
-                downloadManager.enqueue(request);
+                downloadManager.enqueue(request);*/
 
             }
             else if ("Payment cancelled by user.".equals(paymentCancel))
             {
+                GooglePayProcessor.dismiss();
+                payementSelector.dismiss();
                 Toast.makeText(view.getContext(),"Payment cancelled by the user" ,Toast.LENGTH_SHORT).show();
             }
             else {

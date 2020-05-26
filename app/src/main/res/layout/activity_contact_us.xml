@@ -5,10 +5,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:id="@+id/drawer"
     tools:openDrawer="end"
-    tools:context=".Thinachariyai">
+    tools:context=".ContactUs">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -52,99 +51,77 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
-        android:layout_marginTop="65dp"
+        android:layout_marginTop="80dp"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-        <CalendarView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/calenderView" />
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#7C7777"/>
-        <LinearLayout
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:elevation="10dp"
-            android:gravity="center"
-            android:background="@drawable/date_viewer_textview">
-            <TextView
-                android:id="@+id/dateText"
-                android:textStyle="bold"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:text="DAtE"
-                android:gravity="center"/>
-        </LinearLayout>
+        android:layout_height="match_parent">
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <LinearLayout
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:layout_gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:layout_weight="3">
+                android:orientation="vertical">
 
-                <TextView
+                <LinearLayout
                     android:gravity="center"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/selectorInfo"
-                    android:text="please select a date"
-                    android:textSize="18sp"/>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:layout_height="wrap_content">
                     <TextView
-                        android:id="@+id/descriptionText"
+                        android:gravity="center"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textStyle="bold"
-                        android:text="Description"
-                        android:textSize="18sp"/>
-                    <TextView
-                        android:layout_marginTop="5dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/description"
-                        android:textSize="18sp"/>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_marginTop="10dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-                    <TextView
-                        android:id="@+id/videoText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Watch Video"
+                        android:text="Jothida Nipunar, Kavigna Koodal N.Raghavan \n\nNachiyar Thirumaligai Emperumanar Agam,\n\nNo 6, Nehru Nagar 6th Street, TVS Nagar,\n\nMadurai - 625003, Tamilnadu, India"
                         android:textSize="18sp"
                         android:textStyle="bold"/>
-                    <TextView
-                        android:layout_marginTop="5dp"
-                        android:clickable="true"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/videoLink"
-                        android:textSize="18sp"/>
                 </LinearLayout>
                 <View
                     android:layout_marginTop="15dp"
-                    android:layout_marginBottom="20dp"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="#7C7777"/>
+                    android:background="#888686"/>
+
+                <LinearLayout
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+                        android:gravity="center"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Contact No"
+                        android:textStyle="bold"
+                        android:textSize="20sp"/>
+                    <TextView
+                        android:id="@+id/phoneNumber"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="18sp"
+                        android:text="@string/phone_number"
+                        android:gravity="center"
+                        android:layout_marginTop="10dp"
+                        android:clickable="true"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Mail us @"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:gravity="center"
+                        android:layout_marginTop="20dp"/>
+                    <TextView
+                        android:id="@+id/mailid"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="18sp"
+                        android:text="@string/mail_id"
+                        android:gravity="center"
+                        android:layout_marginTop="10dp"
+                        android:clickable="true"/>
+                </LinearLayout>
             </LinearLayout>
         </ScrollView>
     </LinearLayout>

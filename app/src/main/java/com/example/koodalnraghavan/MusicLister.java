@@ -377,10 +377,13 @@ public class MusicLister extends AppCompatActivity {
             if(status.equals("success"))
             {
                 isSongUpdated(Note);
-                Toast.makeText(MusicLister.this,"Transaction Successful",Toast.LENGTH_SHORT).show();
+                Toast.makeText(MusicLister.this,"Transaction Successful \n Press the song to play",Toast.LENGTH_SHORT).show();
                 Log.d("UPI","responseStr : " + approvalRefNo);
 
-                Uri uri_book = Uri.parse(URL_Music);
+                GooglePayProcessor.dismiss();
+                payementSelector.dismiss();
+
+                /*Uri uri_book = Uri.parse(URL_Music);
 
                 DownloadManager downloadManager; //(DownloadManager) view.getContext().getSystemService(Context.DOWNLOAD_SERVICE);
                 downloadManager = (DownloadManager) getApplicationContext().getSystemService(Context.DOWNLOAD_SERVICE);
@@ -396,11 +399,13 @@ public class MusicLister extends AppCompatActivity {
 
                 Toast.makeText(getApplicationContext(),"Downloading : " + Note,Toast.LENGTH_SHORT).show();
 
-                downloadManager.enqueue(request);
+                downloadManager.enqueue(request);*/
 
             }
             else if ("Payment cancelled by user.".equals(paymentCancel))
             {
+                GooglePayProcessor.dismiss();
+                payementSelector.dismiss();
                 Toast.makeText(MusicLister.this,"Payment cancelled by the user" ,Toast.LENGTH_SHORT).show();
             }
             else {
