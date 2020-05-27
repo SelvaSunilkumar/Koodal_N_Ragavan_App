@@ -9,121 +9,126 @@
     tools:openDrawer="end"
     tools:context=".ContactUs">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:ignore="MissingConstraints">
+            android:layout_height="wrap_content">
 
-            <LinearLayout
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/exo_media_button_height"
-                android:layout_weight="2"
-                android:weightSum="1"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content"
+                tools:ignore="MissingConstraints">
 
-                <TextView
-                    android:id="@+id/titleId"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/exo_media_button_height"
-                    android:ellipsize="marquee"
-                    android:fadingEdge="horizontal"
-                    android:gravity="center_vertical"
-                    android:marqueeRepeatLimit="marquee_forever"
-                    android:scrollHorizontally="true"
-                    android:layout_weight="0.8"
-                    android:singleLine="true"
-                    android:textSize="20sp" />
-                <Button
-                    android:id="@+id/donation"
-                    android:layout_width="@dimen/exo_media_button_width"
-                    android:layout_height="@dimen/exo_media_button_height"
-                    android:background="@drawable/client_sambavanai"
-                    android:gravity="right"
-                    android:layout_weight="0.2"
-                    android:layout_gravity="right"/>
-            </LinearLayout>
-        </androidx.appcompat.widget.Toolbar>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                    android:layout_weight="2"
+                    android:weightSum="1"
+                    android:orientation="horizontal">
 
-    <LinearLayout
-        android:layout_marginTop="80dp"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <ScrollView
+                    <TextView
+                        android:id="@+id/titleId"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/exo_media_button_height"
+                        android:ellipsize="marquee"
+                        android:fadingEdge="horizontal"
+                        android:gravity="center_vertical"
+                        android:marqueeRepeatLimit="marquee_forever"
+                        android:scrollHorizontally="true"
+                        android:layout_weight="0.8"
+                        android:singleLine="true"
+                        android:textSize="20sp" />
+                    <Button
+                        android:id="@+id/donation"
+                        android:layout_width="@dimen/exo_media_button_width"
+                        android:layout_height="@dimen/exo_media_button_height"
+                        android:background="@drawable/client_sambavanai"
+                        android:gravity="right"
+                        android:layout_weight="0.2"
+                        android:layout_gravity="right"/>
+                </LinearLayout>
+            </androidx.appcompat.widget.Toolbar>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-            <LinearLayout
-                android:gravity="center"
-                android:layout_gravity="center"
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
+                android:layout_height="match_parent">
                 <LinearLayout
                     android:gravity="center"
+                    android:layout_gravity="center"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        android:gravity="center"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Jothida Nipunar, Kavigna Koodal N.Raghavan \n\nNachiyar Thirumaligai Emperumanar Agam,\n\nNo 6, Nehru Nagar 6th Street, TVS Nagar,\n\nMadurai - 625003, Tamilnadu, India"
-                        android:textSize="18sp"
-                        android:textStyle="bold"/>
-                </LinearLayout>
-                <View
-                    android:layout_marginTop="15dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="#888686"/>
-
-                <LinearLayout
-                    android:gravity="center"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:orientation="vertical">
-                    <TextView
+
+                    <LinearLayout
+                        android:gravity="center"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:gravity="center"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Jothida Nipunar, Kavigna Koodal N.Raghavan \n\nNachiyar Thirumaligai Emperumanar Agam,\n\nNo 6, Nehru Nagar 6th Street, TVS Nagar,\n\nMadurai - 625003, Tamilnadu, India"
+                            android:textSize="18sp"
+                            android:textStyle="bold"/>
+                    </LinearLayout>
+                    <View
+                        android:layout_marginTop="15dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#888686"/>
+
+                    <LinearLayout
                         android:gravity="center"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Contact No"
-                        android:textStyle="bold"
-                        android:textSize="20sp"/>
-                    <TextView
-                        android:id="@+id/phoneNumber"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textSize="18sp"
-                        android:text="@string/phone_number"
-                        android:gravity="center"
-                        android:layout_marginTop="10dp"
-                        android:clickable="true"/>
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Mail us @"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        android:gravity="center"
-                        android:layout_marginTop="20dp"/>
-                    <TextView
-                        android:id="@+id/mailid"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textSize="18sp"
-                        android:text="@string/mail_id"
-                        android:gravity="center"
-                        android:layout_marginTop="10dp"
-                        android:clickable="true"/>
+                        android:orientation="vertical">
+                        <TextView
+                            android:gravity="center"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Contact No"
+                            android:textStyle="bold"
+                            android:textSize="20sp"/>
+                        <TextView
+                            android:id="@+id/phoneNumber"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="18sp"
+                            android:text="@string/phone_number"
+                            android:gravity="center"
+                            android:layout_marginTop="10dp"
+                            android:clickable="true"/>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Mail us @"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:gravity="center"
+                            android:layout_marginTop="20dp"/>
+                        <TextView
+                            android:id="@+id/mailid"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="18sp"
+                            android:text="@string/mail_id"
+                            android:gravity="center"
+                            android:layout_marginTop="10dp"
+                            android:clickable="true"/>
+                    </LinearLayout>
                 </LinearLayout>
-            </LinearLayout>
-        </ScrollView>
+            </ScrollView>
+        </LinearLayout>
+
     </LinearLayout>
 
     <com.google.android.material.navigation.NavigationView

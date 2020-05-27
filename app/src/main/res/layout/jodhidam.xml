@@ -11,59 +11,63 @@
     tools:openDrawer="end"
     tools:context=".jodhidam">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <androidx.appcompat.widget.Toolbar
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/toolbar"
-            tools:ignore="MissingConstraints">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/exo_media_button_height"
-                android:layout_weight="2"
-                android:weightSum="1"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/titleId"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/exo_media_button_height"
-                    android:ellipsize="marquee"
-                    android:fadingEdge="horizontal"
-                    android:gravity="center_vertical"
-                    android:marqueeRepeatLimit="marquee_forever"
-                    android:scrollHorizontally="true"
-                    android:layout_weight="0.8"
-                    android:singleLine="true"
-                    android:textSize="20sp" />
-                <Button
-                    android:id="@+id/donation"
-                    android:layout_width="@dimen/exo_media_button_width"
-                    android:layout_height="@dimen/exo_media_button_height"
-                    android:background="@drawable/client_sambavanai"
-                    android:gravity="right"
-                    android:layout_weight="0.2"
-                    android:layout_gravity="right"/>
-            </LinearLayout>
-        </androidx.appcompat.widget.Toolbar>
-    </androidx.constraintlayout.widget.ConstraintLayout>
     <LinearLayout
-        android:layout_marginTop="65dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-        <ProgressBar
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/progress"/>
-        <ListView
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <androidx.appcompat.widget.Toolbar
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/toolbar"
+                tools:ignore="MissingConstraints">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/exo_media_button_height"
+                    android:layout_weight="2"
+                    android:weightSum="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/titleId"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/exo_media_button_height"
+                        android:ellipsize="marquee"
+                        android:fadingEdge="horizontal"
+                        android:gravity="center_vertical"
+                        android:marqueeRepeatLimit="marquee_forever"
+                        android:scrollHorizontally="true"
+                        android:layout_weight="0.8"
+                        android:singleLine="true"
+                        android:textSize="20sp" />
+                    <Button
+                        android:id="@+id/donation"
+                        android:layout_width="@dimen/exo_media_button_width"
+                        android:layout_height="@dimen/exo_media_button_height"
+                        android:background="@drawable/client_sambavanai"
+                        android:gravity="right"
+                        android:layout_weight="0.2"
+                        android:layout_gravity="right"/>
+                </LinearLayout>
+            </androidx.appcompat.widget.Toolbar>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/listviewj"/>
-    </LinearLayout>
+            android:orientation="vertical">
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/progress"/>
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/listviewj"/>
+        </LinearLayout>
 
+    </LinearLayout>
     <com.google.android.material.navigation.NavigationView
         android:layout_width="match_parent"
         android:layout_height="match_parent"

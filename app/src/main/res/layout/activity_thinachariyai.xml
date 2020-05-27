@@ -10,145 +10,151 @@
     tools:openDrawer="end"
     tools:context=".Thinachariyai">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:ignore="MissingConstraints">
+            android:layout_height="wrap_content">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/exo_media_button_height"
-                android:layout_weight="2"
-                android:weightSum="1"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/titleId"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/exo_media_button_height"
-                    android:ellipsize="marquee"
-                    android:fadingEdge="horizontal"
-                    android:gravity="center_vertical"
-                    android:marqueeRepeatLimit="marquee_forever"
-                    android:scrollHorizontally="true"
-                    android:layout_weight="0.8"
-                    android:singleLine="true"
-                    android:textSize="20sp" />
-                <Button
-                    android:id="@+id/donation"
-                    android:layout_width="@dimen/exo_media_button_width"
-                    android:layout_height="@dimen/exo_media_button_height"
-                    android:background="@drawable/client_sambavanai"
-                    android:gravity="right"
-                    android:layout_weight="0.2"
-                    android:layout_gravity="right"/>
-            </LinearLayout>
-        </androidx.appcompat.widget.Toolbar>
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <ScrollView
-        android:layout_marginTop="65dp"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-            <CalendarView
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/calenderView" />
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#7C7777"/>
-            <LinearLayout
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:elevation="10dp"
-                android:gravity="center"
-                android:background="@drawable/date_viewer_textview">
-                <TextView
-                    android:id="@+id/dateText"
-                    android:textStyle="bold"
+                tools:ignore="MissingConstraints">
+
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="20sp"
-                    android:text="DAtE"
-                    android:gravity="center"/>
-            </LinearLayout>
+                    android:layout_height="@dimen/exo_media_button_height"
+                    android:layout_weight="2"
+                    android:weightSum="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/titleId"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/exo_media_button_height"
+                        android:ellipsize="marquee"
+                        android:fadingEdge="horizontal"
+                        android:gravity="center_vertical"
+                        android:marqueeRepeatLimit="marquee_forever"
+                        android:scrollHorizontally="true"
+                        android:layout_weight="0.8"
+                        android:singleLine="true"
+                        android:textSize="20sp" />
+                    <Button
+                        android:id="@+id/donation"
+                        android:layout_width="@dimen/exo_media_button_width"
+                        android:layout_height="@dimen/exo_media_button_height"
+                        android:background="@drawable/client_sambavanai"
+                        android:gravity="right"
+                        android:layout_weight="0.2"
+                        android:layout_gravity="right"/>
+                </LinearLayout>
+            </androidx.appcompat.widget.Toolbar>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
             <LinearLayout
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:layout_weight="3">
-
-                <TextView
-                    android:gravity="center"
+                android:orientation="vertical">
+                <CalendarView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/selectorInfo"
-                    android:text="please select a date"
-                    android:textSize="18sp"/>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-                    <TextView
-                        android:id="@+id/descriptionText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textStyle="bold"
-                        android:text="Description"
-                        android:textSize="18sp"/>
-                    <TextView
-                        android:layout_marginTop="5dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/description"
-                        android:textSize="18sp"/>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_marginTop="10dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-                    <TextView
-                        android:id="@+id/videoText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Watch Video"
-                        android:textSize="18sp"
-                        android:textStyle="bold"/>
-                    <TextView
-                        android:layout_marginTop="5dp"
-                        android:clickable="true"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/videoLink"
-                        android:textSize="18sp"/>
-                </LinearLayout>
+                    android:id="@+id/calenderView" />
                 <View
-                    android:layout_marginTop="15dp"
-                    android:layout_marginBottom="20dp"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="#7C7777"/>
-            </LinearLayout>
-        </LinearLayout>
+                <LinearLayout
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:elevation="10dp"
+                    android:gravity="center"
+                    android:background="@drawable/date_viewer_textview">
+                    <TextView
+                        android:id="@+id/dateText"
+                        android:textStyle="bold"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="20sp"
+                        android:text="DAtE"
+                        android:gravity="center"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_weight="3">
 
-    </ScrollView>
+                    <TextView
+                        android:gravity="center"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/selectorInfo"
+                        android:text="please select a date"
+                        android:textSize="18sp"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <TextView
+                            android:id="@+id/descriptionText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textStyle="bold"
+                            android:text="Description"
+                            android:textSize="18sp"/>
+                        <TextView
+                            android:layout_marginTop="5dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/description"
+                            android:textSize="18sp"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_marginTop="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <TextView
+                            android:id="@+id/videoText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Watch Video"
+                            android:textSize="18sp"
+                            android:textStyle="bold"/>
+                        <TextView
+                            android:layout_marginTop="5dp"
+                            android:clickable="true"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/videoLink"
+                            android:textSize="18sp"/>
+                    </LinearLayout>
+                    <View
+                        android:layout_marginTop="15dp"
+                        android:layout_marginBottom="20dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#7C7777"/>
+                </LinearLayout>
+            </LinearLayout>
+
+        </ScrollView>
+
+    </LinearLayout>
+
     <com.google.android.material.navigation.NavigationView
         android:layout_width="match_parent"
         android:layout_height="match_parent"

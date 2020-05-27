@@ -9,227 +9,232 @@
     tools:openDrawer="end"
     tools:context=".home">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <androidx.appcompat.widget.Toolbar
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/toolbar"
-            tools:ignore="MissingConstraints">
-            <Button
-                android:id="@+id/donation"
-                android:layout_width="@dimen/exo_media_button_width"
-                android:layout_height="@dimen/exo_media_button_height"
-                android:background="@drawable/client_sambavanai"
-                android:gravity="right"
-                android:layout_gravity="right"/>
-        </androidx.appcompat.widget.Toolbar>
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
-        android:layout_weight="2"
+        android:layout_height="match_parent"
         android:orientation="vertical">
-        <ScrollView
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:fadingEdge="horizontal"
             android:layout_width="match_parent"
-            android:layout_marginTop="10dp"
-            android:layout_weight="2"
-            android:layout_height="match_parent">
-
-            <LinearLayout
+            android:layout_height="wrap_content">
+            <androidx.appcompat.widget.Toolbar
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/toolbar"
+                tools:ignore="MissingConstraints">
+                <Button
+                    android:id="@+id/donation"
+                    android:layout_width="@dimen/exo_media_button_width"
+                    android:layout_height="@dimen/exo_media_button_height"
+                    android:background="@drawable/client_sambavanai"
+                    android:gravity="right"
+                    android:layout_gravity="right"/>
+            </androidx.appcompat.widget.Toolbar>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:orientation="vertical">
+            <ScrollView
+                android:fadingEdge="horizontal"
+                android:layout_width="match_parent"
                 android:layout_weight="2"
-                android:orientation="vertical">
+                android:layout_height="match_parent">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="2"
-                    android:orientation="horizontal">
+                    android:orientation="vertical">
                     <LinearLayout
-                        android:gravity="center_horizontal"
-                        android:layout_weight="1"
-                        android:layout_width="0dp"
-                        android:orientation="vertical"
-                        android:layout_height="match_parent">
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:orientation="horizontal">
                         <LinearLayout
-                            android:id="@+id/ThinamOrukural"
-                            android:clickable="true"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="120dp"
-                                android:src="@drawable/client_thinam_oru_nalvarthai"/>
-                            <TextView
-                                android:gravity="center"
-                                android:layout_width="match_parent"
-                                android:layout_height="40dp"
-                                android:id="@+id/dhinamoru"
-                                android:text="Thinam oru nalvarthai"
-                                android:textAlignment="center"/>
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/azhwargalinManam"
-                            android:clickable="true"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
-                            <ImageView
-                                android:layout_marginTop="10dp"
-                                android:layout_width="wrap_content"
-                                android:layout_height="120dp"
-                                android:src="@drawable/client_alwargalin_manam"/>
-                            <TextView
-                                android:gravity="center"
-                                android:layout_width="match_parent"
-                                android:layout_height="40dp"
-                                android:id="@+id/alvars"
-                                android:text="108 Azhwargalin manam"
-                                android:textAlignment="center"/>
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/KadhaiKekumNeram"
-                            android:clickable="true"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
-                            <ImageView
-                                android:layout_marginTop="10dp"
-                                android:layout_width="wrap_content"
-                                android:layout_height="120dp"
-                                android:src="@drawable/client_kadhai_kekum_neram"/>
-                            <TextView
-                                android:gravity="center"
-                                android:layout_width="match_parent"
-                                android:layout_height="40dp"
-                                android:id="@+id/storytime"
-                                android:text="Kadhai ketkum neram"
-                                android:textAlignment="center"/>
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/babyname"
-                            android:clickable="true"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="120dp"
-                                android:layout_marginTop="10dp"
-                                android:src="@drawable/client_baby_names" />
-                            <TextView
-                                android:gravity="center"
-                                android:layout_width="match_parent"
-                                android:layout_height="40dp"
-                                android:id="@+id/nameBaby"
-                                android:text="Baby Names"
-                                android:textAlignment="center"/>
-                        </LinearLayout>
-                    </LinearLayout>
-                    <LinearLayout
-                        android:gravity="center_horizontal"
-                        android:layout_weight="1"
-                        android:layout_width="0dp"
-                        android:orientation="vertical"
-                        android:layout_height="match_parent">
-                        <LinearLayout
-                            android:clickable="true"
-                            android:id="@+id/Jodhidam"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="120dp"
-                                android:src="@drawable/client_jodhidam"/>
-                            <TextView
-                                android:gravity="center"
-                                android:layout_width="match_parent"
-                                android:layout_height="40dp"
-                                android:id="@+id/astrology"
-                                android:text="Jodhidam"
-                                android:textAlignment="center"/>
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:clickable="true"
-                            android:id="@+id/ebooks"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="120dp"
-                                android:layout_marginTop="10dp"
-                                android:src="@drawable/client_ebooks" />
-                            <TextView
-                                android:id="@+id/books"
-                                android:gravity="center"
-                                android:layout_width="match_parent"
-                                android:layout_height="40dp"
-                                android:textAlignment="center"
-                                android:text="Sambavanai"/>
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:layout_weight="1"
+                            android:layout_width="0dp"
                             android:orientation="vertical"
-                            android:clickable="true"
-                            android:id="@+id/thinahiriyai">
-                            <ImageView
-                                android:layout_marginTop="10dp"
+                            android:layout_height="match_parent">
+                            <LinearLayout
+                                android:id="@+id/ThinamOrukural"
+                                android:clickable="true"
                                 android:layout_width="wrap_content"
-                                android:layout_height="120dp"
-                                android:src="@drawable/client_dhinacharyai"/>
-                            <TextView
-                                android:gravity="center"
-                                android:id="@+id/routine"
-                                android:layout_width="match_parent"
-                                android:layout_height="40dp"
-                                android:text="Thinachariyai"
-                                android:textAlignment="center"/>
-                        </LinearLayout>
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="120dp"
+                                    android:src="@drawable/client_thinam_oru_nalvarthai"/>
+                                <TextView
+                                    android:gravity="center"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="40dp"
+                                    android:id="@+id/dhinamoru"
+                                    android:text="Thinam oru nalvarthai"
+                                    android:textAlignment="center"/>
+                            </LinearLayout>
 
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:id="@+id/dance"
-                            android:clickable="true">
-                            <ImageView
+                            <LinearLayout
+                                android:id="@+id/azhwargalinManam"
+                                android:clickable="true"
                                 android:layout_width="wrap_content"
-                                android:layout_height="120dp"
-                                android:layout_marginTop="10dp"
-                                android:src="@drawable/client_dance"/>
-                            <TextView
-                                android:id="@+id/danceId"
-                                android:gravity="center"
-                                android:layout_width="match_parent"
-                                android:layout_height="40dp"
-                                android:textAlignment="center"
-                                android:text="Sambavanai"/>
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+                                <ImageView
+                                    android:layout_marginTop="10dp"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="120dp"
+                                    android:src="@drawable/client_alwargalin_manam"/>
+                                <TextView
+                                    android:gravity="center"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="40dp"
+                                    android:id="@+id/alvars"
+                                    android:text="108 Azhwargalin manam"
+                                    android:textAlignment="center"/>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/KadhaiKekumNeram"
+                                android:clickable="true"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+                                <ImageView
+                                    android:layout_marginTop="10dp"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="120dp"
+                                    android:src="@drawable/client_kadhai_kekum_neram"/>
+                                <TextView
+                                    android:gravity="center"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="40dp"
+                                    android:id="@+id/storytime"
+                                    android:text="Kadhai ketkum neram"
+                                    android:textAlignment="center"/>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/babyname"
+                                android:clickable="true"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="120dp"
+                                    android:layout_marginTop="10dp"
+                                    android:src="@drawable/client_baby_names" />
+                                <TextView
+                                    android:gravity="center"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="40dp"
+                                    android:id="@+id/nameBaby"
+                                    android:text="Baby Names"
+                                    android:textAlignment="center"/>
+                            </LinearLayout>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:gravity="center_horizontal"
+                            android:layout_weight="1"
+                            android:layout_width="0dp"
+                            android:orientation="vertical"
+                            android:layout_height="match_parent">
+                            <LinearLayout
+                                android:clickable="true"
+                                android:id="@+id/Jodhidam"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="120dp"
+                                    android:src="@drawable/client_jodhidam"/>
+                                <TextView
+                                    android:gravity="center"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="40dp"
+                                    android:id="@+id/astrology"
+                                    android:text="Jodhidam"
+                                    android:textAlignment="center"/>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:clickable="true"
+                                android:id="@+id/ebooks"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="120dp"
+                                    android:layout_marginTop="10dp"
+                                    android:src="@drawable/client_ebooks" />
+                                <TextView
+                                    android:id="@+id/books"
+                                    android:gravity="center"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="40dp"
+                                    android:textAlignment="center"
+                                    android:text="Sambavanai"/>
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:clickable="true"
+                                android:id="@+id/thinahiriyai">
+                                <ImageView
+                                    android:layout_marginTop="10dp"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="120dp"
+                                    android:src="@drawable/client_dhinacharyai"/>
+                                <TextView
+                                    android:gravity="center"
+                                    android:id="@+id/routine"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="40dp"
+                                    android:text="Thinachariyai"
+                                    android:textAlignment="center"/>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:id="@+id/dance"
+                                android:clickable="true">
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="120dp"
+                                    android:layout_marginTop="10dp"
+                                    android:src="@drawable/client_dance"/>
+                                <TextView
+                                    android:id="@+id/danceId"
+                                    android:gravity="center"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="40dp"
+                                    android:textAlignment="center"
+                                    android:text="Sambavanai"/>
+                            </LinearLayout>
+
                         </LinearLayout>
 
                     </LinearLayout>
+
 
                 </LinearLayout>
 
+            </ScrollView>
 
-            </LinearLayout>
-
-        </ScrollView>
-
+        </LinearLayout>
     </LinearLayout>
 
     <com.google.android.material.navigation.NavigationView
