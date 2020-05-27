@@ -99,6 +99,7 @@ public class MusicLister extends AppCompatActivity {
         PlayinSong.setSelected(true);
         Download.setEnabled(false);
         Download.setSelected(true);
+        Download.setVisibility(View.GONE);
 
         bundle = getIntent().getExtras();
 
@@ -199,7 +200,7 @@ public class MusicLister extends AppCompatActivity {
                                 }
                             });
 
-                            Download.setOnClickListener(new View.OnClickListener() {
+                            /*Download.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     Toast.makeText(getApplicationContext(),"Downloading : " + list.get(position),Toast.LENGTH_SHORT).show();
@@ -219,7 +220,7 @@ public class MusicLister extends AppCompatActivity {
 
                                     downloadManager.enqueue(request);
                                 }
-                            });
+                            });*/
                         }
                         else {
                             // payment gateway

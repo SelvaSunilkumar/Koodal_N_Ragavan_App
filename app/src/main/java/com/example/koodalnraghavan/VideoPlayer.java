@@ -53,7 +53,7 @@ public class VideoPlayer extends AppCompatActivity {
     private SimpleExoPlayer exoPlayer;
     private AlertDialog.Builder dialog;
     private AlertDialog alertDialog;
-
+    private boolean flag;
     //private MediaController mediaController;
     private Bundle bundle;
 
@@ -74,6 +74,11 @@ public class VideoPlayer extends AppCompatActivity {
 
         String playingNow = bundle.getString("list");
         String url = bundle.getString("url");
+        //int flag = bundle.getInt("flag",0);
+        flag = bundle.getBoolean("flag",false);
+
+        System.out.println("Playing Now : " +playingNow);
+        System.out.println("Flag : " + flag);
 
         Uri uri = Uri.parse(url);
         //mediaController = new MediaController(this);
@@ -212,24 +217,32 @@ public class VideoPlayer extends AppCompatActivity {
         //progressBar.setVisibility(View.VISIBLE);
 
         download = findViewById(R.id.download);
-        download.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        download.setVisibility(View.GONE);
+        if(flag)
+        {
+            download.setVisibility(View.GONE);
+        }
+        else {
+            download.setVisibility(View.VISIBLE);
+            download.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-                DownloadManager downloadManager = (DownloadManager) v.getContext().getSystemService(Context.DOWNLOAD_SERVICE);
-                DownloadManager.Request request = new DownloadManager.Request(uri);
+                    DownloadManager downloadManager = (DownloadManager) v.getContext().getSystemService(Context.DOWNLOAD_SERVICE);
+                    DownloadManager.Request request = new DownloadManager.Request(uri);
 
-                Context context = v.getContext();
-                String filename = playingNow;
-                String fileExtension = ".mp4";
+                    Context context = v.getContext();
+                    String filename = playingNow;
+                    String fileExtension = ".mp4";
 
-                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE);
-                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-                request.setDestinationInExternalFilesDir(context,DIRECTORY_DOWNLOADS,filename + fileExtension);
+                    request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE);
+                    request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+                    request.setDestinationInExternalFilesDir(context,DIRECTORY_DOWNLOADS,filename + fileExtension);
 
-                downloadManager.enqueue(request);
+                    downloadManager.enqueue(request);
 
-            }
-        });
+                }
+            });
+        }
     }
 }

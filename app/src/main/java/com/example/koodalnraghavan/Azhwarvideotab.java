@@ -124,11 +124,16 @@ public class Azhwarvideotab extends Fragment {
 
                         if(position == -1 || isVideoAvailable(list.get(position)))
                         {
-                            Intent pdfLayout = new Intent(view.getContext(), VideoPlayer.class);
-                            Bundle bundle = new Bundle();
-                            bundle.putString("url", url.get(position));
-                            pdfLayout.putExtras(bundle);
-                            startActivity(pdfLayout);
+                            nextActivity = new Intent(view.getContext(),VideoPlayer.class);
+
+                            bundle = new Bundle();
+                            bundle.putString("list",list.get(position));
+                            bundle.putString("url",url.get(position));
+                            //bundle.putInt("flag",1);
+                            bundle.putBoolean("flag",true);
+
+                            nextActivity.putExtras(bundle);
+                            startActivity(nextActivity);
                         }
                         else
                         {
@@ -158,8 +163,8 @@ public class Azhwarvideotab extends Fragment {
                                             //Storing the data from layout to the sting variables
                                             Name = NameTextView.getText().toString();
                                             UPI_Id = UPI_id_TextView.getText().toString();
-                                            //Amount = price.get(position);
-                                            Amount = "1";
+                                            Amount = price.get(position);
+                                            //Amount = "1";
 
                                             Note = list.get(position);
 
@@ -295,6 +300,8 @@ public class Azhwarvideotab extends Fragment {
                 bundle = new Bundle();
                 bundle.putString("list",Note);
                 bundle.putString("url",URL_Music);
+                //bundle.putInt("flag",1);
+                bundle.putBoolean("flag",true);
 
                 nextActivity.putExtras(bundle);
                 startActivity(nextActivity);
