@@ -51,40 +51,40 @@
         </androidx.appcompat.widget.Toolbar>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <LinearLayout
+    <ScrollView
         android:layout_marginTop="65dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-        <CalendarView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/calenderView" />
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#7C7777"/>
+        android:layout_height="match_parent">
         <LinearLayout
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:elevation="10dp"
-            android:gravity="center"
-            android:background="@drawable/date_viewer_textview">
-            <TextView
-                android:id="@+id/dateText"
-                android:textStyle="bold"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <CalendarView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:text="DAtE"
-                android:gravity="center"/>
-        </LinearLayout>
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+                android:id="@+id/calenderView" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#7C7777"/>
+            <LinearLayout
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:elevation="10dp"
+                android:gravity="center"
+                android:background="@drawable/date_viewer_textview">
+                <TextView
+                    android:id="@+id/dateText"
+                    android:textStyle="bold"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:text="DAtE"
+                    android:gravity="center"/>
+            </LinearLayout>
             <LinearLayout
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
@@ -146,9 +146,9 @@
                     android:layout_height="1dp"
                     android:background="#7C7777"/>
             </LinearLayout>
-        </ScrollView>
-    </LinearLayout>
+        </LinearLayout>
 
+    </ScrollView>
     <com.google.android.material.navigation.NavigationView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
