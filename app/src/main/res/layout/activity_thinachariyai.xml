@@ -62,10 +62,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
-                <CalendarView
-                    android:layout_width="match_parent"
+                <androidx.cardview.widget.CardView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/calenderView" />
+                    app:cardCornerRadius="10dp"
+                    android:layout_gravity="center_horizontal"
+                    app:cardUseCompatPadding="true">
+                    <CalendarView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/calenderView" />
+                </androidx.cardview.widget.CardView>
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
