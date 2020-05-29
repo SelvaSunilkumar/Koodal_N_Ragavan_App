@@ -78,7 +78,7 @@ public class Settings extends AppCompatActivity implements NavigationView.OnNavi
         LanguageSelector.setChecked(sharedPreferences.getBoolean("value",true));
         boolean editor = sharedPreferences.getBoolean("value",false);
 
-        Toast.makeText(getApplicationContext()," " + editor,Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getApplicationContext()," " + editor,Toast.LENGTH_SHORT).show();
 
         Donation = findViewById(R.id.donation);
         Donation.setOnClickListener(new View.OnClickListener() {

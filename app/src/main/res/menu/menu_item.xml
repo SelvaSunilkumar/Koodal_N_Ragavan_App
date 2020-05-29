@@ -32,7 +32,7 @@
         <item
             android:id="@+id/others"
             android:icon="@drawable/client_dance"
-            android:title="Others"/>
+            android:title="Upanyasam &amp; Others"/>
     </group>
 
     <item

@@ -38,16 +38,16 @@
                         android:gravity="center_vertical"
                         android:marqueeRepeatLimit="marquee_forever"
                         android:scrollHorizontally="true"
-                        android:layout_weight="0.8"
+                        android:layout_weight="1"
                         android:singleLine="true"
                         android:textSize="20sp" />
                     <Button
                         android:id="@+id/donation"
-                        android:layout_width="@dimen/exo_media_button_width"
+                        android:layout_width="75dp"
                         android:layout_height="@dimen/exo_media_button_height"
-                        android:background="@drawable/client_sambavanai"
+                        android:background="@drawable/dhakshana"
                         android:gravity="right"
-                        android:layout_weight="0.2"
+                        android:layout_weight="0"
                         android:layout_gravity="right"/>
                 </LinearLayout>
             </androidx.appcompat.widget.Toolbar>
