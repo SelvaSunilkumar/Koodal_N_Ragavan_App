@@ -25,6 +25,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
 import java.util.UUID;
 
+import es.dmoral.toasty.Toasty;
+
 import static android.os.Environment.DIRECTORY_DOWNLOADS;
 
 public class Sambavanai extends AppCompatActivity {
@@ -67,7 +69,7 @@ public class Sambavanai extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Toast.makeText(getApplicationContext(),"Payment using google pay",Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(),"Payment using google pay",Toast.LENGTH_SHORT).show();
 
                 floatBanner = new Dialog(Sambavanai.this);
                 floatBanner.setContentView(R.layout.google_pay_payable);
@@ -77,7 +79,7 @@ public class Sambavanai extends AppCompatActivity {
                 Paynow.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(getApplicationContext(),"Payment using Google Pay",Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getApplicationContext(),"Payment using Google Pay",Toast.LENGTH_SHORT).show();
 
                         NameTextView = floatBanner.findViewById(R.id.payee_name);
                         UPI_TextView = floatBanner.findViewById(R.id.payee_upi);
@@ -221,7 +223,7 @@ public class Sambavanai extends AppCompatActivity {
 
             if(status.equals("success"))
             {
-                Toast.makeText(Sambavanai.this,"Transaction Successful",Toast.LENGTH_SHORT).show();
+                Toasty.success(Sambavanai.this, "Transaction Successful", Toast.LENGTH_SHORT).show();
                 Log.d("UPI","responseStr : " + approvalRefNo);
                 //uuid = UUID.randomUUID();
 
@@ -231,15 +233,15 @@ public class Sambavanai extends AppCompatActivity {
             }
             else if ("Payment cancelled by user.".equals(paymentCancel))
             {
-                Toast.makeText(Sambavanai.this,"Payment cancelled by the user : " + PayeeName + Amount,Toast.LENGTH_SHORT).show();
+                Toasty.warning(Sambavanai.this,"Payment cancelled by the user",Toast.LENGTH_SHORT).show();
             }
             else {
-                Toast.makeText(Sambavanai.this,"Transaction failed.Please try again later",Toast.LENGTH_SHORT).show();
+                Toasty.error(Sambavanai.this,"Transaction failed.Please try again later",Toast.LENGTH_SHORT).show();
             }
         }
         else
         {
-            Toast.makeText(Sambavanai.this,"Internet connection not Available",Toast.LENGTH_SHORT).show();
+            Toasty.info(Sambavanai.this,"Internet connection not Available",Toast.LENGTH_SHORT).show();
         }
     }
 

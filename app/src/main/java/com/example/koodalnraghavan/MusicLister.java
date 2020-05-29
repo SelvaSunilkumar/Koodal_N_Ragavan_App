@@ -36,6 +36,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
+import es.dmoral.toasty.Toasty;
+
 import static android.os.Environment.DIRECTORY_DOWNLOADS;
 
 public class MusicLister extends AppCompatActivity {
@@ -378,7 +380,7 @@ public class MusicLister extends AppCompatActivity {
             if(status.equals("success"))
             {
                 isSongUpdated(Note);
-                Toast.makeText(MusicLister.this,"Transaction Successful \n Press the song to play",Toast.LENGTH_SHORT).show();
+                Toasty.success(MusicLister.this, "Transaction Successful \n Press the song to play", Toast.LENGTH_SHORT).show();
                 Log.d("UPI","responseStr : " + approvalRefNo);
 
                 GooglePayProcessor.dismiss();
@@ -407,15 +409,15 @@ public class MusicLister extends AppCompatActivity {
             {
                 GooglePayProcessor.dismiss();
                 payementSelector.dismiss();
-                Toast.makeText(MusicLister.this,"Payment cancelled by the user" ,Toast.LENGTH_SHORT).show();
+                Toasty.warning(MusicLister.this,"Payment cancelled by the user" ,Toast.LENGTH_SHORT).show();
             }
             else {
-                Toast.makeText(MusicLister.this,"Transaction failed.Please try again later",Toast.LENGTH_SHORT).show();
+                Toasty.error(MusicLister.this,"Transaction failed.Please try again later",Toast.LENGTH_SHORT).show();
             }
         }
         else
         {
-            Toast.makeText(MusicLister.this,"Internet connection not Available",Toast.LENGTH_SHORT).show();
+            Toasty.info(MusicLister.this,"Internet connection not Available",Toast.LENGTH_SHORT).show();
         }
     }
 

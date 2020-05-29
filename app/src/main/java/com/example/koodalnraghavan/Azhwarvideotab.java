@@ -36,6 +36,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
+import es.dmoral.toasty.Toasty;
+
 import static android.os.Environment.DIRECTORY_DOWNLOADS;
 
 
@@ -290,7 +292,7 @@ public class Azhwarvideotab extends Fragment {
             {
                 //isSongUpdated(Note);
                 isVideoUpdated(Note);
-                Toast.makeText(view.getContext(),"Transaction Successful",Toast.LENGTH_SHORT).show();
+                Toasty.success(view.getContext(), "Transaction Successful", Toast.LENGTH_SHORT).show();
                 Log.d("UPI","responseStr : " + approvalRefNo);
                 GooglePayProcessor.dismiss();
                 payementSelector.dismiss();
@@ -329,15 +331,15 @@ public class Azhwarvideotab extends Fragment {
             {
                 GooglePayProcessor.dismiss();
                 payementSelector.dismiss();
-                Toast.makeText(view.getContext(),"Payment cancelled by the user" ,Toast.LENGTH_SHORT).show();
+                Toasty.warning(view.getContext(),"Payment cancelled by the user" ,Toast.LENGTH_SHORT).show();
             }
             else {
-                Toast.makeText(view.getContext(),"Transaction failed.Please try again later",Toast.LENGTH_SHORT).show();
+                Toasty.error(view.getContext(),"Transaction failed.Please try again later",Toast.LENGTH_SHORT).show();
             }
         }
         else
         {
-            Toast.makeText(view.getContext(),"Internet connection not Available",Toast.LENGTH_SHORT).show();
+            Toasty.info(view.getContext(),"Internet connection not Available",Toast.LENGTH_SHORT).show();
         }
     }
 

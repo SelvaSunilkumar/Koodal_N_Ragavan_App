@@ -41,6 +41,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
+import es.dmoral.toasty.Toasty;
+
 import static android.os.Environment.DIRECTORY_DOWNLOADS;
 
 public class eBooksDisplay extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -504,7 +506,8 @@ public class eBooksDisplay extends AppCompatActivity implements NavigationView.O
                 paymentSelectorButton.dismiss();
                 GooglePayGatewayProcessor.dismiss();
 
-                Toast.makeText(eBooksDisplay.this,"Transaction Successful",Toast.LENGTH_SHORT).show();
+                Toasty.success(getApplicationContext(),"Payment Successful",Toast.LENGTH_SHORT).show();
+                //Toast.makeText(eBooksDisplay.this,"Transaction Successful",Toast.LENGTH_SHORT).show();
                 Log.d("UPI","responseStr : " + approvalRefNo);
 
                 nextActivity = new Intent(eBooksDisplay.this,PdfViewer.class);
@@ -538,15 +541,19 @@ public class eBooksDisplay extends AppCompatActivity implements NavigationView.O
             {
                 GooglePayGatewayProcessor.dismiss();
                 paymentSelectorButton.dismiss();
-                Toast.makeText(eBooksDisplay.this,"Payment cancelled by the user",Toast.LENGTH_SHORT).show();
+                //Toast.makeText(eBooksDisplay.this,"Payment cancelled by the user",Toast.LENGTH_SHORT).show();
+
+                Toasty.warning(getApplicationContext(),"Payment Cancelled by User",Toast.LENGTH_SHORT).show();
             }
             else {
-                Toast.makeText(eBooksDisplay.this,"Transaction failed.Please try again later",Toast.LENGTH_SHORT).show();
+                //Toast.makeText(eBooksDisplay.this,"Transaction failed.Please try again later",Toast.LENGTH_SHORT).show();
+                Toasty.error(getApplicationContext(),"Transaction Failed",Toast.LENGTH_SHORT).show();
             }
         }
         else
         {
-            Toast.makeText(eBooksDisplay.this,"Internet connection not Available",Toast.LENGTH_SHORT).show();
+            //Toast.makeText(eBooksDisplay.this,"Internet connection not Available",Toast.LENGTH_SHORT).show();
+            Toasty.info(getApplicationContext(),"Internet Connection not Available",Toast.LENGTH_SHORT).show();
         }
     }
 
