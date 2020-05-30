@@ -201,7 +201,7 @@ public class AboutUs extends AppCompatActivity implements NavigationView.OnNavig
                 break;
             case R.id.Gallery:
                 //Toast.makeText(getApplicationContext(),"Gallery",Toast.LENGTH_SHORT).show();
-                nextActivity = new Intent(this,NotFound.class);
+                nextActivity = new Intent(this,GalleryViewer.class);
                 startActivity(nextActivity);
                 break;
             case R.id.freedownload:

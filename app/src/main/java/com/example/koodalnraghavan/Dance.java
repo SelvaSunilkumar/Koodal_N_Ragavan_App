@@ -169,7 +169,7 @@ public class Dance extends AppCompatActivity implements NavigationView.OnNavigat
                 break;
             case R.id.Gallery:
                 //Toast.makeText(getApplicationContext(),"Gallery",Toast.LENGTH_SHORT).show();
-                nextActivity = new Intent(Dance.this,NotFound.class);
+                nextActivity = new Intent(Dance.this,GalleryViewer.class);
                 startActivity(nextActivity);
                 break;
             case R.id.freedownload:

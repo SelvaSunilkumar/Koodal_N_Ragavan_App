@@ -237,7 +237,7 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
                 break;
             case R.id.Gallery:
                 //Toast.makeText(getApplicationContext(),"Gallery",Toast.LENGTH_SHORT).show();
-                nextActivity = new Intent(home.this,NotFound.class);
+                nextActivity = new Intent(home.this,GalleryViewer.class);
                 startActivity(nextActivity);
                 break;
             case R.id.freedownload:
