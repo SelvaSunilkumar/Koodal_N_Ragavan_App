@@ -209,6 +209,10 @@ public class AboutUs extends AppCompatActivity implements NavigationView.OnNavig
                 nextActivity = new Intent(this,FreeDownload.class);
                 startActivity(nextActivity);
                 break;
+            case R.id.purchases:
+                nextActivity = new Intent(this,Purchace.class);
+                startActivity(nextActivity);
+                break;
             case R.id.contact:
                 //Toast.makeText(getApplicationContext(),"Contact",Toast.LENGTH_SHORT).show();
                 nextActivity = new Intent(this,ContactUs.class);

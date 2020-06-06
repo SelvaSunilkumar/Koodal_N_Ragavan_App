@@ -357,6 +357,10 @@ public class Thinachariyai extends AppCompatActivity implements NavigationView.O
                 nextActivity = new Intent(this,FreeDownload.class);
                 startActivity(nextActivity);
                 break;
+            case R.id.purchases:
+                nextActivity = new Intent(this,Purchace.class);
+                startActivity(nextActivity);
+                break;
             case R.id.contact:
                 //Toast.makeText(getApplicationContext(),"Contact",Toast.LENGTH_SHORT).show();
                 nextActivity = new Intent(this,ContactUs.class);

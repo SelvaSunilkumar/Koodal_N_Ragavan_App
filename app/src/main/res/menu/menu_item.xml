@@ -26,6 +26,10 @@
             android:icon="@drawable/download_icon"
             android:title="Free Downloads"/>
         <item
+            android:id="@+id/purchases"
+            android:icon="@drawable/purchases"
+            android:title="My Purchase"/>
+        <item
             android:id="@+id/contact"
             android:icon="@drawable/contact_icon"
             android:title="Contact Us"/>

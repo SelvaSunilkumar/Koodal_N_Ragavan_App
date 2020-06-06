@@ -291,7 +291,7 @@ public class Azhwarvideotab extends Fragment {
             if(status.equals("success"))
             {
                 //isSongUpdated(Note);
-                isVideoUpdated(Note);
+                isVideoUpdated(Note,URL_Music);
                 Toasty.success(view.getContext(), "Transaction Successful", Toast.LENGTH_SHORT).show();
                 Log.d("UPI","responseStr : " + approvalRefNo);
                 GooglePayProcessor.dismiss();
@@ -331,6 +331,7 @@ public class Azhwarvideotab extends Fragment {
             {
                 GooglePayProcessor.dismiss();
                 payementSelector.dismiss();
+                //isVideoUpdated(Note,URL_Music);
                 Toasty.warning(view.getContext(),"Payment cancelled by the user" ,Toast.LENGTH_SHORT).show();
             }
             else {
@@ -359,13 +360,13 @@ public class Azhwarvideotab extends Fragment {
         return false;
     }
 
-    public void isVideoUpdated(String videoName)
+    public void isVideoUpdated(String videoName,String url)
     {
-        boolean isUpdated = databaseHelper.insertValue(videoName);
+        boolean isUpdated = databaseHelper.insertValue(videoName,url);
         if(isUpdated)
-            Toast.makeText(view.getContext(),"Inserted Successfully",Toast.LENGTH_SHORT).show();
+            Toast.makeText(view.getContext(),"Video Available",Toast.LENGTH_SHORT).show();
         else
-            Toast.makeText(view.getContext(),"Insertion failed",Toast.LENGTH_SHORT).show();
+            Toast.makeText(view.getContext(),"",Toast.LENGTH_SHORT).show();
     }
 
     public boolean isVideoAvailable(String videoName) {

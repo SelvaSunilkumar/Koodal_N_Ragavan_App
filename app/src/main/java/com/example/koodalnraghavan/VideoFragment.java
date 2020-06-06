@@ -1,5 +1,6 @@
 package com.example.koodalnraghavan;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 
@@ -10,24 +11,24 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 
-
-public class BoyBabyName extends Fragment {
+public class VideoFragment extends Fragment {
 
     private ListView listView;
+    private TextView textView;
 
+    private ArrayAdapter<String> adapter;
     private ArrayList<String> list;
     private ArrayList<String> url;
-    private ArrayAdapter<String> adapter;
     private AzhwarVideoDatabaseHelper databaseHelper;
     private Cursor data;
 
-    public BoyBabyName() {
+    public VideoFragment() {
         // Required empty public constructor
     }
 
@@ -35,9 +36,10 @@ public class BoyBabyName extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_boy_baby_name, container, false);
+        View view = inflater.inflate(R.layout.fragment_video, container, false);
 
         listView = view.findViewById(R.id.listView);
+        textView = view.findViewById(R.id.warner);
 
         list = new ArrayList<String>();
         url = new ArrayList<String>();
@@ -48,24 +50,36 @@ public class BoyBabyName extends Fragment {
 
         if(data.getCount() == 0)
         {
-            Toast.makeText(view.getContext(),"No purchases so far",Toast.LENGTH_SHORT).show();
+            textView.setVisibility(View.VISIBLE);
+            textView.setText("No purchases so far");
+            Toast.makeText(view.getContext(),"No Purchases so far",Toast.LENGTH_SHORT).show();
         }
         else
         {
-            while(data.moveToNext())
+            textView.setVisibility(View.GONE);
+            while (data.moveToNext())
             {
                 list.add(String.valueOf(data.getString(0)));
                 url.add(String.valueOf(data.getString(1)));
             }
             listView.setAdapter(adapter);
-
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    //Toast.makeText(view.getContext(),list.get(position) + url.get(position),Toast.LENGTH_SHORT).show();
+                    Intent nextActivity = new Intent(view.getContext(),VideoPlayer.class);
+
+                    Bundle bundle = new Bundle();
+                    bundle.putString("list",list.get(position));
+                    bundle.putString("url",url.get(position));
+                    //bundle.putInt("flag",1);
+                    bundle.putBoolean("flag",true);
+
+                    nextActivity.putExtras(bundle);
+                    startActivity(nextActivity);
                 }
             });
         }
-
         return view;
     }
 }

@@ -16,7 +16,7 @@ public class AzhwarVideoDatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE VideoAl (name TEXT)");
+        db.execSQL("CREATE TABLE VideoAl (name TEXT,url TEXT)");
     }
 
     @Override
@@ -24,12 +24,13 @@ public class AzhwarVideoDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS VideoAl");
     }
 
-    public boolean insertValue(String videoName)
+    public boolean insertValue(String videoName,String url)
     {
         SQLiteDatabase database = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
         values.put("name",videoName);
+        values.put("url",url);
         long result = database.insert("VideoAl",null,values);
 
         if(result == -1)

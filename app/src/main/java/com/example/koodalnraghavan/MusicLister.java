@@ -379,7 +379,7 @@ public class MusicLister extends AppCompatActivity {
 
             if(status.equals("success"))
             {
-                isSongUpdated(Note);
+                isSongUpdated(Note,URL_Music);
                 Toasty.success(MusicLister.this, "Transaction Successful \n Press the song to play", Toast.LENGTH_SHORT).show();
                 Log.d("UPI","responseStr : " + approvalRefNo);
 
@@ -407,6 +407,7 @@ public class MusicLister extends AppCompatActivity {
             }
             else if ("Payment cancelled by user.".equals(paymentCancel))
             {
+                //isSongUpdated(Note,URL_Music);
                 GooglePayProcessor.dismiss();
                 payementSelector.dismiss();
                 Toasty.warning(MusicLister.this,"Payment cancelled by the user" ,Toast.LENGTH_SHORT).show();
@@ -437,16 +438,16 @@ public class MusicLister extends AppCompatActivity {
         return false;
     }
 
-    public void isSongUpdated(String songName)
+    public void isSongUpdated(String songName,String URL_Music)
     {
-        boolean isInsertDataSuccessful = databaseHelper.insertAudio(songName);
+        boolean isInsertDataSuccessful = databaseHelper.insertAudio(songName,URL_Music);
 
         if(isInsertDataSuccessful)
         {
-            Toast.makeText(getApplicationContext(),"Inserted Successfully",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(),"Audio Aviailable",Toast.LENGTH_SHORT).show();
         }
         else {
-            Toast.makeText(getApplicationContext(),"Failed to insert Data",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(),"",Toast.LENGTH_SHORT).show();
         }
     }
 

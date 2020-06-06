@@ -116,7 +116,7 @@ public class FreeCallerTone extends Fragment {
                 listView.setAdapter(adapter);
 
                 //mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-                mediaPlayer.setAudioAttributes(new AudioAttributes.Builder().setContentType(AudioAttributes.CONTENT_TYPE_MUSIC).build());
+                //mediaPlayer.setAudioAttributes(new AudioAttributes.Builder().setContentType(AudioAttributes.CONTENT_TYPE_MUSIC).build());
 
                 listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override

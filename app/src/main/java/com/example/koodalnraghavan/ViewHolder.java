@@ -30,13 +30,13 @@ public class ViewHolder extends RecyclerView.ViewHolder {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(view.getContext(),"Clicked : " + name,Toast.LENGTH_SHORT).show();
+                //Toast.makeText(view.getContext(),"Clicked : " + name,Toast.LENGTH_SHORT).show();
 
                 Dialog dialog = new Dialog(view.getContext());
                 dialog.setContentView(R.layout.image_dialog_viewer);
 
                 ImageView imager = dialog.findViewById(R.id.dialogImage);
-                
+
                 Picasso.get().load(url).into(imager);
                 dialog.show();
             }

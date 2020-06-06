@@ -6,124 +6,110 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.SeekBar;
-import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.tabs.TabItem;
+import com.google.android.material.tabs.TabLayout;
 
-public class Settings extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class Purchace extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout drawerLayout;
     private Toolbar toolbar;
     private NavigationView navigationView;
     private ActionBarDrawerToggle toggle;
 
-    public Switch LanguageSelector;
-    private TextView TitleTootlbar;
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
+    private TabItem MusicTab;
+    private TabItem VideoTab;
+    private TabItem BookTab;
     private Button Donation;
+    private TextView TitleTootlbar;
 
+    private Intent nextActivity;
+    private AlertDialog.Builder dialog;
+    private AlertDialog alertDialog;
 
-    //public SharedPreferences sharedPreferences;
-    //public SharedPreferences.Editor editor;
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        Intent intent = new Intent(Settings.this,home.class);
-        startActivity(intent);
-        //finish();
-    }
+    private PurchaseAdapter pageAdapter;
 
     @SuppressLint("RestrictedApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_settings);
+        setContentView(R.layout.activity_purchace);
 
-        LanguageSelector = findViewById(R.id.languageSelector);
+        tabLayout = findViewById(R.id.tablayout);
+        BookTab = findViewById(R.id.ebooks);
+        MusicTab = findViewById(R.id.audio);
+        //VideoTab = findViewById(R.id.video);
+        viewPager = findViewById(R.id.viewpager);
+
+        TitleTootlbar = findViewById(R.id.titleId);
+        TitleTootlbar.setText("Free Downloads");
+        TitleTootlbar.setSelected(true);
 
         drawerLayout = findViewById(R.id.drawer);
         toolbar = findViewById(R.id.toolbar);
         navigationView = findViewById(R.id.navigationbar);
 
-        TitleTootlbar = findViewById(R.id.titleId);
-        TitleTootlbar.setText("Settings");
-        TitleTootlbar.setSelected(true);
-
         setSupportActionBar(toolbar);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        getSupportActionBar().setTitle(" Settings");
+        //getSupportActionBar().setTitle(" Free Downloads");
         getSupportActionBar().setIcon(R.mipmap.ic_tool_bar);
         toggle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.drawerOpen,R.string.drawerClose);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
 
-        SharedPreferences sharedPreferences = getSharedPreferences("save",MODE_PRIVATE);
-        LanguageSelector.setChecked(sharedPreferences.getBoolean("value",true));
-        boolean editor = sharedPreferences.getBoolean("value",false);
-
-        //Toast.makeText(getApplicationContext()," " + editor,Toast.LENGTH_SHORT).show();
-
         Donation = findViewById(R.id.donation);
         Donation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Settings.this,Sambavanai.class);
+                Intent intent = new Intent(Purchace.this,Sambavanai.class);
                 startActivity(intent);
             }
         });
 
-        LanguageSelector.setOnClickListener(new View.OnClickListener() {
+        pageAdapter = new PurchaseAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT,tabLayout.getTabCount());
+        viewPager.setAdapter(pageAdapter);
+
+        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
-            public void onClick(View v) {
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewPager.setCurrentItem(tab.getPosition());
 
-                if(LanguageSelector.isChecked())
-                {
+                pageAdapter.notifyDataSetChanged();
+            }
 
-                   SharedPreferences.Editor editor = getSharedPreferences("save",MODE_PRIVATE).edit();
-                   editor.putBoolean("value",true);
-                   editor.apply();
-                   LanguageSelector.setChecked(true);
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
 
-                }
-                else
-                {
+            }
 
-                    SharedPreferences.Editor editor = getSharedPreferences("save",MODE_PRIVATE).edit();
-                    editor.putBoolean("value",false);
-                    editor.apply();;
-                    LanguageSelector.setChecked(false);
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
 
-
-                }
             }
         });
 
+        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-
-        Intent nextActivity;
-
-        AlertDialog.Builder dialog;
-        AlertDialog alertDialog;
 
         switch(menuItem.getItemId())
         {
@@ -144,7 +130,7 @@ public class Settings extends AppCompatActivity implements NavigationView.OnNavi
                 startActivity(nextActivity);
                 break;
             case R.id.event:
-               // Toast.makeText(getApplicationContext(),"Eventt",Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(),"Eventt",Toast.LENGTH_SHORT).show();
                 nextActivity = new Intent(this,NotFound.class);
                 startActivity(nextActivity);
                 break;
@@ -259,12 +245,10 @@ public class Settings extends AppCompatActivity implements NavigationView.OnNavi
                 alertDialog.show();
                 break;
             case R.id.settings:
-                nextActivity = new Intent(this, Settings.class);
+                nextActivity = new Intent(this,Settings.class);
                 startActivity(nextActivity);
-                finish();
                 break;
         }
         return false;
-
     }
 }

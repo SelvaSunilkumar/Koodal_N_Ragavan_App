@@ -78,7 +78,8 @@ public class PdfViewer extends AppCompatActivity {
         @Override
         protected void onPostExecute(InputStream inputStream) {
             pdfView.fromStream(inputStream).load();
-            progressBar.setVisibility(View.GONE);
+            if(pdfView.isActivated())
+                progressBar.setVisibility(View.GONE);
         }
     }
 }

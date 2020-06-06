@@ -302,6 +302,10 @@ public class eBooksDisplay extends AppCompatActivity implements NavigationView.O
                 nextActivity = new Intent(this,FreeDownload.class);
                 startActivity(nextActivity);
                 break;
+            case R.id.purchases:
+                nextActivity = new Intent(this,Purchace.class);
+                startActivity(nextActivity);
+                break;
             case R.id.contact:
                 //Toast.makeText(getApplicationContext(),"Contact",Toast.LENGTH_SHORT).show();
                 nextActivity = new Intent(this,ContactUs.class);
@@ -501,7 +505,7 @@ public class eBooksDisplay extends AppCompatActivity implements NavigationView.O
 
             if(status.equals("success"))
             {
-                AddData(Note);
+                AddData(Note,bookUrl);
 
                 paymentSelectorButton.dismiss();
                 GooglePayGatewayProcessor.dismiss();
@@ -539,6 +543,7 @@ public class eBooksDisplay extends AppCompatActivity implements NavigationView.O
             }
             else if ("Payment cancelled by user.".equals(paymentCancel))
             {
+                //AddData(Note,bookUrl);
                 GooglePayGatewayProcessor.dismiss();
                 paymentSelectorButton.dismiss();
                 //Toast.makeText(eBooksDisplay.this,"Payment cancelled by the user",Toast.LENGTH_SHORT).show();
@@ -573,9 +578,9 @@ public class eBooksDisplay extends AppCompatActivity implements NavigationView.O
         return false;
     }
 
-    public void AddData(String bookName)
+    public void AddData(String bookName,String BookUrl)
     {
-        boolean insertBook = databaseHelper.insertBook(bookName);
+        boolean insertBook = databaseHelper.insertBook(bookName,BookUrl);
 
         if(insertBook)
         {

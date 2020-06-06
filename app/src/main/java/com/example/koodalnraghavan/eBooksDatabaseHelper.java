@@ -15,7 +15,7 @@ public class eBooksDatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE EBooksData (bookname TEXT)");
+        db.execSQL("CREATE TABLE EBooksData (bookname TEXT,url TEXT)");
     }
 
     @Override
@@ -23,12 +23,13 @@ public class eBooksDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE EBooksData");
     }
 
-    public boolean insertBook(String bookName)
+    public boolean insertBook(String bookName,String url)
     {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
         values.put("bookname",bookName);
+        values.put("url",url);
 
         long result = db.insert("EBooksData",null,values);
 

@@ -177,6 +177,10 @@ public class Dance extends AppCompatActivity implements NavigationView.OnNavigat
                 nextActivity = new Intent(Dance.this,FreeDownload.class);
                 startActivity(nextActivity);
                 break;
+            case R.id.purchases:
+                nextActivity = new Intent(this,Purchace.class);
+                startActivity(nextActivity);
+                break;
             case R.id.contact:
                // Toast.makeText(getApplicationContext(),"Contact",Toast.LENGTH_SHORT).show();
                 nextActivity = new Intent(Dance.this,ContactUs.class);

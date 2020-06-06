@@ -15,7 +15,7 @@ public class AlvargalinManamDatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE AudioAl (name TEXT)");
+        db.execSQL("CREATE TABLE AudioAl (name TEXT,url TEXT)");
     }
 
     @Override
@@ -23,12 +23,13 @@ public class AlvargalinManamDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS AudioAl");
     }
 
-    public boolean insertAudio(String audioName)
+    public boolean insertAudio(String audioName,String url)
     {
         SQLiteDatabase database = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
         values.put("name",audioName);
+        values.put("url",url);
 
         long result = database.insert("AudioAl",null,values);
         if(result == -1)
