@@ -2,6 +2,7 @@ package com.example.koodalnraghavan;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,19 +11,37 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.viewpager.widget.ViewPager;
 
 import android.annotation.SuppressLint;
+import android.app.DownloadManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+
+import static android.os.Environment.DIRECTORY_DOWNLOADS;
 
 public class KadhaiKekumNeram extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -31,18 +50,36 @@ public class KadhaiKekumNeram extends AppCompatActivity implements NavigationVie
     private NavigationView navigationView;
     private ActionBarDrawerToggle toggle;
 
-    private TabLayout tabLayout;
-    private ViewPager viewPager;
-    private TabItem MusicTab;
-    private TabItem VideoTab;
     private TextView TitleTootlbar;
     private Button Donation;
-
-    public StoryTimePageAdaptor pageAdapter;
+    private ListView listView;
+    private ProgressBar progressBar;
+    private ImageView Stop;
+    private ImageView Pause;
+    private Button Download;
+    private TextView PlayinSong;
 
     private Intent nextActivity;
     private AlertDialog.Builder dialog;
     private AlertDialog alertDialog;
+
+    private FirebaseDatabase database;
+    private DatabaseReference reference;
+
+    private ArrayList<String> list;
+    private ArrayList<String> url;
+    private ArrayAdapter<String> adapter;
+    private PdfLoader loader;
+    private MediaPlayer mediaPlayer;
+
+    private int pausePlayCounter;
+    int icons[] = {R.drawable.pause_icon , R.drawable.play_icon};
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mediaPlayer.release();
+    }
 
     @SuppressLint("RestrictedApi")
     @Override
@@ -51,31 +88,29 @@ public class KadhaiKekumNeram extends AppCompatActivity implements NavigationVie
         setContentView(R.layout.activity_kadhai_kekum_neram);
 
         TitleTootlbar = findViewById(R.id.titleId);
-        TitleTootlbar.setText("Dance");
+        TitleTootlbar.setText(R.string.kadhai);
         TitleTootlbar.setSelected(true);
-
-        tabLayout = findViewById(R.id.tablayout);
-        MusicTab = findViewById(R.id.musictab);
-        VideoTab = findViewById(R.id.videotab);
-        viewPager = findViewById(R.id.viewpager);
 
         drawerLayout = findViewById(R.id.drawer);
         toolbar = findViewById(R.id.toolbar);
         navigationView = findViewById(R.id.navigationbar);
+        listView = findViewById(R.id.listView);
+        progressBar = findViewById(R.id.progress);
+        Stop = findViewById(R.id.stop);
+        Pause = findViewById(R.id.pause);
+        Download = findViewById(R.id.download);
+        PlayinSong = findViewById(R.id.playinginfo);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        getSupportActionBar().setTitle(" Kadhai Kekum Neram");
+        //getSupportActionBar().setTitle(" Kadhai Kekum Neram");
         getSupportActionBar().setIcon(R.mipmap.ic_tool_bar);
         toggle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.drawerOpen,R.string.drawerClose);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
 
-        pageAdapter = new StoryTimePageAdaptor(getSupportFragmentManager(),tabLayout.getTabCount());
-        //pageAdapter = new PageAdapter(getSupportFragmentManager(),tabLayout.getTabCount());
-        viewPager.setAdapter(pageAdapter);
 
         Donation = findViewById(R.id.donation);
         Donation.setOnClickListener(new View.OnClickListener() {
@@ -86,32 +121,121 @@ public class KadhaiKekumNeram extends AppCompatActivity implements NavigationVie
             }
         });
 
-        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
+        list = new ArrayList<String>();
+        url = new ArrayList<String>();
+        adapter = new ArrayAdapter<String>(getApplicationContext(),R.layout.videoinfo,R.id.portal,list);
 
-                viewPager.setCurrentItem(tab.getPosition());
-                if(tab.getPosition()==0)
+        database = FirebaseDatabase.getInstance();
+        reference = database.getReference();
+        mediaPlayer = new MediaPlayer();
+
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                loader = new PdfLoader();
+                progressBar.setVisibility(View.VISIBLE);
+                for(DataSnapshot ds:dataSnapshot.getChildren())
                 {
-                    pageAdapter.notifyDataSetChanged();
+                    loader = ds.getValue(PdfLoader.class);
+                    list.add(String.valueOf(loader.getPortal()));
+                    url.add(String.valueOf(loader.getUrl()));
                 }
-                else if(tab.getPosition()==1)
-                {
-                    pageAdapter.notifyDataSetChanged();
-                }
+                progressBar.setVisibility(View.GONE);
+                listView.setAdapter(adapter);
+
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                        String MusicUrl = url.get(position);
+
+                        //Toast.makeText(getApplicationContext(),"Song Url : " + MusicUrl,Toast.LENGTH_SHORT).show();
+
+                        try{
+                            mediaPlayer.stop();
+                            mediaPlayer.reset();
+                            mediaPlayer.setDataSource(MusicUrl);
+                            mediaPlayer.prepare();
+                            Toast.makeText(getApplicationContext(),"Play",Toast.LENGTH_SHORT).show();
+                            mediaPlayer.start();
+                            pausePlayCounter = 0;
+
+                            PlayinSong.setText("Playing now : " + list.get(position));
+                            PlayinSong.setSelected(true);
+                            Download.setEnabled(true);
+                            Download.setText("Download");
+                            Download.setSelected(true);
+                        }
+                        catch (Exception e)
+                        {
+                            Toast.makeText(getApplicationContext(),"Mediaplayer couln't start",Toast.LENGTH_SHORT).show();
+                        }
+
+                        Pause.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+
+                                pausePlayCounter++;
+
+                                if(pausePlayCounter%2 == 0)
+                                {
+                                    mediaPlayer.start();
+                                    Pause.setBackgroundResource(icons[0]);
+                                }
+                                else
+                                {
+                                    mediaPlayer.pause();
+                                    Pause.setBackgroundResource(icons[1]);
+                                }
+
+                            }
+                        });
+
+                        Stop.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+
+                                mediaPlayer.stop();
+
+                                PlayinSong.setText("Stopped : " + list.get(position));
+                                PlayinSong.setSelected(true);
+                                return;
+                            }
+                        });
+
+                            Download.setOnClickListener(new View.OnClickListener() {
+                                @RequiresApi(api = Build.VERSION_CODES.M)
+                                @Override
+                                public void onClick(View v) {
+                                    Toast.makeText(getApplicationContext(),"Downloading : " + list.get(position),Toast.LENGTH_SHORT).show();
+
+                                    Uri uri = Uri.parse(MusicUrl);
+
+                                    DownloadManager downloadManager = (DownloadManager) getApplicationContext().getSystemService(Context.DOWNLOAD_SERVICE);
+                                    DownloadManager.Request request = new DownloadManager.Request(uri);
+
+                                    Context context = getApplicationContext();
+                                    String fileName = list.get(position);
+                                    String fileExtension = ".mp3";
+
+                                    request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE);
+                                    request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+                                    request.setDestinationInExternalFilesDir(context,DIRECTORY_DOWNLOADS,fileName + fileExtension);
+
+                                    downloadManager.enqueue(request);
+                                }
+                            });
+                    }
+                });
             }
 
             @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
-        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+
     }
 
     @Override
@@ -130,14 +254,8 @@ public class KadhaiKekumNeram extends AppCompatActivity implements NavigationVie
                 nextActivity = new Intent(this,AboutUs.class);
                 startActivity(nextActivity);
                 break;
-            case R.id.activity:
-                //Toast.makeText(getApplicationContext(),"Activity",Toast.LENGTH_SHORT).show();
-                nextActivity = new Intent(this,NotFound.class);
-                startActivity(nextActivity);
-                break;
-            case R.id.event:
-                //Toast.makeText(getApplicationContext(),"Eventt",Toast.LENGTH_SHORT).show();
-                nextActivity = new Intent(this,NotFound.class);
+            case R.id.others:
+                nextActivity = new Intent(this,Others.class);
                 startActivity(nextActivity);
                 break;
             case R.id.Gallery:

@@ -3,6 +3,7 @@ package com.example.koodalnraghavan;
 import android.database.Cursor;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -12,7 +13,14 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -20,12 +28,15 @@ import java.util.ArrayList;
 public class BoyBabyName extends Fragment {
 
     private ListView listView;
+    private ProgressBar progressBar;
 
     private ArrayList<String> list;
-    private ArrayList<String> url;
+    //private ArrayList<String> url;
     private ArrayAdapter<String> adapter;
-    private AzhwarVideoDatabaseHelper databaseHelper;
-    private Cursor data;
+
+    private BabyNamer namer;
+    private FirebaseDatabase database;
+    private DatabaseReference reference;
 
     public BoyBabyName() {
         // Required empty public constructor
@@ -38,33 +49,39 @@ public class BoyBabyName extends Fragment {
         View view = inflater.inflate(R.layout.fragment_boy_baby_name, container, false);
 
         listView = view.findViewById(R.id.listView);
+        progressBar = view.findViewById(R.id.progress);
 
         list = new ArrayList<String>();
-        url = new ArrayList<String>();
-        adapter = new ArrayAdapter<String>(view.getContext(),R.layout.musicinfo,R.id.portal,list);
+        //url = new ArrayList<String>();
+        adapter = new ArrayAdapter<String>(view.getContext(),R.layout.baby_names,R.id.name,list);
 
-        databaseHelper = new AzhwarVideoDatabaseHelper(view.getContext());
-        data = databaseHelper.fetchVideoList();
+        database = FirebaseDatabase.getInstance();
+        reference = database.getReference("BabyNames").child("Boys");
 
-        if(data.getCount() == 0)
-        {
-            Toast.makeText(view.getContext(),"No purchases so far",Toast.LENGTH_SHORT).show();
-        }
-        else
-        {
-            while(data.moveToNext())
-            {
-                list.add(String.valueOf(data.getString(0)));
-                url.add(String.valueOf(data.getString(1)));
-            }
-            listView.setAdapter(adapter);
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                namer = new BabyNamer();
+                progressBar.setVisibility(View.VISIBLE);
+
+                for(DataSnapshot ds:dataSnapshot.getChildren())
+                {
+                    namer = ds.getValue(BabyNamer.class);
+
+                    list.add(String.valueOf(namer.getName_tml()));
                 }
-            });
-        }
+
+                listView.setAdapter(adapter);
+                progressBar.setVisibility(View.GONE);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
         return view;
     }

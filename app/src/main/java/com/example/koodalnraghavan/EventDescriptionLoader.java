@@ -2,42 +2,71 @@ package com.example.koodalnraghavan;
 
 public class EventDescriptionLoader {
 
-    String description;
-    String name;
-    String url;
+    private String month;
+    private long month_tml;
+    private String day;
+    private String thidhi;
+    private String star;
+    private String event;
 
     public EventDescriptionLoader()
     {
-
     }
 
-    public EventDescriptionLoader(String description, String name, String url) {
-        this.description = description;
-        this.name = name;
-        this.url = url;
+    public EventDescriptionLoader(String month, long month_tml, String day, String thidhi, String star, String event) {
+        this.month = month;
+        this.month_tml = month_tml;
+        this.day = day;
+        this.thidhi = thidhi;
+        this.star = star;
+        this.event = event;
     }
 
-    public String getDescription() {
-        return description;
+    public String getMonth() {
+        return month;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setMonth(String month) {
+        this.month = month;
     }
 
-    public String getName() {
-        return name;
+    public long getMonth_tml() {
+        return month_tml;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setMonth_tml(long month_tml) {
+        this.month_tml = month_tml;
     }
 
-    public String getUrl() {
-        return url;
+    public String getDay() {
+        return day;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setDay(String day) {
+        this.day = day;
+    }
+
+    public String getThidhi() {
+        return thidhi;
+    }
+
+    public void setThidhi(String thidhi) {
+        this.thidhi = thidhi;
+    }
+
+    public String getStar() {
+        return star;
+    }
+
+    public void setStar(String star) {
+        this.star = star;
+    }
+
+    public String getEvent() {
+        return event;
+    }
+
+    public void setEvent(String event) {
+        this.event = event;
     }
 }

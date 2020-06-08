@@ -165,14 +165,8 @@ public class ContactUs extends AppCompatActivity implements NavigationView.OnNav
                 nextActivity = new Intent(this,AboutUs.class);
                 startActivity(nextActivity);
                 break;
-            case R.id.activity:
-                //Toast.makeText(getApplicationContext(),"Activity",Toast.LENGTH_SHORT).show();
-                nextActivity = new Intent(this,NotFound.class);
-                startActivity(nextActivity);
-                break;
-            case R.id.event:
-                //Toast.makeText(getApplicationContext(),"Event",Toast.LENGTH_SHORT).show();
-                nextActivity = new Intent(this,NotFound.class);
+            case R.id.others:
+                nextActivity = new Intent(this,Others.class);
                 startActivity(nextActivity);
                 break;
             case R.id.Gallery:

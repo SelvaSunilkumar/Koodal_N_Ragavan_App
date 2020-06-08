@@ -5,14 +5,14 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-public class StoryTimePageAdaptor extends FragmentPagerAdapter {
+public class OtherAdapter extends FragmentPagerAdapter {
 
-    int numberOfPages;
+    int number;
 
-    public StoryTimePageAdaptor(FragmentManager fm,int numberOfPages)
+    public OtherAdapter(FragmentManager fm,int number)
     {
         super(fm);
-        this.numberOfPages = numberOfPages;
+        this.number = number;
     }
 
     @NonNull
@@ -22,9 +22,9 @@ public class StoryTimePageAdaptor extends FragmentPagerAdapter {
         switch (position)
         {
             case 0:
-                return new AudioStory();
+                return new OtherAudio();
             case 1:
-                return new VideoStory();
+                return new OtherVideo();
             default:
                 return null;
         }
@@ -32,7 +32,7 @@ public class StoryTimePageAdaptor extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return numberOfPages;
+        return number;
     }
 
     @Override

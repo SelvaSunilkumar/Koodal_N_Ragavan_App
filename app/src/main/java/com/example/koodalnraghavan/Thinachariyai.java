@@ -71,7 +71,19 @@ public class Thinachariyai extends AppCompatActivity implements NavigationView.O
     private Button Donation;
     private ProgressBar progressBar;
 
+    private TextView dayTextView;
+    private TextView dayText;
+    private TextView thidhiTextView;
+    private TextView thidhi;
+    private TextView starTextView;
+    private TextView star;
+    private TextView eventTextView;
+    private TextView event;
+
     private String dateSelected;
+    private final String LoaderString = "Loading...";
+    private final String nullSetter = "-";
+    private final String message = "available soon...";
 
     private FirebaseDatabase database;
     private DatabaseReference reference;
@@ -103,10 +115,16 @@ public class Thinachariyai extends AppCompatActivity implements NavigationView.O
         dateSelector = findViewById(R.id.selectorInfo);
         DescriptionText = findViewById(R.id.descriptionText);
         Description = findViewById(R.id.description);
-        videoText = findViewById(R.id.videoText);
-        video = findViewById(R.id.videoLink);
         DateText = findViewById(R.id.dateText);
         calendarView = findViewById(R.id.calenderView);
+        dayTextView = findViewById(R.id.day);
+        dayText = findViewById(R.id.dayText);
+        thidhiTextView = findViewById(R.id.thidhi);
+        thidhi = findViewById(R.id.thidhiText);
+        starTextView = findViewById(R.id.star);
+        star = findViewById(R.id.startText);
+        eventTextView = findViewById(R.id.event);
+        event = findViewById(R.id.eventText);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
@@ -120,8 +138,8 @@ public class Thinachariyai extends AppCompatActivity implements NavigationView.O
 
         Description.setVisibility(View.GONE);
         DescriptionText.setVisibility(View.GONE);
-        video.setVisibility(View.GONE);
-        videoText.setVisibility(View.GONE);
+        //video.setVisibility(View.GONE);
+        //videoText.setVisibility(View.GONE);
 
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
@@ -141,24 +159,112 @@ public class Thinachariyai extends AppCompatActivity implements NavigationView.O
             }
         });
 
+        DescriptionText.setVisibility(View.GONE);
+        Description.setVisibility(View.GONE);
+        dayTextView.setVisibility(View.GONE);
+        dayText.setVisibility(View.GONE);
+        thidhiTextView.setVisibility(View.GONE);
+        thidhi.setVisibility(View.GONE);
+        star.setVisibility(View.GONE);
+        starTextView.setVisibility(View.GONE);
+        eventTextView.setVisibility(View.GONE);
+        event.setVisibility(View.GONE);
+
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
 
-                Description.setVisibility(View.VISIBLE);
-                DescriptionText.setVisibility(View.VISIBLE);
-                video.setVisibility(View.VISIBLE);
-                videoText.setVisibility(View.VISIBLE);
-                dateSelector.setVisibility(View.GONE);
+                /*
+                private TextView DescriptionText;
+                private TextView Description;
+                private TextView dayTextView;
+                private TextView dayText;
+                private TextView thidhiTextView;
+                private TextView thidhi;
+                private TextView starTextView;
+                private TextView star;
+                private TextView eventTextView;
+                private TextView event;*/
 
                 dateSelected = dayOfMonth + "-" + (month + 1) + "-" + year;
-
                 DateText.setText(dateSelected);
-                Description.setText("Loading Description ...");
-                video.setText("Loading Video ...");
-                video.setClickable(false);
+
+                DescriptionText.setVisibility(View.VISIBLE);
+                Description.setVisibility(View.VISIBLE);
+                dayTextView.setVisibility(View.VISIBLE);
+                dayText.setVisibility(View.VISIBLE);
+                thidhiTextView.setVisibility(View.VISIBLE);
+                thidhi.setVisibility(View.VISIBLE);
+                star.setVisibility(View.VISIBLE);
+                starTextView.setVisibility(View.VISIBLE);
+                eventTextView.setVisibility(View.VISIBLE);
+                event.setVisibility(View.VISIBLE);
+
+                Description.setText(LoaderString);
+                dayText.setText(LoaderString);
+                thidhi.setText(LoaderString);
+                star.setText(LoaderString);
+                event.setText(LoaderString);
+
+
 
                 reference.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                        dateSelector.setVisibility(View.GONE);
+
+                        if(dataSnapshot.hasChild(dateSelected))
+                        {
+                            databaseReference = reference.child(dateSelected);
+                            databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                                    descriptionLoader = new EventDescriptionLoader();
+
+                                    descriptionLoader = dataSnapshot.getValue(EventDescriptionLoader.class);
+
+                                    DescriptionText.setText(descriptionLoader.getMonth() + " : ");
+                                    Description.setText(String.valueOf(descriptionLoader.getMonth_tml()));
+                                    dayText.setText(descriptionLoader.getDay());
+                                    thidhi.setText(descriptionLoader.getThidhi());
+                                    //event.setText(descriptionLoader.getEvent());
+                                    star.setText(descriptionLoader.getStar());
+
+                                    if(dataSnapshot.hasChild("event"))
+                                    {
+                                       event.setText(descriptionLoader.getEvent());
+                                    }
+                                    else
+                                    {
+                                        event.setText(nullSetter);
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
+                        }
+                        else
+                        {
+                            Description.setText(message);
+                            dayText.setText(message);
+                            thidhi.setText(message);
+                            star.setText(message);
+                            event.setText(message);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+                /*reference.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
@@ -316,7 +422,7 @@ public class Thinachariyai extends AppCompatActivity implements NavigationView.O
                     public void onCancelled(@NonNull DatabaseError databaseError) {
 
                     }
-                });
+                });*/
             }
         });
     }
@@ -337,14 +443,8 @@ public class Thinachariyai extends AppCompatActivity implements NavigationView.O
                 nextActivity = new Intent(this,AboutUs.class);
                 startActivity(nextActivity);
                 break;
-            case R.id.activity:
-                //Toast.makeText(getApplicationContext(),"Activity",Toast.LENGTH_SHORT).show();
-                nextActivity = new Intent(this,NotFound.class);
-                startActivity(nextActivity);
-                break;
-            case R.id.event:
-                //Toast.makeText(getApplicationContext(),"Eventt",Toast.LENGTH_SHORT).show();
-                nextActivity = new Intent(this,NotFound.class);
+            case R.id.others:
+                nextActivity = new Intent(this,Others.class);
                 startActivity(nextActivity);
                 break;
             case R.id.Gallery:

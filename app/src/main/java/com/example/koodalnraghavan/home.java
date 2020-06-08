@@ -164,7 +164,7 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
             @Override
             public void onClick(View v) {
                 //nextActivity = new Intent(home.this,KadhaiKekumNeram.class);
-                nextActivity = new Intent(home.this,NotFound.class);
+                nextActivity = new Intent(home.this,KadhaiKekumNeram.class);
                 startActivity(nextActivity);
             }
         });
@@ -225,14 +225,8 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
                 nextActivity = new Intent(home.this,AboutUs.class);
                 startActivity(nextActivity);
                 break;
-            case R.id.activity:
-                //Toast.makeText(getApplicationContext(),"Activity",Toast.LENGTH_SHORT).show();
-                nextActivity = new Intent(home.this,NotFound.class);
-                startActivity(nextActivity);
-                break;
-            case R.id.event:
-                //Toast.makeText(getApplicationContext(),"Eventt",Toast.LENGTH_SHORT).show();
-                nextActivity = new Intent(home.this,NotFound.class);
+            case R.id.others:
+                nextActivity = new Intent(this,Others.class);
                 startActivity(nextActivity);
                 break;
             case R.id.Gallery:

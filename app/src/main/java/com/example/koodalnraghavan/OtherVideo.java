@@ -1,5 +1,6 @@
 package com.example.koodalnraghavan;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -8,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -19,22 +21,27 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.List;
 
 
-public class GirlBabyNames extends Fragment {
+public class OtherVideo extends Fragment {
 
     private ListView listView;
     private ProgressBar progressBar;
 
     private ArrayList<String> list;
+    private ArrayList<String> url;
     private ArrayAdapter<String> adapter;
 
     private FirebaseDatabase database;
     private DatabaseReference reference;
-    private BabyNamer namer;
 
-    public GirlBabyNames() {
+    public PdfLoader pdfLoader;
+
+    private Bundle bundle;
+    private Intent intent;
+
+
+    public OtherVideo() {
         // Required empty public constructor
     }
 
@@ -42,34 +49,51 @@ public class GirlBabyNames extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_girl_baby_names, container, false);
+        View view = inflater.inflate(R.layout.fragment_other_video, container, false);
 
         listView = view.findViewById(R.id.listView);
         progressBar = view.findViewById(R.id.progress);
 
-        list = new ArrayList<String>();
-        adapter = new ArrayAdapter<String>(view.getContext(),R.layout.baby_names,R.id.name,list);
-
         database = FirebaseDatabase.getInstance();
-        reference = database.getReference("BabyNames").child("Girls");
+        reference = database.getReference("DailyVideo");
 
-        progressBar.setVisibility(View.VISIBLE);
+        list = new ArrayList<String>();
+        url = new ArrayList<String>();
+
+        adapter = new ArrayAdapter<String >(view.getContext(),R.layout.musicinfo,R.id.portal,list);
 
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                namer = new BabyNamer();
-
-                for (DataSnapshot ds:dataSnapshot.getChildren())
+                for(DataSnapshot ds:dataSnapshot.getChildren())
                 {
-                    namer = ds.getValue(BabyNamer.class);
-
-                    list.add(String.valueOf(namer.getName_tml()));
+                    progressBar.setVisibility(View.VISIBLE);
+                    pdfLoader = ds.getValue(PdfLoader.class);
+                    list.add(String.valueOf(pdfLoader.getPortal()));
+                    url.add(String.valueOf(pdfLoader.getUrl()));
                 }
-
                 progressBar.setVisibility(View.GONE);
                 listView.setAdapter(adapter);
+
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                        String videoUrl = url.get(position);
+                        String videoTitle = list.get(position);
+
+                        intent = new Intent(view.getContext(),VideoPlayer.class);
+
+                        bundle = new Bundle();
+
+                        bundle.putString("list",videoTitle);
+                        bundle.putString("url",videoUrl);
+
+                        intent.putExtras(bundle);
+                        startActivity(intent);
+                    }
+                });
             }
 
             @Override
@@ -77,7 +101,6 @@ public class GirlBabyNames extends Fragment {
 
             }
         });
-
-        return view;
+        return  view;
     }
 }

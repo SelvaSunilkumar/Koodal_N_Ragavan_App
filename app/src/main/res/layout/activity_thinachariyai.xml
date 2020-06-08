@@ -102,7 +102,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
-                    android:layout_weight="3">
+                    android:layout_weight="6">
 
                     <TextView
                         android:gravity="center"
@@ -114,19 +114,78 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:orientation="horizontal">
                         <TextView
                             android:id="@+id/descriptionText"
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textStyle="bold"
-                            android:text="Description"
+                            android:text="சார்வரி : "
                             android:textSize="18sp"/>
                         <TextView
-                            android:layout_marginTop="5dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:id="@+id/description"
+                            android:textSize="18sp"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/day"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="கிழமை : "
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/dayText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:clickable="true"
+                            android:textSize="18sp" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_marginTop="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/thidhi"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="திதி : "
+                            android:textSize="18sp"
+                            android:textStyle="bold"/>
+                        <TextView
+                            android:clickable="true"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/thidhiText"
+                            android:textSize="18sp"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_marginTop="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/star"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="நக்ஷத்திரம் : "
+                            android:textSize="18sp"
+                            android:textStyle="bold"/>
+                        <TextView
+                            android:clickable="true"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/startText"
                             android:textSize="18sp"/>
                     </LinearLayout>
                     <LinearLayout
@@ -135,18 +194,19 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
                         <TextView
-                            android:id="@+id/videoText"
+                            android:id="@+id/event"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Watch Video"
+                            android:text="ஆழ்வார்/ஆசாரியர் திருநக்ஷத்திரம், கோவில் உற்சவம்  : "
                             android:textSize="18sp"
                             android:textStyle="bold"/>
                         <TextView
+                            android:gravity="center_horizontal"
                             android:layout_marginTop="5dp"
                             android:clickable="true"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:id="@+id/videoLink"
+                            android:id="@+id/eventText"
                             android:textSize="18sp"/>
                     </LinearLayout>
                     <View
