@@ -10,8 +10,13 @@
        android:layout_height="match_parent"
        android:id="@+id/listView"/>
     <ProgressBar
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/progress"/>
+        android:id="@+id/progress"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:indeterminate="true"
+        android:progress="50"
+        android:secondaryProgressTint="@color/colorPrimary"
+        android:progressTint="@color/colorAccent"/>
 
 </FrameLayout>
