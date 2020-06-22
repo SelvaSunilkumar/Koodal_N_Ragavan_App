@@ -11,6 +11,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.viewpager.widget.ViewPager;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -21,6 +22,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -30,6 +32,12 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
@@ -39,6 +47,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.ArrayList;
 
 import static android.os.Environment.DIRECTORY_DOWNLOADS;
@@ -72,13 +85,32 @@ public class KadhaiKekumNeram extends AppCompatActivity implements NavigationVie
     private PdfLoader loader;
     private MediaPlayer mediaPlayer;
 
+    private Dialog music;
+    private ImageView playAudio;
+    private ImageView downloadAudio;
+    private TextView Info;
+    private ProgressBar progressBar1;
+    private boolean flag = false;
+
     private int pausePlayCounter;
     int icons[] = {R.drawable.pause_icon , R.drawable.play_icon};
+
+    private final String JSON_URL = "https://raw.githubusercontent.com/SelvaSunilkumar/jsonRepo/master/portalInfo.json";
+    private RequestQueue queue;
+    private JsonObjectRequest request;
+    private JSONArray jsonArray;
+    private JSONObject song;
+    private String song_name;
+    private String song_url;
+
+    private WebView webView;
 
     @Override
     protected void onPause() {
         super.onPause();
-        mediaPlayer.release();
+        //music.dismiss();
+        //mediaPlayer.release();
+        webView.destroy();
     }
 
     @SuppressLint("RestrictedApi")
@@ -100,6 +132,7 @@ public class KadhaiKekumNeram extends AppCompatActivity implements NavigationVie
         Pause = findViewById(R.id.pause);
         Download = findViewById(R.id.download);
         PlayinSong = findViewById(R.id.playinginfo);
+        webView = findViewById(R.id.web);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
@@ -124,118 +157,139 @@ public class KadhaiKekumNeram extends AppCompatActivity implements NavigationVie
         list = new ArrayList<String>();
         url = new ArrayList<String>();
         adapter = new ArrayAdapter<String>(getApplicationContext(),R.layout.videoinfo,R.id.portal,list);
-
-        database = FirebaseDatabase.getInstance();
-        reference = database.getReference();
         mediaPlayer = new MediaPlayer();
 
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                loader = new PdfLoader();
-                progressBar.setVisibility(View.VISIBLE);
-                for(DataSnapshot ds:dataSnapshot.getChildren())
-                {
-                    loader = ds.getValue(PdfLoader.class);
-                    list.add(String.valueOf(loader.getPortal()));
-                    url.add(String.valueOf(loader.getUrl()));
-                }
-                progressBar.setVisibility(View.GONE);
-                listView.setAdapter(adapter);
-
-                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        queue = Volley.newRequestQueue(KadhaiKekumNeram.this);
+        request = new JsonObjectRequest(Request.Method.GET, JSON_URL, null,
+                new Response.Listener<JSONObject>() {
                     @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    public void onResponse(JSONObject response) {
 
-                        String MusicUrl = url.get(position);
+                        try {
+                            jsonArray = response.getJSONArray("story");
+                            progressBar.setVisibility(View.VISIBLE);
+                            for(int iterator = 0; iterator < jsonArray.length() ; iterator++)
+                            {
+                                song = jsonArray.getJSONObject(iterator);
 
-                        //Toast.makeText(getApplicationContext(),"Song Url : " + MusicUrl,Toast.LENGTH_SHORT).show();
+                                song_name = song.getString("name");
+                                song_url = song.getString("url");
 
-                        try{
-                            mediaPlayer.stop();
-                            mediaPlayer.reset();
-                            mediaPlayer.setDataSource(MusicUrl);
-                            mediaPlayer.prepare();
-                            Toast.makeText(getApplicationContext(),"Play",Toast.LENGTH_SHORT).show();
-                            mediaPlayer.start();
-                            pausePlayCounter = 0;
-
-                            PlayinSong.setText("Playing now : " + list.get(position));
-                            PlayinSong.setSelected(true);
-                            Download.setEnabled(true);
-                            Download.setText("Download");
-                            Download.setSelected(true);
-                        }
-                        catch (Exception e)
-                        {
-                            Toast.makeText(getApplicationContext(),"Mediaplayer couln't start",Toast.LENGTH_SHORT).show();
-                        }
-
-                        Pause.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-
-                                pausePlayCounter++;
-
-                                if(pausePlayCounter%2 == 0)
-                                {
-                                    mediaPlayer.start();
-                                    Pause.setBackgroundResource(icons[0]);
-                                }
-                                else
-                                {
-                                    mediaPlayer.pause();
-                                    Pause.setBackgroundResource(icons[1]);
-                                }
-
+                                list.add(song_name);
+                                url.add(song_url);
                             }
-                        });
 
-                        Stop.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
+                            progressBar.setVisibility(View.GONE);
+                            listView.setAdapter(adapter);
 
-                                mediaPlayer.stop();
-
-                                PlayinSong.setText("Stopped : " + list.get(position));
-                                PlayinSong.setSelected(true);
-                                return;
-                            }
-                        });
-
-                            Download.setOnClickListener(new View.OnClickListener() {
-                                @RequiresApi(api = Build.VERSION_CODES.M)
+                            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                 @Override
-                                public void onClick(View v) {
-                                    Toast.makeText(getApplicationContext(),"Downloading : " + list.get(position),Toast.LENGTH_SHORT).show();
+                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                                    Uri uri = Uri.parse(MusicUrl);
+                                    /*webView.getSettings().setJavaScriptEnabled(true);
+                                    webView.loadUrl(url.get(position));*/
 
-                                    DownloadManager downloadManager = (DownloadManager) getApplicationContext().getSystemService(Context.DOWNLOAD_SERVICE);
-                                    DownloadManager.Request request = new DownloadManager.Request(uri);
+                                    music = new Dialog(KadhaiKekumNeram.this);
+                                    music.setContentView(R.layout.music_player);
+                                    music.show();
 
-                                    Context context = getApplicationContext();
-                                    String fileName = list.get(position);
-                                    String fileExtension = ".mp3";
+                                    playAudio = music.findViewById(R.id.pausePlay);
+                                    downloadAudio = music.findViewById(R.id.download);
+                                    progressBar1 = music.findViewById(R.id.progress);
+                                    Info = music.findViewById(R.id.playingNow);
 
-                                    request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE);
-                                    request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-                                    request.setDestinationInExternalFilesDir(context,DIRECTORY_DOWNLOADS,fileName + fileExtension);
+                                    Info.setText(list.get(position));
+                                    Info.setSelected(true);
 
-                                    downloadManager.enqueue(request);
+                                    final String portalUrl = url.get(position);
+
+                                    try {
+                                        mediaPlayer.stop();
+                                        mediaPlayer.reset();
+                                        mediaPlayer.setDataSource(portalUrl);
+                                        mediaPlayer.prepare();
+                                        Toast.makeText(view.getContext(),"Play",Toast.LENGTH_SHORT).show();
+                                        mediaPlayer.start();
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+
+                                    mediaPlayer.setOnInfoListener(new MediaPlayer.OnInfoListener() {
+                                        @Override
+                                        public boolean onInfo(MediaPlayer mp, int what, int extra) {
+
+                                            if (what == MediaPlayer.MEDIA_INFO_BUFFERING_START)
+                                            {
+                                                progressBar1.setVisibility(View.VISIBLE);
+                                            }
+                                            else if (what == MediaPlayer.MEDIA_INFO_BUFFERING_END)
+                                            {
+                                                progressBar1.setVisibility(View.GONE);
+                                            }
+                                            return false;
+                                        }
+                                    });
+                                    playAudio.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            if(!flag)
+                                            {
+                                                playAudio.setImageDrawable(getResources().getDrawable(R.drawable.play_er));
+                                                flag = true;
+                                                mediaPlayer.pause();
+                                            }
+                                            else
+                                            {
+                                                playAudio.setImageDrawable(getResources().getDrawable(R.drawable.pause_music));
+                                                flag = false;
+                                                mediaPlayer.start();
+                                            }
+                                        }
+                                    });
+
+                                    downloadAudio.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            Toast.makeText(KadhaiKekumNeram.this,"Downloading : " + list.get(position),Toast.LENGTH_SHORT).show();
+
+                                            Uri uri = Uri.parse(portalUrl);
+
+                                            DownloadManager downloadManager = (DownloadManager) view.getContext().getSystemService(Context.DOWNLOAD_SERVICE);
+                                            DownloadManager.Request request = new DownloadManager.Request(uri);
+
+                                            Context context = view.getContext();
+                                            String fileename = list.get(position);
+                                            String fileExtension = ".mp3";
+
+                                            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE);
+                                            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+                                            request.setDestinationInExternalFilesDir(context,DIRECTORY_DOWNLOADS,fileename + fileExtension);
+
+                                            downloadManager.enqueue(request);
+                                        }
+                                    });
+
+                                    music.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                                        @Override
+                                        public void onDismiss(DialogInterface dialog) {
+                                            mediaPlayer.stop();
+                                        }
+                                    });
                                 }
                             });
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
                     }
-                });
-            }
-
+                }, new Response.ErrorListener() {
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
             }
         });
 
+        queue.add(request);
     }
 
     @Override

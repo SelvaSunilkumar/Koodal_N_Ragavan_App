@@ -14,72 +14,28 @@ import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+
 public class GalleryViewer extends AppCompatActivity {
 
     private RecyclerView recyclerView;
-    private FirebaseDatabase database;
-    private DatabaseReference reference;
-
-    private NetworkInfo networkInfo;
-    private ConnectivityManager connectivityManager;
-
-    private AlertDialog.Builder dialog;
-    private AlertDialog alertDialog;
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        assert connectivityManager != null;
-        networkInfo = connectivityManager.getActiveNetworkInfo();
-
-        if(networkInfo != null && networkInfo.isConnected())
-        {
-            FirebaseRecyclerAdapter<Model,ViewHolder> adapter = new FirebaseRecyclerAdapter<Model, ViewHolder>(
-                    Model.class,
-                    R.layout.row,
-                    ViewHolder.class,
-                    reference
-            ) {
-                @Override
-                protected void populateViewHolder(ViewHolder viewHolder, Model model, int i) {
-
-                    viewHolder.setDetails(getApplicationContext(),model.getName(),model.getUrl());
-                }
-            };
-            recyclerView.setAdapter(adapter);
-        }
-        else
-        {
-            dialog = new AlertDialog.Builder(this);
-            dialog.setTitle("No Internet");
-            dialog.setMessage("Press 'RESTART' after switching on Internet");
-            dialog.setPositiveButton("Restart", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-
-                    Intent intent = getIntent();
-                    finish();
-                    startActivity(intent);
-                }
-            });
-
-            dialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    return;
-                }
-            });
-
-            alertDialog = dialog.create();
-            alertDialog.show();
-        }
-    }
+    private GalleryAdapter adapter;
+    private ArrayList<GalleryResource> resources;
+    private RequestQueue queue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,10 +44,47 @@ public class GalleryViewer extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.imageLister);
         recyclerView.setHasFixedSize(true);
-
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        database = FirebaseDatabase.getInstance();
-        reference = database.getReference("Gallery");
+        resources = new ArrayList<>();
+
+        queue = Volley.newRequestQueue(this);
+        parseJson();
+    }
+
+    private void parseJson() {
+
+        String url = "https://raw.githubusercontent.com/SelvaSunilkumar/jsonRepo/master/portalInfo.json";
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            JSONArray jsonArray = response.getJSONArray("gallery");
+
+                            for(int iterator = 0 ; iterator < jsonArray.length() ; iterator++)
+                            {
+                                JSONObject gallery = jsonArray.getJSONObject(iterator);
+
+                                String imageUrl = gallery.getString("url");
+
+                                resources.add(new GalleryResource(imageUrl));
+                            }
+                            adapter = new GalleryAdapter(GalleryViewer.this,resources);
+                            recyclerView.setAdapter(adapter);
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+
+        queue.add(request);
     }
 }

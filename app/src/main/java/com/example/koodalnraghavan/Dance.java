@@ -23,12 +23,23 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -48,15 +59,20 @@ public class Dance extends AppCompatActivity implements NavigationView.OnNavigat
     private TextView TitleTootlbar;
     private Button Donation;
 
-    private PdfLoader pdfLoader;
     private ArrayList<String> list;
     private ArrayList<String> url;
     private ArrayAdapter<String> adapter;
     private Bundle bundle;
     private Intent intent;
 
-    private FirebaseDatabase firebaseDatabase;
-    private DatabaseReference reference;
+    //----------------------------------------------
+    private final String JSON_URL = "https://raw.githubusercontent.com/SelvaSunilkumar/jsonRepo/master/portalInfo.json";
+    private RequestQueue queue;
+    private JsonObjectRequest request;
+    private JSONArray jsonArray;
+    private JSONObject dance;
+    private String danceName;
+    private String danceUrl;
 
     @SuppressLint("RestrictedApi")
     @Override
@@ -84,9 +100,6 @@ public class Dance extends AppCompatActivity implements NavigationView.OnNavigat
         listView = findViewById(R.id.listView);
         progressBar = findViewById(R.id.progress);
 
-        firebaseDatabase = FirebaseDatabase.getInstance();
-        reference = firebaseDatabase.getReference("Dance");
-
         list = new ArrayList<String>();
         url = new ArrayList<String>();
         adapter = new ArrayAdapter<String>(getApplicationContext(),R.layout.musicinfo,R.id.portal,list);
@@ -100,7 +113,63 @@ public class Dance extends AppCompatActivity implements NavigationView.OnNavigat
             }
         });
 
-        reference.addValueEventListener(new ValueEventListener() {
+        //------------------------------------------------------------------------------------------
+        queue = Volley.newRequestQueue(Dance.this);
+
+        request = new JsonObjectRequest(Request.Method.GET, JSON_URL, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        try {
+                            jsonArray = response.getJSONArray("dance");
+
+                            progressBar.setVisibility(View.VISIBLE);
+                            for (int iterator = 0 ; iterator < jsonArray.length() ; iterator++)
+                            {
+                                dance = jsonArray.getJSONObject(iterator);
+
+                                danceName = dance.getString("name");
+                                danceUrl = dance.getString("url");
+
+                                list.add(danceName);
+                                url.add(danceUrl);
+                            }
+
+                            listView.setAdapter(adapter);
+                            progressBar.setVisibility(View.GONE);
+                            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                    intent = new Intent(Dance.this,VideoPlayer.class);
+
+                                    bundle = new Bundle();
+                                    bundle.putString("list",list.get(position));
+                                    bundle.putString("url",url.get(position));
+
+                                    intent.putExtras(bundle);
+                                    startActivity(intent);
+                                }
+                            });
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+
+        queue.add(request);
+        //------------------------------------------------------------------------------------------
+
+
+
+        /*reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
@@ -138,7 +207,7 @@ public class Dance extends AppCompatActivity implements NavigationView.OnNavigat
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        });
+        });*/
     }
 
     @Override

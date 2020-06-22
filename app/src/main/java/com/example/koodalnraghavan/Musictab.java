@@ -11,16 +11,31 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ExpandableListView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 
 /**
@@ -30,20 +45,11 @@ import java.util.ArrayList;
  */
 public class Musictab extends Fragment {
 
-    private ListView listView;
-    private ProgressBar progressBar;
+    private LinearLayout folder1;
+    private LinearLayout folder2;
 
-    private ArrayList<String> list;
-    private ArrayList<String> url;
-    private ArrayAdapter<String> adapter;
-
-    private FirebaseDatabase database;
-    private DatabaseReference reference;
-
-    public PdfLoader pdfLoader;
-
+    private Intent subFolderActivity;
     private Bundle bundle;
-    private Intent intent;
 
     public Musictab() {
         // Required empty public constructor
@@ -56,56 +62,41 @@ public class Musictab extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_musictab, container, false);
 
-        listView = view.findViewById(R.id.listView);
-        progressBar = view.findViewById(R.id.progress);
+        folder1 = view.findViewById(R.id.folder1);
+        folder2 = view.findViewById(R.id.folder2);
 
-        database = FirebaseDatabase.getInstance();
-        reference = database.getReference("DailyVideo");
-
-        list = new ArrayList<String>();
-        url = new ArrayList<String>();
-
-        adapter = new ArrayAdapter<String >(view.getContext(),R.layout.musicinfo,R.id.portal,list);
-
-        reference.addValueEventListener(new ValueEventListener() {
+        folder1.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            public void onClick(View v) {
+                //Toast.makeText(view.getContext(),"Folder 1",Toast.LENGTH_SHORT).show();
 
-                for(DataSnapshot ds:dataSnapshot.getChildren())
-                {
-                    progressBar.setVisibility(View.VISIBLE);
-                    pdfLoader = ds.getValue(PdfLoader.class);
-                    list.add(String.valueOf(pdfLoader.getPortal()));
-                    url.add(String.valueOf(pdfLoader.getUrl()));
-                }
-                progressBar.setVisibility(View.GONE);
-                listView.setAdapter(adapter);
+                subFolderActivity = new Intent(view.getContext(),SubFolder.class);
 
-                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                bundle = new Bundle();
+                bundle.putInt("number",0);
 
-                        String videoUrl = url.get(position);
-                        String videoTitle = list.get(position);
-
-                        intent = new Intent(view.getContext(),VideoPlayer.class);
-
-                        bundle = new Bundle();
-
-                        bundle.putString("list",videoTitle);
-                        bundle.putString("url",videoUrl);
-
-                        intent.putExtras(bundle);
-                        startActivity(intent);
-                    }
-                });
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                subFolderActivity.putExtras(bundle);
+                startActivity(subFolderActivity);
             }
         });
+
+        folder2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Toast.makeText(view.getContext(),"Folder 2",Toast.LENGTH_SHORT).show();
+
+                subFolderActivity = new Intent(view.getContext(),SubFolder.class);
+
+                bundle = new Bundle();
+                bundle.putInt("number",1);
+
+                subFolderActivity.putExtras(bundle);
+                startActivity(subFolderActivity);
+            }
+        });
+
         return view;
     }
+
+
 }

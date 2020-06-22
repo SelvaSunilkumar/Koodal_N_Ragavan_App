@@ -18,11 +18,21 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -38,10 +48,14 @@ public class TextTab extends Fragment {
     private ArrayList<String> url;
     private ArrayAdapter<String> adapter;
 
-    private FirebaseDatabase database;
-    private DatabaseReference reference;
+    private final String JSON_URL = "https://raw.githubusercontent.com/SelvaSunilkumar/jsonRepo/master/portalInfo.json";
+    private RequestQueue queue;
+    private JsonObjectRequest request;
+    private JSONArray jsonArray;
+    private JSONObject text;
+    private String text_name;
+    private String text_url;
 
-    public PdfLoader pdfLoader;
 
     public TextTab() {
         // Required empty public constructor
@@ -56,15 +70,63 @@ public class TextTab extends Fragment {
         listView = view.findViewById(R.id.listView);
         progressBar = view.findViewById(R.id.progress);
 
-        database = FirebaseDatabase.getInstance();
-        reference = database.getReference("Freetexts");
 
         list = new ArrayList<String>();
         url = new ArrayList<String>();
 
         adapter = new ArrayAdapter<String>(view.getContext(),R.layout.textinfo,R.id.portal,list);
 
-        reference.addValueEventListener(new ValueEventListener() {
+        queue = Volley.newRequestQueue(view.getContext());
+        request = new JsonObjectRequest(Request.Method.GET, JSON_URL, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        try {
+                            jsonArray = response.getJSONArray("freetext");
+
+                            progressBar.setVisibility(View.VISIBLE);
+                            for(int iterator = 0; iterator < jsonArray.length() ; iterator++)
+                            {
+                                text = jsonArray.getJSONObject(iterator);
+
+                                text_name = text.getString("name");
+                                text_url =  text.getString("url");
+
+                                list.add(text_name);
+                                url.add(text_url);
+                            }
+
+                            progressBar.setVisibility(View.GONE);
+                            listView.setAdapter(adapter);
+
+                            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                    Intent nextActivity = new Intent(view.getContext(),PdfViewer.class);
+
+                                    Bundle bundle = new Bundle();
+                                    bundle.putString("url",url.get(position));
+
+                                    nextActivity.putExtras(bundle);
+                                    startActivity(nextActivity);
+                                }
+                            });
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+                Toast.makeText(view.getContext(),"Please try again later",Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        queue.add(request);
+
+        /*reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
@@ -105,7 +167,7 @@ public class TextTab extends Fragment {
                         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
                         request.setDestinationInExternalFilesDir(context,DIRECTORY_DOWNLOADS,filename + fileExtension);
 
-                        downloadManager.enqueue(request);*/
+                        downloadManager.enqueue(request);
 
                     }
                 });
@@ -115,7 +177,7 @@ public class TextTab extends Fragment {
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        });
+        });*/
         return view;
     }
 }

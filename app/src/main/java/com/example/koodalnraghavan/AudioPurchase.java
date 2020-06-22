@@ -4,6 +4,7 @@ import android.database.Cursor;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.net.http.SslError;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -11,6 +12,10 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.HttpAuthHandler;
+import android.webkit.SslErrorHandler;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -35,6 +40,8 @@ public class AudioPurchase extends Fragment {
     private Button Download;
     private TextView PlayinSong;
 
+    private WebView webView;
+
 
     private ArrayList<String> list;
     private ArrayList<String> url;
@@ -46,21 +53,35 @@ public class AudioPurchase extends Fragment {
     private MediaPlayer mediaPlayer;
 
     @Override
-    public void onStop() {
-        super.onStop();
-        //mediaPlayer.release();
+    public void onPause() {
+
+        webView.goBack();
+        super.onPause();
+    }
+
+    @Override
+    public void onDestroyView() {
+
+        if (webView != null)
+        {
+            webView.removeAllViews();
+            super.onDestroyView();
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        if(webView != null)
+        {
+            webView.destroy();
+        }
+        super.onDestroy();
     }
 
     public AudioPurchase() {
         // Required empty public constructor
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        mediaPlayer.stop();
-        mediaPlayer.release();
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -69,12 +90,9 @@ public class AudioPurchase extends Fragment {
         View view = inflater.inflate(R.layout.fragment_audio_purchase, container, false);
 
         listView = view.findViewById(R.id.listView);
-        linearLayout = view.findViewById(R.id.controller);
+
         textView = view.findViewById(R.id.warner);
         progressBar = view.findViewById(R.id.progress);
-        Stop = view.findViewById(R.id.stop);
-        Pause = view.findViewById(R.id.pause);
-        PlayinSong = view.findViewById(R.id.playinginfo);
 
         list = new ArrayList<String>();
         url = new ArrayList<String>();
@@ -85,21 +103,22 @@ public class AudioPurchase extends Fragment {
 
         mediaPlayer = new MediaPlayer();
 
+        webView = view.findViewById(R.id.web);
+
+
         if(data.getCount() == 0)
         {
             textView.setVisibility(View.VISIBLE);
             textView.setText("No Purchases so for");
             Toast.makeText(view.getContext(),"No Purchases so Far",Toast.LENGTH_SHORT).show();
-            linearLayout.setVisibility(View.GONE);
+            //linearLayout.setVisibility(View.GONE);
         }
         else {
-            PlayinSong.setText("Select a Song to Play...");
-            PlayinSong.setSelected(true);
 
             //mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
 
             textView.setVisibility(View.GONE);
-            linearLayout.setVisibility(View.VISIBLE);
+            //linearLayout.setVisibility(View.VISIBLE);
 
             while (data.moveToNext())
             {
@@ -113,7 +132,26 @@ public class AudioPurchase extends Fragment {
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     //Toast.makeText(view.getContext(),list.get(position) + url.get(position),Toast.LENGTH_SHORT).show();
 
-                    try {
+                    webView.getSettings().setJavaScriptEnabled(true);
+                    webView.setHttpAuthUsernamePassword("https://tpvs.tce.edu/restricted/","myrealm","tpvsuser1","tpvs@userONE");
+
+                    webView.setWebViewClient(new WebViewClient()
+                    {
+                        @Override
+                        public void onReceivedHttpAuthRequest(WebView view, HttpAuthHandler handler, String host, String realm) {
+                            handler.proceed("tpvsuser1","tpvs@userONE");
+                        }
+
+                        @Override
+                        public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+                            handler.proceed();
+                        }
+                    });
+
+
+                    webView.loadUrl(url.get(position));
+
+                    /*try {
                         mediaPlayer.stop();
                         mediaPlayer.reset();
                         //mediaPlayer.setDataSource(view.getContext(), Uri.parse(url.get(position)));
@@ -162,7 +200,7 @@ public class AudioPurchase extends Fragment {
                             PlayinSong.setSelected(true);
                             return;
                         }
-                    });
+                    });*/
                 }
             });
         }

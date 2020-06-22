@@ -16,11 +16,21 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -34,9 +44,14 @@ public class BoyBabyName extends Fragment {
     //private ArrayList<String> url;
     private ArrayAdapter<String> adapter;
 
-    private BabyNamer namer;
-    private FirebaseDatabase database;
-    private DatabaseReference reference;
+
+    //********* VOLLEY LIBRARY ***********
+    private RequestQueue queue;
+    private final String JSON_URL = "https://raw.githubusercontent.com/SelvaSunilkumar/jsonRepo/master/portalInfo.json";
+    private JsonObjectRequest request;
+    private JSONArray jsonArray;
+    private JSONObject name;
+    private String babyName;
 
     public BoyBabyName() {
         // Required empty public constructor
@@ -55,34 +70,40 @@ public class BoyBabyName extends Fragment {
         //url = new ArrayList<String>();
         adapter = new ArrayAdapter<String>(view.getContext(),R.layout.baby_names,R.id.name,list);
 
-        database = FirebaseDatabase.getInstance();
-        reference = database.getReference("BabyNames").child("Boys");
+        //------------------------------------------------------------------------------------------
+        queue = Volley.newRequestQueue(view.getContext());
 
-        reference.addValueEventListener(new ValueEventListener() {
+        request = new JsonObjectRequest(Request.Method.GET, JSON_URL, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        try {
+                            jsonArray = response.getJSONArray("boysName");
+                            progressBar.setVisibility(View.VISIBLE);
+                            for(int iterator = 0 ; iterator < jsonArray.length() ; iterator++)
+                            {
+                                name = jsonArray.getJSONObject(iterator);
+
+                                babyName = name.getString("name");
+                                list.add(babyName);
+                            }
+
+                            listView.setAdapter(adapter);
+                            progressBar.setVisibility(View.GONE);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                namer = new BabyNamer();
-                progressBar.setVisibility(View.VISIBLE);
-
-                for(DataSnapshot ds:dataSnapshot.getChildren())
-                {
-                    namer = ds.getValue(BabyNamer.class);
-
-                    list.add(String.valueOf(namer.getName_tml()));
-                }
-
-                listView.setAdapter(adapter);
-                progressBar.setVisibility(View.GONE);
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
             }
         });
-
+        //------------------------------------------------------------------------------------------
+        queue.add(request);
         return view;
     }
 }

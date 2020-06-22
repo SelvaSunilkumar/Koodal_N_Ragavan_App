@@ -67,7 +67,7 @@ public class VideoFragment extends Fragment {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     //Toast.makeText(view.getContext(),list.get(position) + url.get(position),Toast.LENGTH_SHORT).show();
-                    Intent nextActivity = new Intent(view.getContext(),VideoPlayer.class);
+                    Intent nextActivity = new Intent(view.getContext(),WebVideo.class);
 
                     Bundle bundle = new Bundle();
                     bundle.putString("list",list.get(position));

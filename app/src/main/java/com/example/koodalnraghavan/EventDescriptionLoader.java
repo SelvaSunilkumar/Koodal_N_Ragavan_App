@@ -3,7 +3,7 @@ package com.example.koodalnraghavan;
 public class EventDescriptionLoader {
 
     private String month;
-    private long month_tml;
+    private String month_tml;
     private String day;
     private String thidhi;
     private String star;
@@ -13,7 +13,7 @@ public class EventDescriptionLoader {
     {
     }
 
-    public EventDescriptionLoader(String month, long month_tml, String day, String thidhi, String star, String event) {
+    public EventDescriptionLoader(String month, String month_tml, String day, String thidhi, String star, String event) {
         this.month = month;
         this.month_tml = month_tml;
         this.day = day;
@@ -30,11 +30,11 @@ public class EventDescriptionLoader {
         this.month = month;
     }
 
-    public long getMonth_tml() {
+    public String getMonth_tml() {
         return month_tml;
     }
 
-    public void setMonth_tml(long month_tml) {
+    public void setMonth_tml(String month_tml) {
         this.month_tml = month_tml;
     }
 

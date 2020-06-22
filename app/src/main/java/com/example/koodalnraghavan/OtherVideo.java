@@ -13,12 +13,23 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -32,14 +43,16 @@ public class OtherVideo extends Fragment {
     private ArrayList<String> url;
     private ArrayAdapter<String> adapter;
 
-    private FirebaseDatabase database;
-    private DatabaseReference reference;
-
-    public PdfLoader pdfLoader;
-
     private Bundle bundle;
     private Intent intent;
 
+    private String JSON_URL = "https://raw.githubusercontent.com/SelvaSunilkumar/jsonRepo/master/portalInfo.json";
+    private JsonObjectRequest request;
+    private RequestQueue queue;
+    private JSONArray jsonArray;
+    private JSONObject video;
+    private String videoName;
+    private String videoUrl;
 
     public OtherVideo() {
         // Required empty public constructor
@@ -54,15 +67,66 @@ public class OtherVideo extends Fragment {
         listView = view.findViewById(R.id.listView);
         progressBar = view.findViewById(R.id.progress);
 
-        database = FirebaseDatabase.getInstance();
-        reference = database.getReference("DailyVideo");
-
         list = new ArrayList<String>();
         url = new ArrayList<String>();
 
         adapter = new ArrayAdapter<String >(view.getContext(),R.layout.musicinfo,R.id.portal,list);
 
-        reference.addValueEventListener(new ValueEventListener() {
+        queue = Volley.newRequestQueue(view.getContext());
+        request = new JsonObjectRequest(Request.Method.GET, JSON_URL, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        try {
+                            jsonArray = response.getJSONArray("othervideo");
+                            progressBar.setVisibility(View.VISIBLE);
+
+                            for(int iterator = 0 ; iterator < jsonArray.length() ; iterator ++)
+                            {
+                                video = jsonArray.getJSONObject(iterator);
+
+                                videoName = video.getString("name");
+                                videoUrl = video.getString("url");
+
+                                list.add(videoName);
+                                url.add(videoUrl);
+                            }
+
+                            progressBar.setVisibility(View.GONE);
+                            listView.setAdapter(adapter);
+                            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                    String videoUrl = url.get(position);
+                                    String videoTitle = list.get(position);
+
+                                    intent = new Intent(view.getContext(),VideoPlayer.class);
+
+                                    bundle = new Bundle();
+
+                                    bundle.putString("list",videoTitle);
+                                    bundle.putString("url",videoUrl);
+
+                                    intent.putExtras(bundle);
+                                    startActivity(intent);
+                                }
+                            });
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+                Toast.makeText(view.getContext(),"Please try again later ",Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        /*reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
@@ -80,18 +144,7 @@ public class OtherVideo extends Fragment {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                        String videoUrl = url.get(position);
-                        String videoTitle = list.get(position);
 
-                        intent = new Intent(view.getContext(),VideoPlayer.class);
-
-                        bundle = new Bundle();
-
-                        bundle.putString("list",videoTitle);
-                        bundle.putString("url",videoUrl);
-
-                        intent.putExtras(bundle);
-                        startActivity(intent);
                     }
                 });
             }
@@ -100,7 +153,9 @@ public class OtherVideo extends Fragment {
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        });
+        });*/
+
+        queue.add(request);
         return  view;
     }
 }

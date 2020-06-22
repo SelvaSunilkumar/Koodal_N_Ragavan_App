@@ -3,27 +3,34 @@ package com.example.koodalnraghavan;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.MediaController;
 import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.ExoPlayerFactory;
+import com.google.android.exoplayer2.LoadControl;
 import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
@@ -37,6 +44,7 @@ import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.trackselection.TrackSelector;
+import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.BandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
@@ -51,8 +59,7 @@ public class JodhidamContactVideoPLayer extends AppCompatActivity {
     private SimpleExoPlayer exoPlayer;
     private TextView currentlyPlaying;
     private Button DownloadVideo;
-    private TextView phoneNumber;
-    private TextView websiteLink;
+    private TextView ContactUs;
     private ProgressBar progressBar;
 
     private Intent intent;
@@ -67,11 +74,14 @@ public class JodhidamContactVideoPLayer extends AppCompatActivity {
     private String ContactNumber;
     private String WebsiteUrl;
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        exoPlayer.stop();
-    }
+    private SimpleExoPlayer simpleExoPlayerView;
+    //private ProgressBar progressBar;
+    private ImageView fullscreen;
+    private PlayerView playerView;
+    LinearLayout layout;
+
+    private boolean flag = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,12 +91,10 @@ public class JodhidamContactVideoPLayer extends AppCompatActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         //videoView = findViewById(R.id.videoplayer);
-        exoPlayerView = findViewById(R.id.exoVideoPlayer);
-        currentlyPlaying = findViewById(R.id.playingNow);
         DownloadVideo = findViewById(R.id.download);
-        phoneNumber = findViewById(R.id.phoneNumber);
-        websiteLink = findViewById(R.id.websiteLink);
         progressBar = findViewById(R.id.progress);
+        ContactUs = findViewById(R.id.contact);
+        currentlyPlaying = findViewById(R.id.playingInfo);
 
         ContactNumber = "9894063660";
         WebsiteUrl = "http://www.kavignakoodalnraghavan.com";
@@ -96,119 +104,120 @@ public class JodhidamContactVideoPLayer extends AppCompatActivity {
         videoLink = bundle.getString("url");
         videoName = bundle.getString("list");
 
-        currentlyPlaying.setText("Currently Playing : " + videoName);
-        currentlyPlaying.setSelected(true);
+        playerView = findViewById(R.id.player);
+        progressBar = findViewById(R.id.progress);
+        fullscreen = findViewById(R.id.fullscreen);
+        layout = findViewById(R.id.customer);
 
-        uri = Uri.parse(videoLink);
+        currentlyPlaying.setText(videoName);
 
-        progressBar.setVisibility(View.VISIBLE);
-        try {
-            BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
-            TrackSelector trackSelector = new DefaultTrackSelector(new AdaptiveTrackSelection.Factory(bandwidthMeter));
-            exoPlayer = ExoPlayerFactory.newSimpleInstance(this,trackSelector);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-            DefaultHttpDataSourceFactory defaultHttpDataSourceFactory = new DefaultHttpDataSourceFactory(videoName);
-            ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
-            MediaSource source = new ExtractorMediaSource(uri,defaultHttpDataSourceFactory,extractorsFactory,null,null);
-            exoPlayerView.setPlayer(exoPlayer);
-            exoPlayer.prepare(source);
-            exoPlayer.setPlayWhenReady(true);
-            exoPlayer.addListener(new Player.EventListener() {
-                @Override
-                public void onTimelineChanged(Timeline timeline, @Nullable Object manifest, int reason) {
+        //Uri videoUrl = Uri.parse("https://firebasestorage.googleapis.com/v0/b/database-97af9.appspot.com/o/Jothidam%2Fmoodiya%20aalayanga%20yendru%20thirakkum.mp4?alt=media&token=2451ae2b-0912-4929-9ef2-4848e941edca");
 
-                }
+        Uri videoUrl = Uri.parse(videoLink);
 
-                @Override
-                public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
+        LoadControl loadControl = new DefaultLoadControl();
 
-                }
+        BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
+        TrackSelector trackSelector = new DefaultTrackSelector(new AdaptiveTrackSelection.Factory(bandwidthMeter));
 
-                @Override
-                public void onLoadingChanged(boolean isLoading) {
+        simpleExoPlayerView = ExoPlayerFactory.newSimpleInstance(this,trackSelector,loadControl);
 
-                }
+        DefaultHttpDataSourceFactory factory = new DefaultHttpDataSourceFactory("exoplayer_video");
 
-                @Override
-                public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+        ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
 
-                    if(playWhenReady && playbackState == ExoPlayer.STATE_READY)
-                        progressBar.setVisibility(View.GONE);
-                    if(playWhenReady && playbackState == ExoPlayer.STATE_BUFFERING)
-                        progressBar.setVisibility(View.VISIBLE);
-                    if(playWhenReady && playbackState == ExoPlayer.STATE_ENDED)
-                        progressBar.setVisibility(View.GONE);
+        MediaSource mediaSource = new ExtractorMediaSource(videoUrl,factory,extractorsFactory,null,null);
 
-                }
+        playerView.setPlayer(simpleExoPlayerView);
 
-                @Override
-                public void onRepeatModeChanged(int repeatMode) {
+        playerView.setKeepScreenOn(true);
+        simpleExoPlayerView.prepare(mediaSource);
+        simpleExoPlayerView.setPlayWhenReady(true);
 
-                }
-
-                @Override
-                public void onShuffleModeEnabledChanged(boolean shuffleModeEnabled) {
-
-                }
-
-                @Override
-                public void onPlayerError(ExoPlaybackException error) {
-
-                }
-
-                @Override
-                public void onPositionDiscontinuity(int reason) {
-
-                }
-
-                @Override
-                public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
-
-                }
-
-                @Override
-                public void onSeekProcessed() {
-
-                }
-            });
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-
-        /*mediaController = new MediaController(this);
-
-        currentlyPlaying.setText("Playing Now : " + videoName);
-        currentlyPlaying.setSelected(true);
-        mediaController.setAnchorView(videoView);
-        videoView.setMediaController(mediaController);
-        progressBar.setVisibility(View.VISIBLE);
-        videoView.setVideoURI(uri);
-        videoView.start();
-        videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+        simpleExoPlayerView.addListener(new Player.EventListener() {
             @Override
-            public void onPrepared(MediaPlayer mp) {
+            public void onTimelineChanged(Timeline timeline, Object manifest, int reason) {
 
-                progressBar.setVisibility(View.GONE);
-
-                mp.setOnInfoListener(new MediaPlayer.OnInfoListener() {
-                    @Override
-                    public boolean onInfo(MediaPlayer mp, int what, int extra) {
-
-                        if(what == MediaPlayer.MEDIA_INFO_BUFFERING_START)
-                            progressBar.setVisibility(View.VISIBLE);
-                        if(what == MediaPlayer.MEDIA_INFO_BUFFERING_END)
-                            progressBar.setVisibility(View.GONE);
-                        if(videoView.isPlaying())
-                            progressBar.setVisibility(View.GONE);
-                        if(!videoView.isPlaying())
-                            progressBar.setVisibility(View.VISIBLE);
-                        return false;
-                    }
-                });
             }
-        });*/
+
+            @Override
+            public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
+
+            }
+
+            @Override
+            public void onLoadingChanged(boolean isLoading) {
+
+            }
+
+            @Override
+            public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+
+                if(playbackState == Player.STATE_BUFFERING)
+                {
+                    progressBar.setVisibility(View.VISIBLE);
+                }
+                else if(playbackState == Player.STATE_READY)
+                {
+                    progressBar.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onRepeatModeChanged(int repeatMode) {
+
+            }
+
+            @Override
+            public void onShuffleModeEnabledChanged(boolean shuffleModeEnabled) {
+
+            }
+
+            @Override
+            public void onPlayerError(ExoPlaybackException error) {
+
+            }
+
+            @Override
+            public void onPositionDiscontinuity(int reason) {
+
+            }
+
+            @Override
+            public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
+
+            }
+
+            @Override
+            public void onSeekProcessed() {
+
+            }
+        });
+
+        fullscreen.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("SourceLockedOrientationActivity")
+            @Override
+            public void onClick(View v) {
+
+                if(flag)
+                {
+                    layout.setVisibility(View.VISIBLE);
+                    fullscreen.setImageDrawable(getResources().getDrawable(R.drawable.fullscreen));
+                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                    flag = false;
+                }
+                else
+                {
+                    layout.setVisibility(View.GONE);
+                    fullscreen.setImageDrawable(getResources().getDrawable(R.drawable.smallscreen));
+                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+                    flag = true;
+                }
+            }
+        });
+
 
         DownloadVideo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -228,57 +237,28 @@ public class JodhidamContactVideoPLayer extends AppCompatActivity {
             }
         });
 
-        phoneNumber.setOnClickListener(new View.OnClickListener() {
+        ContactUs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog = new AlertDialog.Builder(JodhidamContactVideoPLayer.this);
-                dialog.setMessage("do you wish to call : " + ContactNumber);
-                dialog.setTitle("Redirecting ...");
-
-                dialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Intent callThem = new Intent(Intent.ACTION_DIAL);
-                        callThem.setData(Uri.parse("tel:" + ContactNumber));
-                        startActivity(callThem);
-                    }
-                });
-
-                dialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        return;
-                    }
-                });
-                alertDialog = dialog.create();
-                alertDialog.show();
+                Intent nextActivity = new Intent(JodhidamContactVideoPLayer.this, ContactUs.class);
+                startActivity(nextActivity);
             }
         });
+    }
 
-        websiteLink.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog = new AlertDialog.Builder(JodhidamContactVideoPLayer.this);
-                dialog.setMessage("Website : " + WebsiteUrl );
-                dialog.setTitle("Redirecting ...");
-                dialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Uri uri = Uri.parse(WebsiteUrl);
-                        Intent launchBrowser = new Intent(Intent.ACTION_VIEW,uri);
-                        startActivity(launchBrowser);
-                    }
-                });
-                dialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        return;
-                    }
-                });
+    @Override
+    protected void onPause() {
+        super.onPause();
 
-                alertDialog = dialog.create();
-                alertDialog.show();
-            }
-        });
+        simpleExoPlayerView.setPlayWhenReady(false);
+        simpleExoPlayerView.getPlaybackState();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+
+        simpleExoPlayerView.setPlayWhenReady(true);
+        simpleExoPlayerView.getPlaybackState();
     }
 }

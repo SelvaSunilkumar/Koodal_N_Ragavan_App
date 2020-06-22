@@ -25,6 +25,12 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
@@ -33,6 +39,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.zip.Inflater;
@@ -61,6 +71,14 @@ public class jodhidam  extends AppCompatActivity implements NavigationView.OnNav
     private ArrayAdapter<String> adapter;
 
     private Azhwarmusic1 azhwarmusic;
+
+    private final String JSON_URL = "https://raw.githubusercontent.com/SelvaSunilkumar/jsonRepo/master/portalInfo.json";
+    private RequestQueue queue;
+    private JsonObjectRequest request;
+    private JSONArray jsonArray;
+    private JSONObject video;
+    private String video_name;
+    private String video_url;
 
     @SuppressLint("RestrictedApi")
     @Override
@@ -105,7 +123,57 @@ public class jodhidam  extends AppCompatActivity implements NavigationView.OnNav
             }
         });
 
-        reference.addValueEventListener(new ValueEventListener() {
+        queue = Volley.newRequestQueue(jodhidam.this);
+        request = new JsonObjectRequest(Request.Method.GET, JSON_URL, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            jsonArray = response.getJSONArray("jodhidam");
+
+                            progressBar.setVisibility(View.VISIBLE);
+                            for(int iterator = 0 ;iterator < jsonArray.length() ; iterator++)
+                            {
+                                video = jsonArray.getJSONObject(iterator);
+
+                                video_name = video.getString("title");
+                                video_url = video.getString("url");
+
+                                list.add(video_name);
+                                url.add(video_url);
+                            }
+                            listView.setAdapter(adapter);
+                            progressBar.setVisibility(View.GONE);
+
+                            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                    Intent videoActivity = new Intent(jodhidam.this,JodhidamContactVideoPLayer.class);
+
+                                    Bundle bundle = new Bundle();
+                                    bundle.putString("list",list.get(position));
+                                    bundle.putString("url",url.get(position));
+
+                                    videoActivity.putExtras(bundle);
+                                    startActivity(videoActivity);
+                                }
+                            });
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(),"Please try again later",Toast.LENGTH_SHORT).show();
+                error.printStackTrace();
+            }
+        });
+
+        queue.add(request);
+
+        /*reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
@@ -144,7 +212,7 @@ public class jodhidam  extends AppCompatActivity implements NavigationView.OnNav
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        });
+        });*/
 
     }
     @Override

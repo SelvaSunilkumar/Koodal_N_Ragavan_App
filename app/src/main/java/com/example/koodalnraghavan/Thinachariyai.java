@@ -10,18 +10,28 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.app.DownloadManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CalendarView;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.ExoPlayerFactory;
@@ -49,9 +59,16 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+
+import static android.os.Environment.DIRECTORY_DOWNLOADS;
 
 public class Thinachariyai extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -79,6 +96,9 @@ public class Thinachariyai extends AppCompatActivity implements NavigationView.O
     private TextView star;
     private TextView eventTextView;
     private TextView event;
+    private TextView link;
+    private ImageView pointer;
+    private View seperator;
 
     private String dateSelected;
     private final String LoaderString = "Loading...";
@@ -97,6 +117,23 @@ public class Thinachariyai extends AppCompatActivity implements NavigationView.O
     private AlertDialog.Builder dialog;
     private AlertDialog alertDialog;
     private Dialog EventVideoPlayer;
+
+    private final String JSON_URL = "https://raw.githubusercontent.com/SelvaSunilkumar/jsonRepo/master/portalInfo.json";
+    private RequestQueue queue;
+    private JsonObjectRequest request;
+    private JSONArray jsonArray;
+    private JSONObject object;
+    private boolean flag;
+    private String getDate;
+
+    private Dialog music;
+    private ImageView playAudio;
+    private ImageView downloadAudio;
+    private TextView Info;
+    private ProgressBar progressBar1;
+    private boolean flagPlayer = false;
+    private MediaPlayer mediaPlayer;
+
 
     @SuppressLint("RestrictedApi")
     @Override
@@ -125,6 +162,9 @@ public class Thinachariyai extends AppCompatActivity implements NavigationView.O
         star = findViewById(R.id.startText);
         eventTextView = findViewById(R.id.event);
         event = findViewById(R.id.eventText);
+        link = findViewById(R.id.link);
+        pointer = findViewById(R.id.pointer);
+        seperator = findViewById(R.id.seperator);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
@@ -169,6 +209,13 @@ public class Thinachariyai extends AppCompatActivity implements NavigationView.O
         starTextView.setVisibility(View.GONE);
         eventTextView.setVisibility(View.GONE);
         event.setVisibility(View.GONE);
+        link.setVisibility(View.GONE);
+        pointer.setVisibility(View.GONE);
+        seperator.setVisibility(View.GONE);
+
+        mediaPlayer = new MediaPlayer();
+
+        queue = Volley.newRequestQueue(Thinachariyai.this);
 
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
@@ -189,6 +236,7 @@ public class Thinachariyai extends AppCompatActivity implements NavigationView.O
                 dateSelected = dayOfMonth + "-" + (month + 1) + "-" + year;
                 DateText.setText(dateSelected);
 
+                //dateSelector.setVisibility(View.GONE);
                 DescriptionText.setVisibility(View.VISIBLE);
                 Description.setVisibility(View.VISIBLE);
                 dayTextView.setVisibility(View.VISIBLE);
@@ -199,6 +247,7 @@ public class Thinachariyai extends AppCompatActivity implements NavigationView.O
                 starTextView.setVisibility(View.VISIBLE);
                 eventTextView.setVisibility(View.VISIBLE);
                 event.setVisibility(View.VISIBLE);
+                seperator.setVisibility(View.VISIBLE);
 
                 Description.setText(LoaderString);
                 dayText.setText(LoaderString);
@@ -206,9 +255,169 @@ public class Thinachariyai extends AppCompatActivity implements NavigationView.O
                 star.setText(LoaderString);
                 event.setText(LoaderString);
 
+                flag = false;
+
+                request = new JsonObjectRequest(Request.Method.GET, JSON_URL, null, new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+
+                                try {
+                                    jsonArray = response.getJSONArray("dhinachariyai");
+
+                                    for (int iterator = 0; iterator < jsonArray.length() ; iterator++)
+                                    {
+                                        object = jsonArray.getJSONObject(iterator);
+
+                                        getDate = object.getString("date");
+                                        if(getDate.equals(dateSelected))
+                                        {
+                                            dateSelector.setText(object.getString("heading"));
+                                            DescriptionText.setText(object.getString("tml_month") + " : ");
+                                            Description.setText(String.valueOf(object.getInt("tml_day")));
+                                            dayText.setText(object.getString("day"));
+                                            thidhi.setText(object.getString("thidhi"));
+                                            event.setText(object.getString("event"));
+                                            star.setText(object.getString("star"));
+
+                                            String portalUrl = object.getString("url");
+
+                                            if (!object.getString("url").equals("null"))
+                                            {
+                                                pointer.setVisibility(View.VISIBLE);
+                                                link.setVisibility(View.VISIBLE);
+
+                                                link.setOnClickListener(new View.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(View v) {
+                                                        Toast.makeText(getApplicationContext(),"Please wait",Toast.LENGTH_SHORT).show();
+
+                                                        music = new Dialog(view.getContext());
+                                                        music.setContentView(R.layout.music_player);
+                                                        music.show();
+
+                                                        playAudio = music.findViewById(R.id.pausePlay);
+                                                        downloadAudio = music.findViewById(R.id.download);
+                                                        progressBar1 = music.findViewById(R.id.progress);
+                                                        Info = music.findViewById(R.id.playingNow);
+
+                                                       /* Info.setText(object.getString());
+                                                        Info.setSelected(true);*/
+                                                        Info.setVisibility(View.GONE);
 
 
-                reference.addListenerForSingleValueEvent(new ValueEventListener() {
+
+                                                        try {
+                                                            mediaPlayer.stop();
+                                                            mediaPlayer.reset();
+                                                            mediaPlayer.setDataSource(portalUrl);
+                                                            mediaPlayer.prepare();
+                                                            Toast.makeText(view.getContext(),"Play",Toast.LENGTH_SHORT).show();
+                                                            mediaPlayer.start();
+                                                        } catch (IOException e) {
+                                                            e.printStackTrace();
+                                                        }
+
+                                                        mediaPlayer.setOnInfoListener(new MediaPlayer.OnInfoListener() {
+                                                            @Override
+                                                            public boolean onInfo(MediaPlayer mp, int what, int extra) {
+
+                                                                if (what == MediaPlayer.MEDIA_INFO_BUFFERING_START)
+                                                                {
+                                                                    progressBar1.setVisibility(View.VISIBLE);
+                                                                }
+                                                                else if (what == MediaPlayer.MEDIA_INFO_BUFFERING_END)
+                                                                {
+                                                                    progressBar1.setVisibility(View.GONE);
+                                                                }
+                                                                return false;
+                                                            }
+                                                        });
+                                                        playAudio.setOnClickListener(new View.OnClickListener() {
+                                                            @Override
+                                                            public void onClick(View v) {
+                                                                if(!flag)
+                                                                {
+                                                                    playAudio.setImageDrawable(getResources().getDrawable(R.drawable.play_er));
+                                                                    flagPlayer = true;
+                                                                    mediaPlayer.pause();
+                                                                }
+                                                                else
+                                                                {
+                                                                    playAudio.setImageDrawable(getResources().getDrawable(R.drawable.pause_music));
+                                                                    flagPlayer = false;
+                                                                    mediaPlayer.start();
+                                                                }
+                                                            }
+                                                        });
+
+                                                        downloadAudio.setVisibility(View.GONE);
+
+                                                        /*downloadAudio.setOnClickListener(new View.OnClickListener() {
+                                                            @Override
+                                                            public void onClick(View v) {
+                                                                Toast.makeText(getContext(),"Downloading : " + list.get(position),Toast.LENGTH_SHORT).show();
+
+                                                                Uri uri = Uri.parse(portalUrl);
+
+                                                                DownloadManager downloadManager = (DownloadManager) view.getContext().getSystemService(Context.DOWNLOAD_SERVICE);
+                                                                DownloadManager.Request request = new DownloadManager.Request(uri);
+
+                                                                Context context = view.getContext();
+                                                                String fileename = list.get(position);
+                                                                String fileExtension = ".mp3";
+
+                                                                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE);
+                                                                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+                                                                request.setDestinationInExternalFilesDir(context,DIRECTORY_DOWNLOADS,fileename + fileExtension);
+
+                                                                downloadManager.enqueue(request);
+                                                            }
+                                                        });*/
+
+                                                        music.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                                                            @Override
+                                                            public void onDismiss(DialogInterface dialog) {
+                                                                mediaPlayer.stop();
+                                                            }
+                                                        });
+                                                    }
+                                                });
+                                            }
+                                            else {
+                                                pointer.setVisibility(View.GONE);
+                                                link.setVisibility(View.GONE);
+                                            }
+
+                                            flag = true;
+
+                                        }
+                                    }
+
+                                    if(!flag)
+                                    {
+                                        dateSelector.setText("");
+                                        Description.setText(message);
+                                        dayText.setText(message);
+                                        thidhi.setText(message);
+                                        star.setText(message);
+                                        event.setText(message);
+                                        pointer.setVisibility(View.GONE);
+                                        link.setVisibility(View.GONE);
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                });
+
+                queue.add(request);
+
+                /*reference.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
@@ -226,7 +435,7 @@ public class Thinachariyai extends AppCompatActivity implements NavigationView.O
                                     descriptionLoader = dataSnapshot.getValue(EventDescriptionLoader.class);
 
                                     DescriptionText.setText(descriptionLoader.getMonth() + " : ");
-                                    Description.setText(String.valueOf(descriptionLoader.getMonth_tml()));
+                                    Description.setText(descriptionLoader.getMonth_tml());
                                     dayText.setText(descriptionLoader.getDay());
                                     thidhi.setText(descriptionLoader.getThidhi());
                                     //event.setText(descriptionLoader.getEvent());
