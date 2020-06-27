@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:id="@+id/drawer"
     tools:openDrawer="end"
-    tools:context=".ContactUs">
+    tools:context="tce.education.koodalnraghavan.ContactUs">
 
     <LinearLayout
         android:layout_width="match_parent"

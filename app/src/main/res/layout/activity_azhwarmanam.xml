@@ -9,7 +9,7 @@
     android:layout_height="match_parent"
     android:id="@+id/drawer"
     tools:openDrawer="end"
-    tools:context=".Azhwarmanam">
+    tools:context="tce.education.koodalnraghavan.Azhwarmanam">
 
 
     <LinearLayout

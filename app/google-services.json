@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:93679173888:android:644f300d6849fe3550b3e5",
         "android_client_info": {
-          "package_name": "com.example.koodalnraghavan"
+          "package_name": "tce.education.koodalnraghavan"
         }
       },
       "oauth_client": [
@@ -18,7 +18,7 @@
           "client_id": "93679173888-crsfl8e5268etbk51h089l2qfl8vn3md.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.koodalnraghavan",
+            "package_name": "tce.education.koodalnraghavan",
             "certificate_hash": "8325c378e0415075355b55e3d2f5aa1afe227024"
           }
         },
