@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/MusicPlayerSheet"
+    android:background="#fff"
+    android:orientation="vertical"
+    app:layout_behavior="@string/bottom_sheet_behavior"
+    app:behavior_peekHeight="?actionBarSize"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:background="@color/icon_background"
+        android:paddingEnd="8dp"
+        android:paddingStart="8dp">
+
+        <ToggleButton
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:text=""
+            android:textOn=""
+            android:textOff=""
+            android:layout_centerVertical="true"
+            android:id="@+id/toggleMusic"
+            android:background="@drawable/expand_or_not"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"/>
+        <LinearLayout
+            android:weightSum="1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="30dp">
+
+            <TextView
+                android:id="@+id/playingInfo"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="Select a Song to Play"
+                android:textSize="18sp"
+                android:textStyle="bold"/>
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:clickable="true"
+                android:background="?android:selectableItemBackground"
+                android:id="@+id/topPlayPause"
+                android:layout_width="30dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/pause_music"
+                app:civ_border_width="2dp"/>
+        </LinearLayout>
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="25dp">
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="250dp"
+                android:layout_height="250dp"
+                android:src="@drawable/mp3" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <TextView
+                    android:id="@+id/currentTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="00.00" />
+
+                <SeekBar
+                    android:id="@+id/seekBar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/totalTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:text="00.00" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/rewindId"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginRight="10dp"
+                    android:background="?android:selectableItemBackground"
+                    android:clickable="true"
+                    android:src="@drawable/rewind_music"
+                    app:civ_border_color="@color/ic_launcher_background"
+                    app:civ_border_width="2dp"
+                    app:civ_circle_background_color="@color/ic_launcher_background" />
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/playPause"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:background="?android:selectableItemBackground"
+                    android:clickable="true"
+                    android:src="@drawable/pause_music"
+                    app:civ_border_color="@color/ic_launcher_background"
+                    app:civ_border_width="2dp"
+                    app:civ_circle_background_color="@color/ic_launcher_background" />
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/forwardId"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="?android:selectableItemBackground"
+                    android:clickable="true"
+                    android:src="@drawable/forward_music"
+                    app:civ_border_color="@color/ic_launcher_background"
+                    app:civ_border_width="2dp"
+                    app:civ_circle_background_color="@color/ic_launcher_background" />
+
+            </LinearLayout>
+
+            <ProgressBar
+                android:id="@+id/musicProgress"
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|left"
+                android:layout_marginTop="10dp"
+                android:indeterminate="true"
+                android:progress="50"
+                android:progressTint="@color/colorAccent"
+                android:secondaryProgressTint="@color/colorPrimary" />
+
+            <Button
+                android:id="@+id/downloadId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:drawableLeft="@drawable/download_icon"
+                android:drawablePadding="15dp"
+                android:padding="15dp"
+                android:text="Download"
+                android:textAllCaps="false"
+                android:textSize="18sp" />
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>
