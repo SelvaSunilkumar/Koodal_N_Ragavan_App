@@ -10,14 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import com.example.koodalnraghavan.R;
-
-
-/**
- * A simple {@link Fragment} subclass.
- * Use the  factory method to
- * create an instance of this fragment.
- */
 public class Musictab extends Fragment {
 
     private LinearLayout folder1;
@@ -27,7 +19,6 @@ public class Musictab extends Fragment {
     private Bundle bundle;
 
     public Musictab() {
-        // Required empty public constructor
     }
 
 
@@ -43,7 +34,6 @@ public class Musictab extends Fragment {
         folder1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Toast.makeText(view.getContext(),"Folder 1",Toast.LENGTH_SHORT).show();
 
                 subFolderActivity = new Intent(view.getContext(),SubFolder.class);
 
@@ -58,7 +48,6 @@ public class Musictab extends Fragment {
         folder2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Toast.makeText(view.getContext(),"Folder 2",Toast.LENGTH_SHORT).show();
 
                 subFolderActivity = new Intent(view.getContext(),SubFolder.class);
 

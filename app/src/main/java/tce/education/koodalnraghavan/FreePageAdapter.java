@@ -23,11 +23,6 @@ public class FreePageAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
 
-        //FreeCallerTone freeCallerTone = new FreeCallerTone();
-        //TextTab textTab = new TextTab();
-
-        //View view;
-
         switch (position)
         {
             case 0:

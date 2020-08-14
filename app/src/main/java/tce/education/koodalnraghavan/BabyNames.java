@@ -15,13 +15,21 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
-import com.example.koodalnraghavan.R;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
+
+import java.util.ArrayList;
 
 public class BabyNames extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -43,6 +51,14 @@ public class BabyNames extends AppCompatActivity implements NavigationView.OnNav
     private AlertDialog.Builder dialog;
     private AlertDialog alertDialog;
 
+    private LinearLayout inforLayout;
+    private BottomSheetBehavior bottomSheetBehavior;
+    private ListView infoListView;
+    private ToggleButton informToggleButton;
+    private ArrayList<String> informList;
+    private ArrayList<String> informUrl;
+    private ArrayAdapter<String> informAdapter;
+
     @SuppressLint("RestrictedApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +77,66 @@ public class BabyNames extends AppCompatActivity implements NavigationView.OnNav
         drawerLayout = findViewById(R.id.drawer);
         toolbar = findViewById(R.id.toolbar);
         navigationView = findViewById(R.id.navigationbar);
+
+        inforLayout = findViewById(R.id.InformbottomSheet);
+        bottomSheetBehavior = BottomSheetBehavior.from(inforLayout);
+        infoListView = findViewById(R.id.infoLister);
+        informToggleButton = findViewById(R.id.toogleInformation);
+
+        informToggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked)
+                {
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                }
+                else {
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                }
+            }
+        });
+
+        bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View view, int i) {
+                if (i == BottomSheetBehavior.STATE_EXPANDED)
+                {
+                    informToggleButton.setChecked(true);
+                }
+                if (i == BottomSheetBehavior.STATE_COLLAPSED)
+                {
+                    informToggleButton.setChecked(false);
+                }
+            }
+
+            @Override
+            public void onSlide(@NonNull View view, float v) {
+
+            }
+        });
+
+        informList = new ArrayList<>();
+        informUrl = new ArrayList<>();
+        informAdapter = new ArrayAdapter<>(BabyNames.this,R.layout.pdfinfo,R.id.portal,informList);
+
+        informList.add("Baby Name - English");
+        informList.add("Baby Name - Tamil");
+        informUrl.add("https://tpvs.tce.edu/unrestricted/description/Baby%20Name%20Front%20Page-Eng.pdf");
+        informUrl.add("https://tpvs.tce.edu/unrestricted/description/Baby%20Name%20Front%20Page-Tam.pdf");
+
+        infoListView.setAdapter(informAdapter);
+        infoListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                Intent intent = new Intent(BabyNames.this,PdfViewer.class);
+                Bundle bundle = new Bundle();
+
+                bundle.putString("url",informUrl.get(position));
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
@@ -109,34 +185,29 @@ public class BabyNames extends AppCompatActivity implements NavigationView.OnNav
             }
         });
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-        //iewPager.addOnAdapterChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch(menuItem.getItemId()) {
             case R.id.home:
-                //Toast.makeText(getApplicationContext(), "Home", Toast.LENGTH_SHORT).show();
                 nextActivity = new Intent(this, home.class);
                 startActivity(nextActivity);
                 finish();
                 break;
             case R.id.aboutus:
-                //Toast.makeText(getApplicationContext(), "About Us", Toast.LENGTH_SHORT).show();
                 nextActivity = new Intent(this, AboutUs.class);
                 startActivity(nextActivity);
                 break;
-            case R.id.others:
-                nextActivity = new Intent(this,Others.class);
+            case R.id.events:
+                nextActivity = new Intent(this,Events.class);
                 startActivity(nextActivity);
                 break;
             case R.id.Gallery:
-                //Toast.makeText(getApplicationContext(), "Gallery", Toast.LENGTH_SHORT).show();
                 nextActivity = new Intent(this,GalleryViewer.class);
                 startActivity(nextActivity);
                 break;
             case R.id.freedownload:
-                //Toast.makeText(getApplicationContext(), "Free Downloads", Toast.LENGTH_SHORT).show();
                 nextActivity = new Intent(this, FreeDownload.class);
                 startActivity(nextActivity);
                 break;
@@ -145,7 +216,6 @@ public class BabyNames extends AppCompatActivity implements NavigationView.OnNav
                 startActivity(nextActivity);
                 break;
             case R.id.contact:
-               // Toast.makeText(getApplicationContext(), "Contact", Toast.LENGTH_SHORT).show();
                 nextActivity = new Intent(this, ContactUs.class);
                 startActivity(nextActivity);
                 break;

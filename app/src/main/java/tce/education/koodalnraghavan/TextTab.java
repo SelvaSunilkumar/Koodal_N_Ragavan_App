@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,19 +15,21 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.koodalnraghavan.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class TextTab extends Fragment {
@@ -38,7 +41,7 @@ public class TextTab extends Fragment {
     private ArrayList<String> url;
     private ArrayAdapter<String> adapter;
 
-    private final String JSON_URL = "https://raw.githubusercontent.com/SelvaSunilkumar/jsonRepo/master/portalInfo.json";
+    private final String JSON_URL = "https://tpvs.tce.edu/restricted/koodal_app/Koodal_raghavan_json.php";
     private RequestQueue queue;
     private JsonObjectRequest request;
     private JSONArray jsonArray;
@@ -112,62 +115,21 @@ public class TextTab extends Fragment {
                 error.printStackTrace();
                 Toast.makeText(view.getContext(),"Please try again later",Toast.LENGTH_SHORT).show();
             }
-        });
+        })
+        {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String,String> headers = new HashMap<>();
+                String username = "tpvsuser1";
+                String password = "tpvs@userONE";
+                String credentials = username + ":" + password;
+                String auth = "Basic " + Base64.encodeToString(credentials.getBytes(),Base64.URL_SAFE|Base64.NO_WRAP);
+                headers.put("authorization",auth);
+                return headers;
+            }
+        };
 
         queue.add(request);
-
-        /*reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                for(DataSnapshot ds:dataSnapshot.getChildren())
-                {
-                    progressBar.setVisibility(View.VISIBLE);
-                    pdfLoader = ds.getValue(PdfLoader.class);
-                    list.add(String.valueOf(pdfLoader.getPortal()));
-                    url.add(String.valueOf(pdfLoader.getUrl()));
-                }
-                progressBar.setVisibility(View.GONE);
-                listView.setAdapter(adapter);
-
-                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                        Intent nextActivity = new Intent(view.getContext(),PdfViewer.class);
-
-                        Bundle bundle = new Bundle();
-                        bundle.putString("url",url.get(position));
-
-                        nextActivity.putExtras(bundle);
-                        startActivity(nextActivity);
-
-                        /*Toast.makeText(getContext(),"Downloading : " + list.get(position),Toast.LENGTH_SHORT).show();
-
-                        Uri uri = Uri.parse(url.get(position));
-
-                        DownloadManager downloadManager = (DownloadManager) view.getContext().getSystemService(Context.DOWNLOAD_SERVICE);
-                        DownloadManager.Request request = new DownloadManager.Request(uri);
-
-                        Context context = view.getContext();
-                        String filename = list.get(position);
-                        String fileExtension = ".pdf";
-
-                        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE);
-                        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-                        request.setDestinationInExternalFilesDir(context,DIRECTORY_DOWNLOADS,filename + fileExtension);
-
-                        downloadManager.enqueue(request);
-
-                    }
-                });
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });*/
         return view;
     }
 }

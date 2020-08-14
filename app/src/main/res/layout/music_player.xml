@@ -16,6 +16,7 @@
         android:gravity="center"
         android:orientation="vertical">
         <ImageView
+            android:id="@+id/imager"
             android:layout_width="250dp"
             android:layout_height="250dp"
             android:src="@drawable/mp3"/>

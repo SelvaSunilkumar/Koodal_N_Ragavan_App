@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,19 +15,21 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.koodalnraghavan.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class OtherVideo extends Fragment {
@@ -41,7 +44,7 @@ public class OtherVideo extends Fragment {
     private Bundle bundle;
     private Intent intent;
 
-    private String JSON_URL = "https://raw.githubusercontent.com/SelvaSunilkumar/jsonRepo/master/portalInfo.json";
+    private String JSON_URL = "https://tpvs.tce.edu/restricted/koodal_app/Koodal_raghavan_json.php";
     private JsonObjectRequest request;
     private RequestQueue queue;
     private JSONArray jsonArray;
@@ -119,36 +122,19 @@ public class OtherVideo extends Fragment {
                 error.printStackTrace();
                 Toast.makeText(view.getContext(),"Please try again later ",Toast.LENGTH_SHORT).show();
             }
-        });
-
-        /*reference.addValueEventListener(new ValueEventListener() {
+        })
+        {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                for(DataSnapshot ds:dataSnapshot.getChildren())
-                {
-                    progressBar.setVisibility(View.VISIBLE);
-                    pdfLoader = ds.getValue(PdfLoader.class);
-                    list.add(String.valueOf(pdfLoader.getPortal()));
-                    url.add(String.valueOf(pdfLoader.getUrl()));
-                }
-                progressBar.setVisibility(View.GONE);
-                listView.setAdapter(adapter);
-
-                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-
-                    }
-                });
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String,String> headers = new HashMap<>();
+                String username = "tpvsuser1";
+                String password = "tpvs@userONE";
+                String credentials = username + ":" + password;
+                String auth = "Basic " + Base64.encodeToString(credentials.getBytes(),Base64.URL_SAFE|Base64.NO_WRAP);
+                headers.put("authorization",auth);
+                return headers;
             }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });*/
+        };
 
         queue.add(request);
         return  view;

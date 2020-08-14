@@ -1,0 +1,384 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/bottomSheet"
+    android:background="#fff"
+    android:orientation="vertical"
+    app:layout_behavior="@string/bottom_sheet_behavior"
+    app:behavior_peekHeight="?actionBarSize"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:background="@color/icon_background"
+        android:paddingEnd="8dp"
+        android:paddingStart="8dp">
+
+        <ToggleButton
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:text=""
+            android:textOn=""
+            android:textOff=""
+            android:id="@+id/toogleButton"
+            android:background="@drawable/expand_or_not"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true" />
+        <LinearLayout
+            android:weightSum="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true">
+
+            <TextView
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="Select a Date"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:id="@+id/dater"/>
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/topPlayPause"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="?android:selectableItemBackground"
+                android:clickable="true"
+                android:src="@drawable/pause_music"
+                app:civ_border_color="@color/icon_background"
+                app:civ_border_width="2dp"
+                app:civ_circle_background_color="@color/icon_background" />
+
+        </LinearLayout>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_weight="6">
+
+                <TextView
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/selectorInfo"
+                    android:text="please select a date"
+                    android:textSize="18sp"
+                    android:textStyle="bold"/>
+                <View
+                    android:id="@+id/seperator"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#7C7777"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:singleLine="true"
+                        android:id="@+id/descriptionText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:text="சார்வரி : "
+                        android:textSize="18sp"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/description"
+                        android:textSize="18sp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/day"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="கிழமை : "
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:gravity="center_vertical"
+                        android:id="@+id/dayText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:textSize="18sp" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/thidhi"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="திதி : "
+                        android:textSize="18sp"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:clickable="true"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/thidhiText"
+                        android:textSize="18sp"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/star"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="நக்ஷத்திரம் : "
+                        android:textSize="18sp"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:clickable="true"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/startText"
+                        android:textSize="18sp"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/event"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="ஆழ்வார்/ஆசாரியர் திருநக்ஷத்திரம், கோவில் உற்சவம்  : "
+                        android:textSize="18sp"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:gravity="center_horizontal"
+                        android:layout_marginTop="5dp"
+                        android:clickable="true"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/eventText"
+                        android:textSize="18sp"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/pointer"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:src="@drawable/point"/>
+
+                    <TextView
+                        android:id="@+id/link"
+                        android:textStyle="italic"
+                        android:textColor="@color/CcolorPrimary"
+                        android:layout_marginLeft="5dp"
+                        android:textSize="18sp"
+                        android:gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/click"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/pointerOne"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:src="@drawable/point"/>
+
+                    <TextView
+                        android:id="@+id/linkOne"
+                        android:textStyle="italic"
+                        android:textColor="@color/CcolorPrimary"
+                        android:layout_marginLeft="5dp"
+                        android:textSize="18sp"
+                        android:gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/click"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/pointerTwo"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:src="@drawable/point"/>
+
+                    <TextView
+                        android:id="@+id/linkTwo"
+                        android:textStyle="italic"
+                        android:textColor="@color/CcolorPrimary"
+                        android:layout_marginLeft="5dp"
+                        android:textSize="18sp"
+                        android:gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/click"/>
+                </LinearLayout>
+
+                <androidx.cardview.widget.CardView
+                    android:background="#B2FFC107"
+                    android:layout_marginTop="10dp"
+                    android:padding="10dp"
+                    android:paddingTop="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardUseCompatPadding="true"
+                    app:cardCornerRadius="10dp">
+                    <LinearLayout
+                        android:id="@+id/musicController"
+                        android:background="#B2FFC107"
+                        android:padding="10dp"
+                        android:gravity="bottom"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:weightSum="1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="00:00"
+                                android:id="@+id/currentTime"/>
+                            <SeekBar
+                                android:layout_weight="1"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/seekBar"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="00:00"
+                                android:id="@+id/totalTime"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:weightSum="1"
+                            android:gravity="center_vertical"
+                            android:layout_marginTop="10dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <ProgressBar
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:id="@+id/musicProgress"/>
+                            <TextView
+                                android:gravity="center_horizontal"
+                                android:layout_weight="1"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Audio Name"
+                                android:textSize="15sp"
+                                android:layout_marginLeft="5dp"
+                                android:id="@+id/audioName"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_marginTop="10dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center">
+
+                            <de.hdodenhof.circleimageview.CircleImageView
+                                android:id="@+id/rewindId"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:layout_marginRight="10dp"
+                                android:background="?android:selectableItemBackground"
+                                android:clickable="true"
+                                android:src="@drawable/rewind_music"
+                                app:civ_border_color="@color/ic_launcher_background"
+                                app:civ_border_width="2dp"
+                                app:civ_circle_background_color="@color/ic_launcher_background" />
+
+                            <de.hdodenhof.circleimageview.CircleImageView
+                                android:id="@+id/playPause"
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+                                android:background="?android:selectableItemBackground"
+                                android:clickable="true"
+                                android:src="@drawable/pause_music"
+                                app:civ_border_color="@color/ic_launcher_background"
+                                app:civ_border_width="2dp"
+                                app:civ_circle_background_color="@color/ic_launcher_background" />
+
+                            <de.hdodenhof.circleimageview.CircleImageView
+                                android:id="@+id/forwardId"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:layout_marginLeft="10dp"
+                                android:background="?android:selectableItemBackground"
+                                android:clickable="true"
+                                android:src="@drawable/forward_music"
+                                app:civ_border_color="@color/ic_launcher_background"
+                                app:civ_border_width="2dp"
+                                app:civ_circle_background_color="@color/ic_launcher_background" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+                <View
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#7C7777"/>
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+
+</LinearLayout>

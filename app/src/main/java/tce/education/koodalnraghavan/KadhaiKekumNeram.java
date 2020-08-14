@@ -8,34 +8,38 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.annotation.SuppressLint;
-import android.app.Dialog;
-import android.app.DownloadManager;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Base64;
 import android.view.MenuItem;
 import android.view.View;
-import android.webkit.WebView;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.koodalnraghavan.R;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.navigation.NavigationView;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -43,8 +47,12 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
-import static android.os.Environment.DIRECTORY_DOWNLOADS;
+
+import tce.education.koodalnraghavan.adapter.StoryAdapter;
+import tce.education.koodalnraghavan.classes.storyDataLoader;
 
 public class KadhaiKekumNeram extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -57,46 +65,53 @@ public class KadhaiKekumNeram extends AppCompatActivity implements NavigationVie
     private Button Donation;
     private ListView listView;
     private ProgressBar progressBar;
-    private ImageView Stop;
-    private ImageView Pause;
-    private Button Download;
-    private TextView PlayinSong;
 
     private Intent nextActivity;
     private AlertDialog.Builder dialog;
     private AlertDialog alertDialog;
 
-    private ArrayList<String> list;
-    private ArrayList<String> url;
-    private ArrayAdapter<String> adapter;
+    private ArrayList<storyDataLoader> list;
+    private StoryAdapter adapter;
     private MediaPlayer mediaPlayer;
 
-    private Dialog music;
-    private ImageView playAudio;
-    private ImageView downloadAudio;
-    private TextView Info;
-    private ProgressBar progressBar1;
-    private boolean flag = false;
-
-    private int pausePlayCounter;
-    int icons[] = {R.drawable.pause_icon , R.drawable.play_icon};
-
-    private final String JSON_URL = "https://raw.githubusercontent.com/SelvaSunilkumar/jsonRepo/master/portalInfo.json";
+    private final String JSON_URL = "https://tpvs.tce.edu/restricted/koodal_app/Koodal_raghavan_json.php";
     private RequestQueue queue;
     private JsonObjectRequest request;
     private JSONArray jsonArray;
     private JSONObject song;
-    private String song_name;
-    private String song_url;
 
-    private WebView webView;
+    //music player Code
+    private int currentMediaPosition;
+    private boolean isPlaying = false;
+    private Handler handler;
+    private Runnable runnable;
+    private TextView SongTitle;
+    private ImageView topPlayPause;
+    private ImageView PlayPause;
+    private ImageView fastForward;
+    private ImageView fastRewind;
+    private SeekBar seekBar;
+    private TextView currentTime;
+    private TextView TotalSongTime;
+    private ProgressBar musicProgressBar;
+    private ImageView songDisplayPicture;
+    private ToggleButton sheetExpander;
+    private Button downloadMusic;
+    private LinearLayout musicPlayer;
+    private BottomSheetBehavior bottomSheetBehavior;
 
     @Override
-    protected void onPause() {
-        super.onPause();
-        //music.dismiss();
-        //mediaPlayer.release();
-        webView.destroy();
+    public void onBackPressed() {
+        super.onBackPressed();
+        handler.removeCallbacks(runnable);
+        mediaPlayer.release();
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        handler.removeCallbacks(runnable);
+        mediaPlayer.release();
     }
 
     @SuppressLint("RestrictedApi")
@@ -109,17 +124,31 @@ public class KadhaiKekumNeram extends AppCompatActivity implements NavigationVie
         TitleTootlbar.setText(R.string.kadhai);
         TitleTootlbar.setSelected(true);
 
+        handler = new Handler();
+        SongTitle = findViewById(R.id.playingInfo);
+        topPlayPause = findViewById(R.id.topPlayPause);
+        PlayPause = findViewById(R.id.playPause);
+        fastForward = findViewById(R.id.forwardId);
+        fastRewind = findViewById(R.id.rewindId);
+        seekBar = findViewById(R.id.seekBar);
+        currentTime = findViewById(R.id.currentTime);
+        TotalSongTime = findViewById(R.id.totalTime);
+        musicProgressBar = findViewById(R.id.musicProgress);
+        songDisplayPicture = findViewById(R.id.imageView);
+        sheetExpander =  findViewById(R.id.toggleMusic);
+        musicPlayer = findViewById(R.id.MusicPlayerSheet);
+        bottomSheetBehavior = BottomSheetBehavior.from(musicPlayer);
+        downloadMusic = findViewById(R.id.downloadId);
+
         drawerLayout = findViewById(R.id.drawer);
         toolbar = findViewById(R.id.toolbar);
         navigationView = findViewById(R.id.navigationbar);
         listView = findViewById(R.id.listView);
         progressBar = findViewById(R.id.progress);
-        webView = findViewById(R.id.web);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        //getSupportActionBar().setTitle(" Kadhai Kekum Neram");
         getSupportActionBar().setIcon(R.mipmap.ic_tool_bar);
         toggle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.drawerOpen,R.string.drawerClose);
         drawerLayout.addDrawerListener(toggle);
@@ -136,142 +165,280 @@ public class KadhaiKekumNeram extends AppCompatActivity implements NavigationVie
             }
         });
 
-        list = new ArrayList<String>();
-        url = new ArrayList<String>();
-        adapter = new ArrayAdapter<String>(getApplicationContext(),R.layout.videoinfo,R.id.portal,list);
-        mediaPlayer = new MediaPlayer();
+        downloadMusic.setVisibility(View.GONE);
 
-        queue = Volley.newRequestQueue(KadhaiKekumNeram.this);
-        request = new JsonObjectRequest(Request.Method.GET, JSON_URL, null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-
-                        try {
-                            jsonArray = response.getJSONArray("story");
-                            progressBar.setVisibility(View.VISIBLE);
-                            for(int iterator = 0; iterator < jsonArray.length() ; iterator++)
-                            {
-                                song = jsonArray.getJSONObject(iterator);
-
-                                song_name = song.getString("name");
-                                song_url = song.getString("url");
-
-                                list.add(song_name);
-                                url.add(song_url);
-                            }
-
-                            progressBar.setVisibility(View.GONE);
-                            listView.setAdapter(adapter);
-
-                            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                @Override
-                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                                    /*webView.getSettings().setJavaScriptEnabled(true);
-                                    webView.loadUrl(url.get(position));*/
-
-                                    music = new Dialog(KadhaiKekumNeram.this);
-                                    music.setContentView(R.layout.music_player);
-                                    music.show();
-
-                                    playAudio = music.findViewById(R.id.pausePlay);
-                                    downloadAudio = music.findViewById(R.id.download);
-                                    progressBar1 = music.findViewById(R.id.progress);
-                                    Info = music.findViewById(R.id.playingNow);
-
-                                    Info.setText(list.get(position));
-                                    Info.setSelected(true);
-
-                                    final String portalUrl = url.get(position);
-
-                                    try {
-                                        mediaPlayer.stop();
-                                        mediaPlayer.reset();
-                                        mediaPlayer.setDataSource(portalUrl);
-                                        mediaPlayer.prepare();
-                                        Toast.makeText(view.getContext(),"Play",Toast.LENGTH_SHORT).show();
-                                        mediaPlayer.start();
-                                    } catch (IOException e) {
-                                        e.printStackTrace();
-                                    }
-
-                                    mediaPlayer.setOnInfoListener(new MediaPlayer.OnInfoListener() {
-                                        @Override
-                                        public boolean onInfo(MediaPlayer mp, int what, int extra) {
-
-                                            if (what == MediaPlayer.MEDIA_INFO_BUFFERING_START)
-                                            {
-                                                progressBar1.setVisibility(View.VISIBLE);
-                                            }
-                                            else if (what == MediaPlayer.MEDIA_INFO_BUFFERING_END)
-                                            {
-                                                progressBar1.setVisibility(View.GONE);
-                                            }
-                                            return false;
-                                        }
-                                    });
-                                    playAudio.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            if(!flag)
-                                            {
-                                                playAudio.setImageDrawable(getResources().getDrawable(R.drawable.play_er));
-                                                flag = true;
-                                                mediaPlayer.pause();
-                                            }
-                                            else
-                                            {
-                                                playAudio.setImageDrawable(getResources().getDrawable(R.drawable.pause_music));
-                                                flag = false;
-                                                mediaPlayer.start();
-                                            }
-                                        }
-                                    });
-
-                                    downloadAudio.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            Toast.makeText(KadhaiKekumNeram.this,"Downloading : " + list.get(position),Toast.LENGTH_SHORT).show();
-
-                                            Uri uri = Uri.parse(portalUrl);
-
-                                            DownloadManager downloadManager = (DownloadManager) view.getContext().getSystemService(Context.DOWNLOAD_SERVICE);
-                                            DownloadManager.Request request = new DownloadManager.Request(uri);
-
-                                            Context context = view.getContext();
-                                            String fileename = list.get(position);
-                                            String fileExtension = ".mp3";
-
-                                            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE);
-                                            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-                                            request.setDestinationInExternalFilesDir(context,DIRECTORY_DOWNLOADS,fileename + fileExtension);
-
-                                            downloadManager.enqueue(request);
-                                        }
-                                    });
-
-                                    music.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                                        @Override
-                                        public void onDismiss(DialogInterface dialog) {
-                                            mediaPlayer.stop();
-                                        }
-                                    });
-                                }
-                            });
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-                    }
-                }, new Response.ErrorListener() {
+        sheetExpander.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked)
+                {
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                }
+                else {
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                }
             }
         });
 
-        queue.add(request);
+        bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View view, int i) {
+
+                if (i == BottomSheetBehavior.STATE_EXPANDED)
+                {
+                    sheetExpander.setChecked(true);
+                }
+                if (i == BottomSheetBehavior.STATE_COLLAPSED)
+                {
+                    sheetExpander.setChecked(false);
+                }
+            }
+
+            @Override
+            public void onSlide(@NonNull View view, float v) {
+
+            }
+        });
+
+        list = new ArrayList<>();
+        mediaPlayer = new MediaPlayer();
+
+        queue = Volley.newRequestQueue(KadhaiKekumNeram.this);
+        /**/
+        new StoryLoader().execute(JSON_URL);
+    }
+
+    private class StoryLoader extends AsyncTask<String,Integer,String>
+    {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+
+            request = new JsonObjectRequest(Request.Method.GET, strings[0], null,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+
+                            try {
+                                jsonArray = response.getJSONArray("story");
+                                progressBar.setVisibility(View.VISIBLE);
+                                for(int iterator = 0; iterator < jsonArray.length() ; iterator++)
+                                {
+                                    song = jsonArray.getJSONObject(iterator);
+
+                                    list.add(new storyDataLoader(song.getString("name"),song.getString("url"),song.getString("image")));
+                                }
+                                adapter = new StoryAdapter(getApplicationContext(),R.layout.videoinfo,list);
+                                progressBar.setVisibility(View.GONE);
+                                listView.setAdapter(adapter);
+
+                                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                    @Override
+                                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                        //code for music player
+                                        storyDataLoader dataLoader = list.get(position);
+                                        isPlaying = false;
+                                        seekBar.setMax(100);
+                                        PlayPause.setImageDrawable(getResources().getDrawable(R.drawable.pause_music));
+                                        topPlayPause.setImageDrawable(getResources().getDrawable(R.drawable.pause_music));
+
+                                        SongTitle.setText(dataLoader.getName());
+                                        Picasso.get().load(dataLoader.getImage()).into(songDisplayPicture);
+
+                                        try {
+                                            mediaPlayer.setDataSource(KadhaiKekumNeram.this,Uri.parse(dataLoader.getUrl()));
+                                            mediaPlayer.prepareAsync();
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
+
+                                        mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                                            @Override
+                                            public void onPrepared(MediaPlayer mp) {
+                                                currentMediaPosition = mediaPlayer.getDuration();
+                                                TotalSongTime.setText(milliSecondsToTime(currentMediaPosition));
+                                                seekBar.setMax(currentMediaPosition);
+                                                mediaPlayer.start();
+                                                changeSeek();
+                                            }
+                                        });
+
+                                        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                                            @Override
+                                            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                                                if (fromUser)
+                                                {
+                                                    mediaPlayer.seekTo(progress);
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onStartTrackingTouch(SeekBar seekBar) {
+
+                                            }
+
+                                            @Override
+                                            public void onStopTrackingTouch(SeekBar seekBar) {
+
+                                            }
+                                        });
+
+                                        mediaPlayer.setOnInfoListener(new MediaPlayer.OnInfoListener() {
+                                            @Override
+                                            public boolean onInfo(MediaPlayer mp, int what, int extra) {
+
+                                                if (what == MediaPlayer.MEDIA_INFO_BUFFERING_START)
+                                                {
+                                                    musicProgressBar.setVisibility(View.VISIBLE);
+                                                }
+                                                else if (what == MediaPlayer.MEDIA_INFO_BUFFERING_END)
+                                                {
+                                                    musicProgressBar.setVisibility(View.GONE);
+                                                }
+                                                return false;
+                                            }
+                                        });
+
+                                        topPlayPause.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                if (!isPlaying)
+                                                {
+                                                    PlayPause.setImageDrawable(getResources().getDrawable(R.drawable.play_er));
+                                                    topPlayPause.setImageDrawable(getResources().getDrawable(R.drawable.play_er));
+                                                    isPlaying = true;
+                                                    mediaPlayer.pause();
+                                                }
+                                                else {
+                                                    PlayPause.setImageDrawable(getResources().getDrawable(R.drawable.pause_music));
+                                                    topPlayPause.setImageDrawable(getResources().getDrawable(R.drawable.pause_music));
+                                                    isPlaying = false;
+                                                    mediaPlayer.start();
+                                                    changeSeek();
+                                                }
+                                            }
+                                        });
+
+                                        PlayPause.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                if (!isPlaying)
+                                                {
+                                                    PlayPause.setImageDrawable(getResources().getDrawable(R.drawable.play_er));
+                                                    topPlayPause.setImageDrawable(getResources().getDrawable(R.drawable.play_er));
+                                                    isPlaying = true;
+                                                    mediaPlayer.pause();
+                                                }
+                                                else {
+                                                    PlayPause.setImageDrawable(getResources().getDrawable(R.drawable.pause_music));
+                                                    topPlayPause.setImageDrawable(getResources().getDrawable(R.drawable.pause_music));
+                                                    isPlaying = false;
+                                                    mediaPlayer.start();
+                                                    changeSeek();
+                                                }
+                                            }
+                                        });
+
+                                        fastForward.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                mediaPlayer.seekTo(mediaPlayer.getCurrentPosition() + 10000);
+                                            }
+                                        });
+
+                                        fastRewind.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                mediaPlayer.seekTo(mediaPlayer.getCurrentPosition() - 10000);
+                                            }
+                                        });
+                                    }
+                                });
+
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    error.printStackTrace();
+                    Toast.makeText(getApplicationContext(),"Please try again Later",Toast.LENGTH_SHORT).show();
+                }
+            })
+            {
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    HashMap<String,String> headers = new HashMap<>();
+                    String username = "tpvsuser1";
+                    String password = "tpvs@userONE";
+                    String credentials = username + ":" + password;
+                    String auth = "Basic " + Base64.encodeToString(credentials.getBytes(),Base64.URL_SAFE|Base64.NO_WRAP);
+                    headers.put("authorization",auth);
+                    return headers;
+                }
+            };
+
+            queue.add(request);
+
+            try {
+                Thread.sleep(10000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+    }
+
+    private void changeSeek() {
+        int currentPosition = mediaPlayer.getCurrentPosition();
+        seekBar.setProgress(currentPosition);
+        currentTime.setText(milliSecondsToTime(currentPosition));
+        if (mediaPlayer.isPlaying())
+        {
+            runnable = new Runnable() {
+                @Override
+                public void run() {
+                    changeSeek();
+                }
+            };
+            handler.postDelayed(runnable, 1000);
+        }
+    }
+
+    private String milliSecondsToTime(long duration) {
+        String timerString = "";
+        String secondsString;
+
+        int hours = (int) (duration / (1000*60*60));
+        int minutes = (int) (duration % (1000 * 60*60)) / (1000*60);
+        int seconds = (int) ((duration % (1000*60*60)) % (1000*60)/1000);
+
+        if (hours > 0)
+        {
+            timerString = hours + ":";
+        }
+        if (seconds < 10)
+        {
+            secondsString = "0" + seconds;
+        }
+        else {
+            secondsString = "" + seconds;
+        }
+
+        timerString = timerString + minutes + ":" + secondsString;
+        return timerString;
     }
 
     @Override
@@ -280,27 +447,23 @@ public class KadhaiKekumNeram extends AppCompatActivity implements NavigationVie
         switch(menuItem.getItemId())
         {
             case R.id.home:
-                //Toast.makeText(getApplicationContext(),"Home",Toast.LENGTH_SHORT).show();
                 nextActivity = new Intent(this,home.class);
                 startActivity(nextActivity);
                 finish();
                 break;
             case R.id.aboutus:
-                ///Toast.makeText(getApplicationContext(),"About Us",Toast.LENGTH_SHORT).show();
                 nextActivity = new Intent(this,AboutUs.class);
                 startActivity(nextActivity);
                 break;
-            case R.id.others:
-                nextActivity = new Intent(this,Others.class);
+            case R.id.events:
+                nextActivity = new Intent(this,Events.class);
                 startActivity(nextActivity);
                 break;
             case R.id.Gallery:
-                //Toast.makeText(getApplicationContext(),"Gallery",Toast.LENGTH_SHORT).show();
                 nextActivity = new Intent(this,GalleryViewer.class);
                 startActivity(nextActivity);
                 break;
             case R.id.freedownload:
-                //Toast.makeText(getApplicationContext(),"Free Downloads",Toast.LENGTH_SHORT).show();
                 nextActivity = new Intent(this,FreeDownload.class);
                 startActivity(nextActivity);
                 break;
@@ -309,7 +472,6 @@ public class KadhaiKekumNeram extends AppCompatActivity implements NavigationVie
                 startActivity(nextActivity);
                 break;
             case R.id.contact:
-                //Toast.makeText(getApplicationContext(),"Contact",Toast.LENGTH_SHORT).show();
                 nextActivity = new Intent(this, ContactUs.class);
                 startActivity(nextActivity);
                 break;

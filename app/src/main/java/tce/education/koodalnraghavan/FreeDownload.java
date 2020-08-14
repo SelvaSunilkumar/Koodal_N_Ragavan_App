@@ -18,7 +18,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.koodalnraghavan.R;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
@@ -67,7 +66,6 @@ public class FreeDownload extends AppCompatActivity implements NavigationView.On
         setSupportActionBar(toolbar);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        //getSupportActionBar().setTitle(" Free Downloads");
         getSupportActionBar().setIcon(R.mipmap.ic_tool_bar);
         toggle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.drawerOpen,R.string.drawerClose);
         drawerLayout.addDrawerListener(toggle);
@@ -126,27 +124,23 @@ public class FreeDownload extends AppCompatActivity implements NavigationView.On
         switch(menuItem.getItemId())
         {
             case R.id.home:
-                //Toast.makeText(getApplicationContext(),"Home",Toast.LENGTH_SHORT).show();
                 nextActivity = new Intent(this,home.class);
                 startActivity(nextActivity);
                 finish();
                 break;
             case R.id.aboutus:
-                //Toast.makeText(getApplicationContext(),"About Us",Toast.LENGTH_SHORT).show();
                 nextActivity = new Intent(this,AboutUs.class);
                 startActivity(nextActivity);
                 break;
-            case R.id.others:
-                nextActivity = new Intent(this,Others.class);
+            case R.id.events:
+                nextActivity = new Intent(this,Events.class);
                 startActivity(nextActivity);
                 break;
             case R.id.Gallery:
-                //Toast.makeText(getApplicationContext(),"Gallery",Toast.LENGTH_SHORT).show();
                 nextActivity = new Intent(this,GalleryViewer.class);
                 startActivity(nextActivity);
                 break;
             case R.id.freedownload:
-                //Toast.makeText(getApplicationContext(),"Free Downloads",Toast.LENGTH_SHORT).show();
                 nextActivity = new Intent(this,FreeDownload.class);
                 startActivity(nextActivity);
                 break;
@@ -155,7 +149,6 @@ public class FreeDownload extends AppCompatActivity implements NavigationView.On
                 startActivity(nextActivity);
                 break;
             case R.id.contact:
-                //Toast.makeText(getApplicationContext(),"Contact",Toast.LENGTH_SHORT).show();
                 nextActivity = new Intent(this,ContactUs.class);
                 startActivity(nextActivity);
                 break;

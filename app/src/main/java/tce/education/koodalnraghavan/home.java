@@ -6,14 +6,25 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.koodalnraghavan.R;
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -21,6 +32,12 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -37,6 +54,8 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
     private LinearLayout AlvargalinManam;
     private LinearLayout BabyName;
     private LinearLayout DanceIcon;
+    private LinearLayout OthersAndUpanyasam;
+    private LinearLayout PrasadhamView;
     private Button Donation;
 
     private TextView DailyKural;
@@ -47,8 +66,8 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
     private TextView dhinachariyai;
     private TextView babyName;
     private TextView Dance;
-    private TextView TitleTootlbar;
-    //private TextView donation;
+    private TextView OthersText;
+    private TextView prasadhamText;
 
     private Intent nextActivity;
 
@@ -57,6 +76,8 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
 
     private SharedPreferences sharedPreferences;
     private boolean LanguageSelector;
+
+    private String userRegisterUrl = "https://tpvs.tce.edu/restricted/koodal_app/insert_token.php";
 
     @SuppressLint("RestrictedApi")
     @Override
@@ -87,13 +108,17 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
         dhinachariyai = findViewById(R.id.routine);
         babyName = findViewById(R.id.nameBaby);
         Dance = findViewById(R.id.danceId);
+        OthersAndUpanyasam = findViewById(R.id.othersUpanyasam);
+        OthersText = findViewById(R.id.othersUpanyasamText);
+        prasadhamText = findViewById(R.id.prasadhamId);
         //donation = findViewById(R.id.)
 
         //------------------------------------------------------------------------------------------
         sharedPreferences = getSharedPreferences("save",MODE_PRIVATE);
 
         LanguageSelector = sharedPreferences.getBoolean("value",true);
-        //Toast.makeText(getApplicationContext()," " + LanguageSelector,Toast.LENGTH_SHORT).show();
+
+        RegisterUser();
 
         if(LanguageSelector)
         {
@@ -106,6 +131,8 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
             ebooks.setText(R.string.ebooks_en);
             dhinachariyai.setText(R.string.thinachariyai);
             Dance.setText(R.string.dance_en);
+            OthersText.setText(R.string.other_en);
+            prasadhamText.setText(R.string.prasadham_en);
         }
         else
         {
@@ -118,6 +145,8 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
             ebooks.setText(R.string.ebooks_tml);
             dhinachariyai.setText(R.string.thinachariyai_tml);
             Dance.setText(R.string.dance_tml);
+            OthersText.setText(R.string.other_tml);
+            prasadhamText.setText(R.string.prasadham_tml);
         }
         //------------------------------------------------------------------------------------------
         DailyVoice = findViewById(R.id.ThinamOrukural);
@@ -161,7 +190,6 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
         KadhaiKekumNeram.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //nextActivity = new Intent(home.this,KadhaiKekumNeram.class);
                 nextActivity = new Intent(home.this,KadhaiKekumNeram.class);
                 startActivity(nextActivity);
             }
@@ -195,7 +223,23 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
             }
         });
 
-        //Donation = getSupportActionBar().getCustomView().findViewById(R.id.donation);
+        OthersAndUpanyasam.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                nextActivity = new Intent(home.this,Others.class);
+                startActivity(nextActivity);
+            }
+        });
+
+        PrasadhamView = findViewById(R.id.prasadham);
+        PrasadhamView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                nextActivity = new Intent(home.this,Prasadham.class);
+                startActivity(nextActivity);
+            }
+        });
+
         Donation = findViewById(R.id.donation);
         Donation.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -207,33 +251,91 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
         //__________________________________________________________________________________________
     }
 
+    private void RegisterUser() {
+
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        String token = task.getResult().getToken();
+
+                        System.out.println("Token : " + token);
+
+                        RegisterToken(token);
+                    }
+                });
+    }
+
+    private void RegisterToken(String token) {
+
+        StringRequest request = new StringRequest(Request.Method.POST, userRegisterUrl,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                        JSONObject jsonObject = null;
+                        try {
+                            jsonObject = new JSONObject(response);
+
+                            String result = jsonObject.getString("success");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        })
+        {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> params = new HashMap<>();
+                params.put("token",token);
+                return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String,String> headers = new HashMap<>();
+                String username = "tpvsuser1";
+                String password = "tpvs@userONE";
+                String credentials = username + ":" + password;
+                String auth = "Basic " + Base64.encodeToString(credentials.getBytes(),Base64.URL_SAFE|Base64.NO_WRAP);
+                headers.put("authorization",auth);
+                return headers;
+            }
+        };
+
+        RequestQueue queue = Volley.newRequestQueue(home.this);
+        queue.add(request);
+    }
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
 
         switch(menuItem.getItemId())
         {
             case R.id.home:
-                //Toast.makeText(getApplicationContext(),"Home",Toast.LENGTH_SHORT).show();
                 nextActivity = new Intent(home.this,home.class);
                 startActivity(nextActivity);
                 finish();
                 break;
             case R.id.aboutus:
-                //Toast.makeText(getApplicationContext(),"About Us",Toast.LENGTH_SHORT).show();
                 nextActivity = new Intent(home.this,AboutUs.class);
                 startActivity(nextActivity);
                 break;
-            case R.id.others:
-                nextActivity = new Intent(this,Others.class);
+            case R.id.events:
+                nextActivity = new Intent(this,Events.class);
                 startActivity(nextActivity);
                 break;
             case R.id.Gallery:
-                //Toast.makeText(getApplicationContext(),"Gallery",Toast.LENGTH_SHORT).show();
                 nextActivity = new Intent(home.this,GalleryViewer.class);
                 startActivity(nextActivity);
                 break;
             case R.id.freedownload:
-                //Toast.makeText(getApplicationContext(),"Free Downloads",Toast.LENGTH_SHORT).show();
                 nextActivity = new Intent(home.this,FreeDownload.class);
                 startActivity(nextActivity);
                 break;
@@ -242,7 +344,6 @@ public class home extends AppCompatActivity implements NavigationView.OnNavigati
                 startActivity(nextActivity);
                 break;
             case R.id.contact:
-                //Toast.makeText(getApplicationContext(),"Contact",Toast.LENGTH_SHORT).show();
                 nextActivity = new Intent(home.this,ContactUs.class);
                 startActivity(nextActivity);
                 break;

@@ -34,4 +34,5 @@ public class PurchaseAdapter extends FragmentPagerAdapter {
     public int getCount() {
         return number;
     }
+
 }

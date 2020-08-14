@@ -8,8 +8,6 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
-import com.example.koodalnraghavan.R;
-
 import java.util.HashMap;
 import java.util.List;
 
@@ -79,8 +77,6 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-
-        //String childText = (String) getChild(groupPosition,childPosition);
 
         DataLister lister = (DataLister) getChild(groupPosition,childPosition);
 

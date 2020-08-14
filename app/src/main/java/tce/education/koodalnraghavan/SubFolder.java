@@ -5,18 +5,22 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.View;
-import android.widget.ExpandableListView;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.koodalnraghavan.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -25,6 +29,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class SubFolder extends AppCompatActivity {
 
@@ -34,22 +39,18 @@ public class SubFolder extends AppCompatActivity {
 
     private TextView folderName;
 
-    private ExpandableVideoLoader listAdapter;
-    private ExpandableListView listView;
-    private List<String> listDataHeader;
-    private HashMap<String,List<DataLister>> listDataChild;
 
-    private String tempFolderName;
-    private int counter;
-
-    private final String JSON_URL = "https://raw.githubusercontent.com/SelvaSunilkumar/jsonRepo/master/portalInfo.json";
+    private final String JSON_URL = "https://tpvs.tce.edu/restricted/koodal_app/Koodal_raghavan_json.php";
     private RequestQueue queue;
     private JsonObjectRequest request;
     private JSONArray jsonArray;
     private JSONObject folder;
     private String folder_name;
-    private String audio_url;
-    private String audio_name;
+
+    private ListView listView;
+    private ProgressBar progressBar;
+    private ArrayList<String> arrayList;
+    private ArrayAdapter<String> arrayAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +64,7 @@ public class SubFolder extends AppCompatActivity {
         folderName = findViewById(R.id.folderName);
 
         listView = findViewById(R.id.listView);
+        progressBar = findViewById(R.id.progress);
 
         if(folderNumber ==  0)
         {
@@ -77,56 +79,14 @@ public class SubFolder extends AppCompatActivity {
             prepareList(getApplicationContext());
         }
 
-        listAdapter = new ExpandableVideoLoader(SubFolder.this,listDataHeader,listDataChild);
-        listView.setAdapter(listAdapter);
+        arrayList = new ArrayList<String>();
+        arrayAdapter = new ArrayAdapter<String>(SubFolder.this,R.layout.folderinfo,R.id.folderName,arrayList);
 
-        listView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
-            @Override
-            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-                return false;
-            }
-        });
 
-        listView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
-            @Override
-            public void onGroupExpand(int groupPosition) {
-
-            }
-        });
-
-        listView.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
-            @Override
-            public void onGroupCollapse(int groupPosition) {
-
-            }
-        });
-
-        listView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-            @Override
-            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-
-                DataLister dataLister = (DataLister) listAdapter.getChild(groupPosition,childPosition);
-
-                intent = new Intent(SubFolder.this,VideoPlayer.class);
-
-                bundle = new Bundle();
-                bundle.putString("list",dataLister.getName());
-                bundle.putString("url",dataLister.getUrl());
-
-                intent.putExtras(bundle);
-                startActivity(intent);
-
-                return false;
-            }
-        });
     }
 
     private void prepareList(Context applicationContext) {
 
-        listDataHeader = new ArrayList<String>();
-        listDataChild = new HashMap<String, List<DataLister>>();
-
-        counter = 0;
 
         queue = Volley.newRequestQueue(applicationContext);
         request = new JsonObjectRequest(Request.Method.GET, JSON_URL, null,
@@ -137,38 +97,34 @@ public class SubFolder extends AppCompatActivity {
                         try {
                             jsonArray = response.getJSONArray("video");
 
-                            for (int i = 0; i < jsonArray.length() ; i++ )
+                            progressBar.setVisibility(View.VISIBLE);
+                            for(int i=0;i<jsonArray.length();i++)
                             {
                                 folder = jsonArray.getJSONObject(i);
                                 folder_name = folder.getString("folder");
-                                if( ! (listDataHeader.contains(folder_name)) )
+
+                                if (! arrayList.contains(folder_name))
                                 {
-                                    listDataHeader.add(folder_name);
-                                    counter++;
-
-                                    List<DataLister> list = new ArrayList<DataLister>();
-                                    audio_name = folder.getString("name");
-                                    list.add(new DataLister(audio_name,folder.getString("url")));
-
-                                    for (int j = 0 ; j < jsonArray.length() ; j++ )
-                                    {
-                                        if( i != j )
-                                        {
-                                            folder = jsonArray.getJSONObject(j);
-                                            tempFolderName = folder.getString("folder");
-
-                                            if(tempFolderName.equals(folder_name))
-                                            {
-                                                audio_name = folder.getString("name");
-                                                list.add(new DataLister(audio_name,folder.getString("url")));
-                                            }
-                                        }
-                                    }
-                                    listDataChild.put(listDataHeader.get(counter-1),list);
-                                    listAdapter.notifyDataSetChanged();
-                                    //progressBar.setVisibility(View.GONE);
+                                    arrayList.add(folder_name);
                                 }
                             }
+                            progressBar.setVisibility(View.GONE);
+                            listView.setAdapter(arrayAdapter);
+                            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                                    Intent intent = new Intent(SubFolder.this,subLister.class);
+
+                                    Bundle bundle = new Bundle();
+
+                                    bundle.putString("folderName",arrayList.get(position));
+                                    bundle.putString("folder","video");
+
+                                    intent.putExtras(bundle);
+                                    startActivity(intent);
+                                }
+                            });
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -179,17 +135,24 @@ public class SubFolder extends AppCompatActivity {
                 Toast.makeText(SubFolder.this,"Please try Again later or Try again",Toast.LENGTH_SHORT).show();
                 error.printStackTrace();
             }
-        });
+        })
+        {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String,String> headers = new HashMap<>();
+                String username = "tpvsuser1";
+                String password = "tpvs@userONE";
+                String credentials = username + ":" + password;
+                String auth = "Basic " + Base64.encodeToString(credentials.getBytes(),Base64.URL_SAFE|Base64.NO_WRAP);
+                headers.put("authorization",auth);
+                return headers;
+            }
+        };
 
         queue.add(request);
     }
 
     private void prepareThirumalaiList(Context applicationContext) {
-
-        listDataHeader = new ArrayList<String>();
-        listDataChild = new HashMap<String, List<DataLister>>();
-
-        counter = 0;
 
         queue = Volley.newRequestQueue(applicationContext);
         request = new JsonObjectRequest(Request.Method.GET, JSON_URL, null,
@@ -200,38 +163,35 @@ public class SubFolder extends AppCompatActivity {
                         try {
                             jsonArray = response.getJSONArray("thirumalai");
 
-                            for (int i = 0; i < jsonArray.length() ; i++ )
+                            progressBar.setVisibility(View.VISIBLE);
+                            for(int i=0;i<jsonArray.length();i++)
                             {
                                 folder = jsonArray.getJSONObject(i);
                                 folder_name = folder.getString("folder");
-                                if( ! (listDataHeader.contains(folder_name)) )
+
+                                if (! arrayList.contains(folder_name))
                                 {
-                                    listDataHeader.add(folder_name);
-                                    counter++;
-
-                                    List<DataLister> list = new ArrayList<DataLister>();
-                                    audio_name = folder.getString("name");
-                                    list.add(new DataLister(audio_name,folder.getString("url")));
-
-                                    for (int j = 0 ; j < jsonArray.length() ; j++ )
-                                    {
-                                        if( i != j )
-                                        {
-                                            folder = jsonArray.getJSONObject(j);
-                                            tempFolderName = folder.getString("folder");
-
-                                            if(tempFolderName.equals(folder_name))
-                                            {
-                                                audio_name = folder.getString("name");
-                                                list.add(new DataLister(audio_name,folder.getString("url")));
-                                            }
-                                        }
-                                    }
-                                    listDataChild.put(listDataHeader.get(counter-1),list);
-                                    listAdapter.notifyDataSetChanged();
-                                    //progressBar.setVisibility(View.GONE);
+                                    arrayList.add(folder_name);
                                 }
                             }
+                            progressBar.setVisibility(View.GONE);
+
+                            listView.setAdapter(arrayAdapter);
+                            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                    Intent intent = new Intent(SubFolder.this,subLister.class);
+
+                                    Bundle bundle = new Bundle();
+
+                                    bundle.putString("folderName",arrayList.get(position));
+                                    bundle.putString("folder","thirumalai");
+
+                                    intent.putExtras(bundle);
+                                    startActivity(intent);
+                                }
+                            });
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -242,7 +202,19 @@ public class SubFolder extends AppCompatActivity {
                 Toast.makeText(SubFolder.this,"Please try Again later or Try again",Toast.LENGTH_SHORT).show();
                 error.printStackTrace();
             }
-        });
+        })
+        {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String,String> headers = new HashMap<>();
+                String username = "tpvsuser1";
+                String password = "tpvs@userONE";
+                String credentials = username + ":" + password;
+                String auth = "Basic " + Base64.encodeToString(credentials.getBytes(),Base64.URL_SAFE|Base64.NO_WRAP);
+                headers.put("authorization",auth);
+                return headers;
+            }
+        };
 
         queue.add(request);
     }

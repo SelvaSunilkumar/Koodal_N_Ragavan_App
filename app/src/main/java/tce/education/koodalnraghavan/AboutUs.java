@@ -21,7 +21,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.koodalnraghavan.R;
 import com.google.android.material.navigation.NavigationView;
 
 public class AboutUs extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -68,7 +67,6 @@ public class AboutUs extends AppCompatActivity implements NavigationView.OnNavig
         setSupportActionBar(toolbar);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        //getSupportActionBar().setTitle(" About us");
         getSupportActionBar().setIcon(R.mipmap.ic_tool_bar);
         toggle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.drawerOpen,R.string.drawerClose);
         drawerLayout.addDrawerListener(toggle);
@@ -190,8 +188,8 @@ public class AboutUs extends AppCompatActivity implements NavigationView.OnNavig
                 nextActivity = new Intent(this,AboutUs.class);
                 startActivity(nextActivity);
                 break;
-            case R.id.others:
-                nextActivity = new Intent(this,Others.class);
+            case R.id.events:
+                nextActivity = new Intent(this,Events.class);
                 startActivity(nextActivity);
                 break;
             case R.id.Gallery:

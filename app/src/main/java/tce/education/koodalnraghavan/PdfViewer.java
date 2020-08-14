@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ProgressBar;
 
-import com.example.koodalnraghavan.R;
 import com.github.barteksc.pdfviewer.PDFView;
 
 import java.io.BufferedInputStream;

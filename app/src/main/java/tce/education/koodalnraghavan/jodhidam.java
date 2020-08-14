@@ -12,6 +12,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -22,13 +23,13 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.koodalnraghavan.R;
 import com.google.android.material.navigation.NavigationView;
 
 import org.json.JSONArray;
@@ -36,6 +37,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class jodhidam  extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -57,7 +60,7 @@ public class jodhidam  extends AppCompatActivity implements NavigationView.OnNav
     private ArrayList<String> url;
     private ArrayAdapter<String> adapter;
 
-    private final String JSON_URL = "https://raw.githubusercontent.com/SelvaSunilkumar/jsonRepo/master/portalInfo.json";
+    private final String JSON_URL = "https://tpvs.tce.edu/restricted/koodal_app/Koodal_raghavan_json.php";
     private RequestQueue queue;
     private JsonObjectRequest request;
     private JSONArray jsonArray;
@@ -152,7 +155,19 @@ public class jodhidam  extends AppCompatActivity implements NavigationView.OnNav
                 Toast.makeText(getApplicationContext(),"Please try again later",Toast.LENGTH_SHORT).show();
                 error.printStackTrace();
             }
-        });
+        })
+        {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String,String> headers = new HashMap<>();
+                String username = "tpvsuser1";
+                String password = "tpvs@userONE";
+                String credentials = username + ":" + password;
+                String auth = "Basic " + Base64.encodeToString(credentials.getBytes(),Base64.URL_SAFE|Base64.NO_WRAP);
+                headers.put("authorization",auth);
+                return headers;
+            }
+        };
 
         queue.add(request);
     }
@@ -162,27 +177,23 @@ public class jodhidam  extends AppCompatActivity implements NavigationView.OnNav
         switch(menuItem.getItemId())
         {
             case R.id.home:
-                //Toast.makeText(getApplicationContext(),"Home",Toast.LENGTH_SHORT).show();
                 nextActivity = new Intent(this,home.class);
                 startActivity(nextActivity);
                 finish();
                 break;
             case R.id.aboutus:
-                //Toast.makeText(getApplicationContext(),"About Us",Toast.LENGTH_SHORT).show();
                 nextActivity = new Intent(this,AboutUs.class);
                 startActivity(nextActivity);
                 break;
-            case R.id.others:
-                nextActivity = new Intent(this,Others.class);
+            case R.id.events:
+                nextActivity = new Intent(this,Events.class);
                 startActivity(nextActivity);
                 break;
             case R.id.Gallery:
-                //Toast.makeText(getApplicationContext(),"Gallery",Toast.LENGTH_SHORT).show();
                 nextActivity = new Intent(this,GalleryViewer.class);
                 startActivity(nextActivity);
                 break;
             case R.id.freedownload:
-                //Toast.makeText(getApplicationContext(),"Free Downloads",Toast.LENGTH_SHORT).show();
                 nextActivity = new Intent(this,FreeDownload.class);
                 startActivity(nextActivity);
                 break;
@@ -191,7 +202,6 @@ public class jodhidam  extends AppCompatActivity implements NavigationView.OnNav
                 startActivity(nextActivity);
                 break;
             case R.id.contact:
-                //Toast.makeText(getApplicationContext(),"Contact",Toast.LENGTH_SHORT).show();
                 nextActivity = new Intent(this,ContactUs.class);
                 startActivity(nextActivity);
                 break;

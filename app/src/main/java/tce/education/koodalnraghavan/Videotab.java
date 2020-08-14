@@ -1,36 +1,46 @@
 package tce.education.koodalnraghavan;
 
-import android.app.Dialog;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.os.Handler;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
+import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.koodalnraghavan.R;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class Videotab extends Fragment {
@@ -40,36 +50,51 @@ public class Videotab extends Fragment {
     private ExpandableListView listView;
     private List<String> listDataHeader;
     private HashMap<String,List<DataLister>> listDataChild;
-    private WebView webView;
-
 
     private String tempFolderName;
     private int counter;
 
-    private final String JSON_URL = "https://raw.githubusercontent.com/SelvaSunilkumar/jsonRepo/master/portalInfo.json";
+    private final String JSON_URL = "https://tpvs.tce.edu/restricted/koodal_app/Koodal_raghavan_json.php";
     private RequestQueue queue;
     private JsonObjectRequest request;
     private JSONArray jsonArray;
     private JSONObject folder;
     private String folder_name;
-    private String audio_url;
     private String audio_name;
 
     private MediaPlayer mediaPlayer;
-
-    private Dialog music;
-    private ImageView playAudio;
-    private ImageView downloadAudio;
-    private TextView Info;
-    private ProgressBar progressBar1;
-    private boolean flag = false;
+    private Runnable runnable;
+    private Handler handler;
+    private TextView songTitle;
+    private TextView currentTime;
+    private TextView totalTime;
+    private SeekBar seekBar;
+    private ProgressBar songProgressBar;
+    private ImageView topPlayPause;
+    private ImageView PlayPause;
+    private ImageView fastForward;
+    private ImageView fastRewind;
+    private ToggleButton musicExpander;
+    private Button DownloadMusic;
+    private LinearLayout musicPlayer;
+    private BottomSheetBehavior bottomSheetBehavior;
+    private boolean isPlaying = false;
 
     @Override
-    public void onPause() {
-        super.onPause();
-        mediaPlayer.stop();
-        webView.destroy();
+    public void onDestroyView() {
+        super.onDestroyView();
+        handler.removeCallbacks(runnable);
+        mediaPlayer.release();
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        handler.removeCallbacks(runnable);
+        mediaPlayer.release();
+    }
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
@@ -78,11 +103,56 @@ public class Videotab extends Fragment {
 
         listView = view.findViewById(R.id.listView);
         progressBar = view.findViewById(R.id.progress);
-        webView = view.findViewById(R.id.web);
+
+        handler = new Handler();
+        songTitle = view.findViewById(R.id.playingInfo);
+        currentTime = view.findViewById(R.id.currentTime);
+        totalTime = view.findViewById(R.id.totalTime);
+        seekBar = view.findViewById(R.id.seekBar);
+        songProgressBar = view.findViewById(R.id.musicProgress);
+        topPlayPause = view.findViewById(R.id.topPlayPause);
+        PlayPause = view.findViewById(R.id.playPause);
+        fastForward = view.findViewById(R.id.forwardId);
+        fastRewind = view.findViewById(R.id.rewindId);
+        musicExpander = view.findViewById(R.id.toggleMusic);
+        musicPlayer = view.findViewById(R.id.MusicPlayerSheet);
+        bottomSheetBehavior = BottomSheetBehavior.from(musicPlayer);
+        DownloadMusic = view.findViewById(R.id.downloadId);
 
         prepareListData(view);
+        DownloadMusic.setVisibility(View.GONE);
 
+        musicExpander.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked)
+                {
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                }
+                else {
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                }
+            }
+        });
 
+        bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View view, int i) {
+                if (i == BottomSheetBehavior.STATE_COLLAPSED)
+                {
+                    musicExpander.setChecked(false);
+                }
+                if (i == BottomSheetBehavior.STATE_EXPANDED)
+                {
+                    musicExpander.setChecked(true);
+                }
+            }
+
+            @Override
+            public void onSlide(@NonNull View view, float v) {
+
+            }
+        });
 
         listAdapter = new ExpandableListAdapter(view.getContext(),listDataHeader,listDataChild);
         listView.setAdapter(listAdapter);
@@ -115,75 +185,124 @@ public class Videotab extends Fragment {
 
                 DataLister dataLister = (DataLister) listAdapter.getChild(groupPosition,childPosition);
 
-                webView.getSettings().setJavaScriptEnabled(true);
-                webView.loadUrl(dataLister.getUrl());
-
-                /*music = new Dialog(view.getContext());
-                music.setContentView(R.layout.music_player);
-                music.show();
-
-                playAudio = music.findViewById(R.id.pausePlay);
-                downloadAudio = music.findViewById(R.id.download);
-                downloadAudio.setVisibility(View.GONE);
-                progressBar1 = music.findViewById(R.id.progress);
-                Info = music.findViewById(R.id.playingNow);
-
-                Info.setText(dataLister.getName());
-                Info.setSelected(true);
-
-                final String portalUrl = dataLister.getUrl();
+                isPlaying = false;
+                seekBar.setMax(100);
+                PlayPause.setImageDrawable(getResources().getDrawable(R.drawable.pause_music));
+                topPlayPause.setImageDrawable(getResources().getDrawable(R.drawable.pause_music));
+                songTitle.setText(dataLister.getName());
+                mediaPlayer.reset();
 
                 try {
-                    mediaPlayer.stop();
-                    mediaPlayer.reset();
-                    mediaPlayer.setDataSource(portalUrl);
-                    mediaPlayer.prepare();
-                    Toast.makeText(view.getContext(),"Play",Toast.LENGTH_SHORT).show();
-                    mediaPlayer.start();
+                    mediaPlayer.setDataSource(view.getContext(), Uri.parse(dataLister.getUrl()));
+                    //mediaPlayer.prepare();
+                    mediaPlayer.prepareAsync();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+
+                mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                    @Override
+                    public void onPrepared(MediaPlayer mp) {
+                        int duration = mediaPlayer.getDuration();
+                        totalTime.setText(milliSecondsToTime(duration));
+                        seekBar.setMax(duration);
+                        mediaPlayer.start();
+                        changeSeek();
+                    }
+                });
+
+                seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                    @Override
+                    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+
+                        if (fromUser)
+                        {
+                            mediaPlayer.seekTo(progress);
+                        }
+                    }
+
+                    @Override
+                    public void onStartTrackingTouch(SeekBar seekBar) {
+
+                    }
+
+                    @Override
+                    public void onStopTrackingTouch(SeekBar seekBar) {
+
+                    }
+                });
 
                 mediaPlayer.setOnInfoListener(new MediaPlayer.OnInfoListener() {
                     @Override
                     public boolean onInfo(MediaPlayer mp, int what, int extra) {
 
+                        if (what == MediaPlayer.MEDIA_INFO_BUFFERING_END)
+                        {
+                            songProgressBar.setVisibility(View.GONE);
+                        }
                         if (what == MediaPlayer.MEDIA_INFO_BUFFERING_START)
                         {
-                            progressBar1.setVisibility(View.VISIBLE);
+                            songProgressBar.setVisibility(View.VISIBLE);
                         }
-                        else if (what == MediaPlayer.MEDIA_INFO_BUFFERING_END)
-                        {
-                            progressBar1.setVisibility(View.GONE);
-                        }
+
                         return false;
                     }
                 });
-                playAudio.setOnClickListener(new View.OnClickListener() {
+
+                topPlayPause.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if(!flag)
+                        if (!isPlaying)
                         {
-                            playAudio.setImageDrawable(getResources().getDrawable(R.drawable.play_er));
-                            flag = true;
+                            PlayPause.setImageDrawable(getResources().getDrawable(R.drawable.play_er));
+                            topPlayPause.setImageDrawable(getResources().getDrawable(R.drawable.play_er));
+                            isPlaying = true;
                             mediaPlayer.pause();
                         }
-                        else
-                        {
-                            playAudio.setImageDrawable(getResources().getDrawable(R.drawable.pause_music));
-                            flag = false;
+                        else {
+                            topPlayPause.setImageDrawable(getResources().getDrawable(R.drawable.pause_music));
+                            PlayPause.setImageDrawable(getResources().getDrawable(R.drawable.pause_music));
                             mediaPlayer.start();
+                            changeSeek();
+                            isPlaying = false;
                         }
                     }
                 });
 
-
-                music.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                PlayPause.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onDismiss(DialogInterface dialog) {
-                        mediaPlayer.stop();
+                    public void onClick(View v) {
+                        if (!isPlaying)
+                        {
+                            PlayPause.setImageDrawable(getResources().getDrawable(R.drawable.play_er));
+                            topPlayPause.setImageDrawable(getResources().getDrawable(R.drawable.play_er));
+                            isPlaying = true;
+                            mediaPlayer.pause();
+                        }
+                        else {
+                            topPlayPause.setImageDrawable(getResources().getDrawable(R.drawable.pause_music));
+                            PlayPause.setImageDrawable(getResources().getDrawable(R.drawable.pause_music));
+                            mediaPlayer.start();
+                            changeSeek();
+                            isPlaying = false;
+                        }
                     }
-                });*/
+                });
+
+                fastForward.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mediaPlayer.seekTo(mediaPlayer.getCurrentPosition() + 10000);
+                    }
+                });
+
+                fastRewind.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mediaPlayer.seekTo(mediaPlayer.getCurrentPosition() - 10000);
+                    }
+                });
+
                 return false;
             }
         });
@@ -192,6 +311,45 @@ public class Videotab extends Fragment {
         return view;
     }
 
+    private String milliSecondsToTime(long duration) {
+        String timerString = "";
+        String secondsString;
+
+        int hours = (int) (duration / (1000*60*60));
+        int minutes = (int) (duration % (1000 * 60*60)) / (1000*60);
+        int seconds = (int) ((duration % (1000*60*60)) % (1000*60)/1000);
+
+        if (hours > 0)
+        {
+            timerString = hours + ":";
+        }
+        if (seconds < 10)
+        {
+            secondsString = "0" + seconds;
+        }
+        else {
+            secondsString = "" + seconds;
+        }
+
+        timerString = timerString + minutes + ":" + secondsString;
+        return timerString;
+    }
+
+    private void changeSeek() {
+        int currentPosition = mediaPlayer.getCurrentPosition();
+        seekBar.setProgress(currentPosition);
+        currentTime.setText(milliSecondsToTime(currentPosition));
+        if (mediaPlayer.isPlaying())
+        {
+            runnable = new Runnable() {
+                @Override
+                public void run() {
+                    changeSeek();
+                }
+            };
+            handler.postDelayed(runnable, 1000);
+        }
+    }
     private void prepareListData(View view) {
 
         listDataHeader = new ArrayList<String>();
@@ -250,7 +408,19 @@ public class Videotab extends Fragment {
                 Toast.makeText(view.getContext(),"Please try Again later or Try again",Toast.LENGTH_SHORT).show();
                 error.printStackTrace();
             }
-        });
+        })
+        {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String,String> headers = new HashMap<>();
+                String username = "tpvsuser1";
+                String password = "tpvs@userONE";
+                String credentials = username + ":" + password;
+                String auth = "Basic " + Base64.encodeToString(credentials.getBytes(),Base64.URL_SAFE|Base64.NO_WRAP);
+                headers.put("authorization",auth);
+                return headers;
+            }
+        };
 
         queue.add(request);
     }

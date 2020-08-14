@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 
-import com.example.koodalnraghavan.R;
 
 import java.util.HashMap;
 import java.util.List;
@@ -84,7 +83,6 @@ public class Expander extends BaseExpandableListAdapter {
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
 
-        //String childText = (String) getChild(groupPosition,childPosition);
 
         DataPriceLister lister = (DataPriceLister) getChild(groupPosition,childPosition);
 
@@ -99,7 +97,6 @@ public class Expander extends BaseExpandableListAdapter {
         if (lister.getFormat().equals("pdf"))
         {
             ImageView imageView = convertView.findViewById(R.id.imager);
-            //imageView.setBackground(convertView.getResources().getDrawable(R.drawable.file));
             imageView.setImageDrawable(convertView.getResources().getDrawable(R.drawable.file));
         }
         else if (lister.getFormat().equals("video"))

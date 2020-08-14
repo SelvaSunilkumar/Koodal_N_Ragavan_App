@@ -10,7 +10,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
-import android.app.DownloadManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -19,12 +18,10 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.webkit.CookieManager;
-import android.webkit.DownloadListener;
-import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -35,13 +32,13 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.koodalnraghavan.R;
 import com.google.android.material.navigation.NavigationView;
 
 import org.json.JSONArray;
@@ -50,10 +47,11 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 import es.dmoral.toasty.Toasty;
-
-import static android.os.Environment.DIRECTORY_DOWNLOADS;
+import tce.education.koodalnraghavan.customlayout.SampleEBooksLister;
 
 public class eBooksDisplay extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -71,7 +69,7 @@ public class eBooksDisplay extends AppCompatActivity implements NavigationView.O
     private TextView TitleTootlbar;
     private Button Donation;
     private ImageView info;
-
+    private LinearLayout sampleBook;
 
     private String Name;
     private String UPI_Id;
@@ -97,7 +95,7 @@ public class eBooksDisplay extends AppCompatActivity implements NavigationView.O
     private AlertDialog.Builder dialog;
     private AlertDialog alertDialog;
 
-    private final String JSON_URL = "https://raw.githubusercontent.com/SelvaSunilkumar/jsonRepo/master/portalInfo.json";
+    private final String JSON_URL = "https://tpvs.tce.edu/restricted/koodal_app/Koodal_raghavan_json.php";
     private RequestQueue queue;
     private JsonObjectRequest request;
     private JSONArray jsonArray;
@@ -105,24 +103,6 @@ public class eBooksDisplay extends AppCompatActivity implements NavigationView.O
     private String ebook_name;
     private String ebook_url;
     private String ebook_amount;
-
-    private WebView webView;
-    private Dialog information;
-
-    public void onPause() {
-
-        webView.goBack();
-        super.onPause();
-    }
-
-    @Override
-    public void onDestroy() {
-        if(webView != null)
-        {
-            webView.destroy();
-        }
-        super.onDestroy();
-    }
 
     @SuppressLint("RestrictedApi")
     @Override
@@ -141,16 +121,15 @@ public class eBooksDisplay extends AppCompatActivity implements NavigationView.O
         setSupportActionBar(toolbar);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        //getSupportActionBar().setTitle(" e-Books");
         getSupportActionBar().setIcon(R.mipmap.ic_tool_bar);
         toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.drawerOpen, R.string.drawerClose);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
 
+        sampleBook = findViewById(R.id.sampleBooks);
         listView = findViewById(R.id.listView);
         progressBar = findViewById(R.id.loader);
-        webView = findViewById(R.id.web);
 
         list = new ArrayList<String>();
         url = new ArrayList<String>();
@@ -159,23 +138,20 @@ public class eBooksDisplay extends AppCompatActivity implements NavigationView.O
 
         adapter = new ArrayAdapter<String>(this, R.layout.pdfinfo, R.id.portal, list);
 
+        sampleBook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SampleEBooksLister booksLister = new SampleEBooksLister();
+                booksLister.show(getSupportFragmentManager(),"Show sample Lister");
+            }
+        });
+
         Donation = findViewById(R.id.donation);
         Donation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(eBooksDisplay.this, Sambavanai.class);
                 startActivity(intent);
-            }
-        });
-
-        info = findViewById(R.id.infor);
-        info.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                information = new Dialog(eBooksDisplay.this);
-                information.setContentView(R.layout.infor);
-                information.show();
             }
         });
 
@@ -218,23 +194,13 @@ public class eBooksDisplay extends AppCompatActivity implements NavigationView.O
                             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                 @Override
                                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                    if (list.get(position).equals("Sample Book") || isBookAvailable(list.get(position))) {
+                                    if (list.get(position).equals("Sample") || isBookAvailable(list.get(position))) {
 
-                                        if (list.get(position).equals("Sample Book"))
-                                        {
-                                            nextActivity = new Intent(eBooksDisplay.this, PdfViewer.class);
-
-                                            bundle = new Bundle();
-                                            bundle.putString("url", url.get(position));
-
-                                            nextActivity.putExtras(bundle);
-                                            startActivity(nextActivity);
-                                        }
-
-                                        else
-                                        {
-                                            downloadBook(url.get(position),list.get(position));
-                                        }
+                                        nextActivity = new Intent(eBooksDisplay.this,PdfViewAuthentication.class);
+                                        bundle = new Bundle();
+                                        bundle.putString("url",url.get(position));
+                                        nextActivity.putExtras(bundle);
+                                        startActivity(nextActivity);
 
                                     } else {
                                         paymentSelectorButton = new Dialog(eBooksDisplay.this);
@@ -258,7 +224,6 @@ public class eBooksDisplay extends AppCompatActivity implements NavigationView.O
                                                 GooglePayNow.setOnClickListener(new View.OnClickListener() {
                                                     @Override
                                                     public void onClick(View v) {
-                                                        //Toast.makeText(getApplicationContext(),"Payment code pending",Toast.LENGTH_SHORT).show();
 
                                                         NameTextView = GooglePayGatewayProcessor.findViewById(R.id.payee_name);
                                                         UPI_id_TextView = GooglePayGatewayProcessor.findViewById(R.id.payee_upi);
@@ -280,7 +245,6 @@ public class eBooksDisplay extends AppCompatActivity implements NavigationView.O
                                             }
                                         });
                                         paymentSelectorButton.show();
-                                        //}
                                     }
                                 }
 
@@ -293,8 +257,21 @@ public class eBooksDisplay extends AppCompatActivity implements NavigationView.O
             @Override
             public void onErrorResponse(VolleyError error) {
                 error.printStackTrace();
+                Toast.makeText(getApplicationContext(),"Please try again later",Toast.LENGTH_SHORT).show();
             }
-        });
+        })
+        {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String,String> headers = new HashMap<>();
+                String username = "tpvsuser1";
+                String password = "tpvs@userONE";
+                String credentials = username + ":" + password;
+                String auth = "Basic " + Base64.encodeToString(credentials.getBytes(),Base64.URL_SAFE|Base64.NO_WRAP);
+                headers.put("authorization",auth);
+                return headers;
+            }
+        };
         queue.add(request);
 
     }
@@ -305,27 +282,23 @@ public class eBooksDisplay extends AppCompatActivity implements NavigationView.O
 
         switch (menuItem.getItemId()) {
             case R.id.home:
-                //Toast.makeText(getApplicationContext(),"Home",Toast.LENGTH_SHORT).show();
                 nextActivity = new Intent(this, home.class);
                 startActivity(nextActivity);
                 finish();
                 break;
             case R.id.aboutus:
-                //Toast.makeText(getApplicationContext(),"About Us",Toast.LENGTH_SHORT).show();
                 nextActivity = new Intent(this, AboutUs.class);
                 startActivity(nextActivity);
                 break;
-            case R.id.others:
-                nextActivity = new Intent(this, Others.class);
+            case R.id.events:
+                nextActivity = new Intent(this, Events.class);
                 startActivity(nextActivity);
                 break;
             case R.id.Gallery:
-                //Toast.makeText(getApplicationContext(),"Gallery",Toast.LENGTH_SHORT).show();
                 nextActivity = new Intent(this, GalleryViewer.class);
                 startActivity(nextActivity);
                 break;
             case R.id.freedownload:
-                ///Toast.makeText(getApplicationContext(),"Free Downloads",Toast.LENGTH_SHORT).show();
                 nextActivity = new Intent(this, FreeDownload.class);
                 startActivity(nextActivity);
                 break;
@@ -334,7 +307,6 @@ public class eBooksDisplay extends AppCompatActivity implements NavigationView.O
                 startActivity(nextActivity);
                 break;
             case R.id.contact:
-                //Toast.makeText(getApplicationContext(),"Contact",Toast.LENGTH_SHORT).show();
                 nextActivity = new Intent(this, ContactUs.class);
                 startActivity(nextActivity);
                 break;
@@ -520,110 +492,18 @@ public class eBooksDisplay extends AppCompatActivity implements NavigationView.O
                 GooglePayGatewayProcessor.dismiss();
 
                 Toasty.success(getApplicationContext(), "Payment Successful", Toast.LENGTH_SHORT).show();
-                //Toast.makeText(eBooksDisplay.this,"Transaction Successful",Toast.LENGTH_SHORT).show();
                 Log.d("UPI", "responseStr : " + approvalRefNo);
 
-                downloadBook(bookUrl,Note);
-
-                /*nextActivity = new Intent(eBooksDisplay.this, PdfViewer.class);
-
-                bundle = new Bundle();
-                bundle.putString("url", bookUrl);
-
-                nextActivity.putExtras(bundle);
-                startActivity(nextActivity);*/
-
-                /*Uri uri_book = Uri.parse(bookUrl);
-
-                DownloadManager downloadManager; //(DownloadManager) view.getContext().getSystemService(Context.DOWNLOAD_SERVICE);
-                downloadManager = (DownloadManager) getApplicationContext().getSystemService(Context.DOWNLOAD_SERVICE);
-                DownloadManager.Request request = new DownloadManager.Request(uri_book);
-
-                Context context = getApplicationContext();
-                String filename = Note;
-                String fileExtention = ".pdf";
-
-                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE);
-                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-                request.setDestinationInExternalFilesDir(context,DIRECTORY_DOWNLOADS,filename + fileExtention);
-
-                Toast.makeText(getApplicationContext(),"Downloading : " + Note,Toast.LENGTH_SHORT).show();
-
-                downloadManager.enqueue(request);*/
-
             } else if ("Payment cancelled by user.".equals(paymentCancel)) {
-                //AddData(Note,bookUrl);
                 GooglePayGatewayProcessor.dismiss();
                 paymentSelectorButton.dismiss();
-                //Toast.makeText(eBooksDisplay.this,"Payment cancelled by the user",Toast.LENGTH_SHORT).show();
-
                 Toasty.warning(getApplicationContext(), "Payment Cancelled by User", Toast.LENGTH_SHORT).show();
             } else {
-                //Toast.makeText(eBooksDisplay.this,"Transaction failed.Please try again later",Toast.LENGTH_SHORT).show();
                 Toasty.error(getApplicationContext(), "Transaction Failed", Toast.LENGTH_SHORT).show();
             }
         } else {
-            //Toast.makeText(eBooksDisplay.this,"Internet connection not Available",Toast.LENGTH_SHORT).show();
             Toasty.info(getApplicationContext(), "Internet Connection not Available", Toast.LENGTH_SHORT).show();
         }
-    }
-
-    private void downloadBook(String bookUrl,String name) {
-
-        webView.getSettings().setJavaScriptEnabled(true);
-
-        webView.setHttpAuthUsernamePassword("https://tpvs.tce.edu/restricted/","realm","tpvsuser1","tpvs@userONE");
-
-        webView.loadUrl(bookUrl);
-
-        webView.setDownloadListener(new DownloadListener() {
-            @Override
-            public void onDownloadStart(String url, String userAgent, String contentDisposition, String mimetype, long contentLength) {
-
-                DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
-                String cookie = CookieManager.getInstance().getCookie(url);
-                request.addRequestHeader("Cookie",cookie);
-                request.addRequestHeader("User-agent",userAgent);
-                request.allowScanningByMediaScanner();
-
-                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE);
-
-                DownloadManager manager = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
-
-                request.setDestinationInExternalPublicDir(DIRECTORY_DOWNLOADS,name);
-
-                manager.enqueue(request);
-
-
-                /*DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
-                request.allowScanningByMediaScanner();
-                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE);
-                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-
-                DownloadManager manager = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
-                manager.enqueue(request);
-
-                Toast.makeText(eBooksDisplay.this,"Downloading file...",Toast.LENGTH_SHORT).show();
-
-                /*Uri uri_book = Uri.parse(url);
-
-                DownloadManager downloadManager; //(DownloadManager) view.getContext().getSystemService(Context.DOWNLOAD_SERVICE);
-                downloadManager = (DownloadManager) getApplicationContext().getSystemService(Context.DOWNLOAD_SERVICE);
-                DownloadManager.Request request = new DownloadManager.Request(uri_book);
-
-                Context context = getApplicationContext();
-                String filename = Note;
-                String fileExtention = ".pdf";
-
-                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE);
-                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-                request.setDestinationInExternalFilesDir(context,DIRECTORY_DOWNLOADS,filename + fileExtention);
-
-                Toast.makeText(getApplicationContext(),"Downloading : " + Note,Toast.LENGTH_SHORT).show();
-
-                downloadManager.enqueue(request);*/
-            }
-        });
     }
 
     public static boolean isConnectionAvailable(Context context) {

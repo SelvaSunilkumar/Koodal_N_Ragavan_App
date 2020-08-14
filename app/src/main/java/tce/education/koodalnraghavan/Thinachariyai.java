@@ -8,30 +8,37 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.annotation.SuppressLint;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Base64;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CalendarView;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.koodalnraghavan.R;
-import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.navigation.NavigationView;
 
 import org.json.JSONArray;
@@ -40,8 +47,11 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Thinachariyai extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -53,8 +63,6 @@ public class Thinachariyai extends AppCompatActivity implements NavigationView.O
     private TextView dateSelector;
     private TextView DescriptionText;
     private TextView Description;
-    private TextView videoText;
-    private TextView video;
     private TextView DateText;
     private TextView TitleTootlbar;
     private CalendarView calendarView;
@@ -71,6 +79,10 @@ public class Thinachariyai extends AppCompatActivity implements NavigationView.O
     private TextView event;
     private TextView link;
     private ImageView pointer;
+    private TextView linkOne;
+    private ImageView pointerOne;
+    private TextView linkTwo;
+    private ImageView pointerTwo;
     private View seperator;
 
     private String dateSelected;
@@ -79,14 +91,11 @@ public class Thinachariyai extends AppCompatActivity implements NavigationView.O
     private final String message = "available soon...";
 
     private Intent nextActivity;
-    private SimpleExoPlayer exoPlayer;
-    private SimpleExoPlayerView exoPlayerView;
 
     private AlertDialog.Builder dialog;
     private AlertDialog alertDialog;
-    private Dialog EventVideoPlayer;
 
-    private final String JSON_URL = "https://raw.githubusercontent.com/SelvaSunilkumar/jsonRepo/master/portalInfo.json";
+    private final String JSON_URL = "https://tpvs.tce.edu/restricted/koodal_app/Koodal_raghavan_json.php";
     private RequestQueue queue;
     private JsonObjectRequest request;
     private JSONArray jsonArray;
@@ -94,20 +103,60 @@ public class Thinachariyai extends AppCompatActivity implements NavigationView.O
     private boolean flag;
     private String getDate;
 
-    private Dialog music;
-    private ImageView playAudio;
-    private ImageView downloadAudio;
-    private TextView Info;
-    private ProgressBar progressBar1;
-    private boolean flagPlayer = false;
     private MediaPlayer mediaPlayer;
 
+    private LinearLayout layout;
+    private BottomSheetBehavior bottomSheetBehavior;
+    private ToggleButton toggleButton;
+    private LinearLayout informLayout;
+    private BottomSheetBehavior informBottomSheetBehaviour;
+    private ToggleButton informToggleButton;
+    private ListView informListView;
+    private ArrayList<String> infoList;
+    private ArrayList<String> infoUrl;
+    private ArrayAdapter<String> informAdapter;
+
+    private LinearLayout musicPlayerLayout;
+    private ImageView topPlayPause;
+    private ImageView PlayPause;
+    private ImageView fastForward;
+    private ImageView fastRewind;
+    private TextView currentTime;
+    private TextView totalTime;
+    private SeekBar seekBar;
+    private ProgressBar musicProgress;
+    private TextView playingNow;
+    private Handler handler;
+    private Runnable runnable;
+    private boolean isPlaying = false;
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        handler.removeCallbacks(runnable);
+        mediaPlayer.release();
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        handler.removeCallbacks(runnable);
+        mediaPlayer.release();
+    }
 
     @SuppressLint("RestrictedApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_thinachariyai);
+
+        layout = findViewById(R.id.bottomSheet);
+        bottomSheetBehavior = BottomSheetBehavior.from(layout);
+        toggleButton = findViewById(R.id.toogleButton);
+        informLayout = findViewById(R.id.InformbottomSheet);
+        informBottomSheetBehaviour = BottomSheetBehavior.from(informLayout);
+        informToggleButton = findViewById(R.id.toogleInformation);
+        informListView = findViewById(R.id.infoLister);
 
         drawerLayout = findViewById(R.id.drawer);
         toolbar = findViewById(R.id.toolbar);
@@ -120,7 +169,7 @@ public class Thinachariyai extends AppCompatActivity implements NavigationView.O
         dateSelector = findViewById(R.id.selectorInfo);
         DescriptionText = findViewById(R.id.descriptionText);
         Description = findViewById(R.id.description);
-        DateText = findViewById(R.id.dateText);
+        DateText = findViewById(R.id.dater);
         calendarView = findViewById(R.id.calenderView);
         dayTextView = findViewById(R.id.day);
         dayText = findViewById(R.id.dayText);
@@ -132,7 +181,23 @@ public class Thinachariyai extends AppCompatActivity implements NavigationView.O
         event = findViewById(R.id.eventText);
         link = findViewById(R.id.link);
         pointer = findViewById(R.id.pointer);
+        linkOne = findViewById(R.id.linkOne);
+        pointerOne = findViewById(R.id.pointerOne);
+        linkTwo = findViewById(R.id.linkTwo);
+        pointerTwo = findViewById(R.id.pointerTwo);
         seperator = findViewById(R.id.seperator);
+
+        topPlayPause = findViewById(R.id.topPlayPause);
+        PlayPause = findViewById(R.id.playPause);
+        fastForward = findViewById(R.id.forwardId);
+        fastRewind = findViewById(R.id.rewindId);
+        seekBar = findViewById(R.id.seekBar);
+        musicProgress = findViewById(R.id.musicProgress);
+        currentTime = findViewById(R.id.currentTime);
+        totalTime = findViewById(R.id.totalTime);
+        musicPlayerLayout = findViewById(R.id.musicController);
+        playingNow = findViewById(R.id.audioName);
+        handler = new Handler();
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
@@ -177,27 +242,107 @@ public class Thinachariyai extends AppCompatActivity implements NavigationView.O
         event.setVisibility(View.GONE);
         link.setVisibility(View.GONE);
         pointer.setVisibility(View.GONE);
+        linkOne.setVisibility(View.GONE);
+        pointerOne.setVisibility(View.GONE);
+        linkTwo.setVisibility(View.GONE);
+        pointerTwo.setVisibility(View.GONE);
         seperator.setVisibility(View.GONE);
+        musicPlayerLayout.setVisibility(View.GONE);
+        musicProgress.setVisibility(View.GONE);
 
         mediaPlayer = new MediaPlayer();
 
         queue = Volley.newRequestQueue(Thinachariyai.this);
 
+        toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                }
+                else {
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                }
+            }
+        });
+
+        bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View view, int sheetState) {
+
+                if (sheetState == BottomSheetBehavior.STATE_EXPANDED) {
+                    toggleButton.setChecked(true);
+                }
+                if (sheetState == BottomSheetBehavior.STATE_COLLAPSED) {
+                    toggleButton.setChecked(false);
+                }
+            }
+
+            @Override
+            public void onSlide(@NonNull View view, float v) {
+
+            }
+        });
+
+        informToggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked)
+                {
+                    informBottomSheetBehaviour.setState(BottomSheetBehavior.STATE_EXPANDED);
+                }
+                else {
+                    informBottomSheetBehaviour.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                }
+            }
+        });
+
+        informBottomSheetBehaviour.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View view, int layIndicator) {
+                if (layIndicator == BottomSheetBehavior.STATE_EXPANDED)
+                {
+                    informToggleButton.setChecked(true);
+                }
+                if (layIndicator == BottomSheetBehavior.STATE_COLLAPSED)
+                {
+                    informToggleButton.setChecked(false);
+                }
+            }
+
+            @Override
+            public void onSlide(@NonNull View view, float v) {
+
+            }
+        });
+
+        infoList = new ArrayList<>();
+        infoUrl = new ArrayList<>();
+
+        infoList.add("Dhinasaryay - English");
+        infoList.add("Dhinasaryay - Tamil");
+        infoUrl.add("https://tpvs.tce.edu/unrestricted/description/Dhinasaryay%20Front%20Page-Eng.pdf");
+        infoUrl.add("https://tpvs.tce.edu/unrestricted/description/Dinasaryay%20Front%20Page-Tam.pdf");
+
+        informAdapter = new ArrayAdapter<>(Thinachariyai.this,R.layout.pdfinfo,R.id.portal,infoList);
+
+        informListView.setAdapter(informAdapter);
+        informListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(Thinachariyai.this,PdfViewer.class);
+                Bundle bundle = new Bundle();
+
+                bundle.putString("url",infoUrl.get(position));
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
+
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
 
-                /*
-                private TextView DescriptionText;
-                private TextView Description;
-                private TextView dayTextView;
-                private TextView dayText;
-                private TextView thidhiTextView;
-                private TextView thidhi;
-                private TextView starTextView;
-                private TextView star;
-                private TextView eventTextView;
-                private TextView event;*/
 
                 dateSelected = dayOfMonth + "-" + (month + 1) + "-" + year;
                 DateText.setText(dateSelected);
@@ -214,6 +359,7 @@ public class Thinachariyai extends AppCompatActivity implements NavigationView.O
                 eventTextView.setVisibility(View.VISIBLE);
                 event.setVisibility(View.VISIBLE);
                 seperator.setVisibility(View.VISIBLE);
+                musicProgress.setVisibility(View.GONE);
 
                 Description.setText(LoaderString);
                 dayText.setText(LoaderString);
@@ -224,6 +370,7 @@ public class Thinachariyai extends AppCompatActivity implements NavigationView.O
                 flag = false;
 
                 request = new JsonObjectRequest(Request.Method.GET, JSON_URL, null, new Response.Listener<JSONObject>() {
+                            @SuppressLint("ResourceAsColor")
                             @Override
                             public void onResponse(JSONObject response) {
 
@@ -245,117 +392,69 @@ public class Thinachariyai extends AppCompatActivity implements NavigationView.O
                                             event.setText(object.getString("event"));
                                             star.setText(object.getString("star"));
 
-                                            String portalUrl = object.getString("url");
+                                            String portalUrl = object.getString("url_one");
+                                            String portalUrlOne = object.getString("url_two");
+                                            String portalUrlTwo = object.getString("url_three");
+                                            flag = true;
 
-                                            if (!object.getString("url").equals("null"))
+                                            if (!portalUrl.equals("null"))
                                             {
-                                                pointer.setVisibility(View.VISIBLE);
+                                                musicProgress.setVisibility(View.VISIBLE);
+                                                String titleOne = object.getString("title_one");
+                                                playingNow.setVisibility(View.VISIBLE);
+                                                musicPlayerLayout.setVisibility(View.VISIBLE);
                                                 link.setVisibility(View.VISIBLE);
-
+                                                pointer.setVisibility(View.VISIBLE);
+                                                link.setText(titleOne);
                                                 link.setOnClickListener(new View.OnClickListener() {
                                                     @Override
                                                     public void onClick(View v) {
-                                                        Toast.makeText(getApplicationContext(),"Please wait",Toast.LENGTH_SHORT).show();
-
-                                                        music = new Dialog(view.getContext());
-                                                        music.setContentView(R.layout.music_player);
-                                                        music.show();
-
-                                                        playAudio = music.findViewById(R.id.pausePlay);
-                                                        downloadAudio = music.findViewById(R.id.download);
-                                                        progressBar1 = music.findViewById(R.id.progress);
-                                                        Info = music.findViewById(R.id.playingNow);
-
-                                                       /* Info.setText(object.getString());
-                                                        Info.setSelected(true);*/
-                                                        Info.setVisibility(View.GONE);
-
-
-
-                                                        try {
-                                                            mediaPlayer.stop();
-                                                            mediaPlayer.reset();
-                                                            mediaPlayer.setDataSource(portalUrl);
-                                                            mediaPlayer.prepare();
-                                                            Toast.makeText(view.getContext(),"Play",Toast.LENGTH_SHORT).show();
-                                                            mediaPlayer.start();
-                                                        } catch (IOException e) {
-                                                            e.printStackTrace();
-                                                        }
-
-                                                        mediaPlayer.setOnInfoListener(new MediaPlayer.OnInfoListener() {
-                                                            @Override
-                                                            public boolean onInfo(MediaPlayer mp, int what, int extra) {
-
-                                                                if (what == MediaPlayer.MEDIA_INFO_BUFFERING_START)
-                                                                {
-                                                                    progressBar1.setVisibility(View.VISIBLE);
-                                                                }
-                                                                else if (what == MediaPlayer.MEDIA_INFO_BUFFERING_END)
-                                                                {
-                                                                    progressBar1.setVisibility(View.GONE);
-                                                                }
-                                                                return false;
-                                                            }
-                                                        });
-                                                        playAudio.setOnClickListener(new View.OnClickListener() {
-                                                            @Override
-                                                            public void onClick(View v) {
-                                                                if(!flag)
-                                                                {
-                                                                    playAudio.setImageDrawable(getResources().getDrawable(R.drawable.play_er));
-                                                                    flagPlayer = true;
-                                                                    mediaPlayer.pause();
-                                                                }
-                                                                else
-                                                                {
-                                                                    playAudio.setImageDrawable(getResources().getDrawable(R.drawable.pause_music));
-                                                                    flagPlayer = false;
-                                                                    mediaPlayer.start();
-                                                                }
-                                                            }
-                                                        });
-
-                                                        downloadAudio.setVisibility(View.GONE);
-
-                                                        /*downloadAudio.setOnClickListener(new View.OnClickListener() {
-                                                            @Override
-                                                            public void onClick(View v) {
-                                                                Toast.makeText(getContext(),"Downloading : " + list.get(position),Toast.LENGTH_SHORT).show();
-
-                                                                Uri uri = Uri.parse(portalUrl);
-
-                                                                DownloadManager downloadManager = (DownloadManager) view.getContext().getSystemService(Context.DOWNLOAD_SERVICE);
-                                                                DownloadManager.Request request = new DownloadManager.Request(uri);
-
-                                                                Context context = view.getContext();
-                                                                String fileename = list.get(position);
-                                                                String fileExtension = ".mp3";
-
-                                                                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE);
-                                                                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-                                                                request.setDestinationInExternalFilesDir(context,DIRECTORY_DOWNLOADS,fileename + fileExtension);
-
-                                                                downloadManager.enqueue(request);
-                                                            }
-                                                        });*/
-
-                                                        music.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                                                            @Override
-                                                            public void onDismiss(DialogInterface dialog) {
-                                                                mediaPlayer.stop();
-                                                            }
-                                                        });
+                                                        PlayAudio(portalUrl,titleOne);
                                                     }
                                                 });
                                             }
                                             else {
-                                                pointer.setVisibility(View.GONE);
+                                                musicPlayerLayout.setVisibility(View.GONE);
                                                 link.setVisibility(View.GONE);
+                                                pointer.setVisibility(View.GONE);
+                                            }
+                                            if (!portalUrlOne.equals("null")) {
+                                                musicProgress.setVisibility(View.VISIBLE);
+                                                String titleTwo = object.getString("title_two");
+                                                linkOne.setVisibility(View.VISIBLE);
+                                                pointerOne.setVisibility(View.VISIBLE);
+                                                linkOne.setText(titleTwo);
+                                                linkOne.setOnClickListener(new View.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(View v) {
+                                                        PlayAudio(portalUrlOne,titleTwo);
+                                                    }
+                                                });
+                                            }
+                                            else {
+                                                playingNow.setVisibility(View.GONE);
+                                                linkOne.setVisibility(View.GONE);
+                                                pointerOne.setVisibility(View.GONE);
                                             }
 
-                                            flag = true;
-
+                                            if (!portalUrlTwo.equals("null"))
+                                            {
+                                                musicProgress.setVisibility(View.VISIBLE);
+                                                String titleThree = object.getString("title_three");
+                                                linkTwo.setVisibility(View.VISIBLE);
+                                                pointerTwo.setVisibility(View.VISIBLE);
+                                                linkTwo.setText(titleThree);
+                                                linkTwo.setOnClickListener(new View.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(View v) {
+                                                        PlayAudio(portalUrlTwo,titleThree);
+                                                    }
+                                                });
+                                            }
+                                            else {
+                                                linkTwo.setVisibility(View.GONE);
+                                                pointerTwo.setVisibility(View.GONE);
+                                            }
                                         }
                                     }
 
@@ -377,227 +476,25 @@ public class Thinachariyai extends AppCompatActivity implements NavigationView.O
                         }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-
+                        Toast.makeText(getApplicationContext(),"Please try again Later",Toast.LENGTH_SHORT).show();
                     }
-                });
+                })
+                {
+                    @Override
+                    public Map<String, String> getHeaders() throws AuthFailureError {
+                        HashMap<String,String> headers = new HashMap<>();
+                        String username = "tpvsuser1";
+                        String password = "tpvs@userONE";
+                        String credentials = username + ":" + password;
+                        String auth = "Basic " + Base64.encodeToString(credentials.getBytes(),Base64.URL_SAFE|Base64.NO_WRAP);
+                        headers.put("authorization",auth);
+                        return headers;
+                    }
+                };
 
                 queue.add(request);
 
-                /*reference.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                        dateSelector.setVisibility(View.GONE);
-
-                        if(dataSnapshot.hasChild(dateSelected))
-                        {
-                            databaseReference = reference.child(dateSelected);
-                            databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                                    descriptionLoader = new EventDescriptionLoader();
-
-                                    descriptionLoader = dataSnapshot.getValue(EventDescriptionLoader.class);
-
-                                    DescriptionText.setText(descriptionLoader.getMonth() + " : ");
-                                    Description.setText(descriptionLoader.getMonth_tml());
-                                    dayText.setText(descriptionLoader.getDay());
-                                    thidhi.setText(descriptionLoader.getThidhi());
-                                    //event.setText(descriptionLoader.getEvent());
-                                    star.setText(descriptionLoader.getStar());
-
-                                    if(dataSnapshot.hasChild("event"))
-                                    {
-                                       event.setText(descriptionLoader.getEvent());
-                                    }
-                                    else
-                                    {
-                                        event.setText(nullSetter);
-                                    }
-                                }
-
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                }
-                            });
-                        }
-                        else
-                        {
-                            Description.setText(message);
-                            dayText.setText(message);
-                            thidhi.setText(message);
-                            star.setText(message);
-                            event.setText(message);
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
-
-                /*reference.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                        if(dataSnapshot.hasChild(dateSelected))
-                        {
-                            //content for the date is present
-                            databaseReference = reference.child(dateSelected);
-                            databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                                    descriptionLoader = new EventDescriptionLoader();
-                                    descriptionLoader = dataSnapshot.getValue(EventDescriptionLoader.class);
-                                    Description.setText(descriptionLoader.getDescription());
-                                    video.setText(descriptionLoader.getName());
-
-                                    if(descriptionLoader.getUrl() == null)
-                                    {
-                                        video.setClickable(false);
-                                    }
-                                    else {
-                                        video.setClickable(true);
-                                        video.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                //Toast.makeText(getApplicationContext(),"Url loading",Toast.LENGTH_SHORT).show();
-                                                EventVideoPlayer = new Dialog(Thinachariyai.this);
-                                                EventVideoPlayer.setContentView(R.layout.calendar_videoplayer);
-
-                                                Uri uri = Uri.parse(descriptionLoader.getUrl());
-
-                                                progressBar = EventVideoPlayer.findViewById(R.id.progress);
-                                                exoPlayerView = EventVideoPlayer.findViewById(R.id.videoplayer);
-                                                progressBar.setVisibility(View.VISIBLE);
-
-
-                                                try {
-                                                    BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
-                                                    TrackSelector trackSelector = new DefaultTrackSelector(new AdaptiveTrackSelection.Factory(bandwidthMeter));
-                                                    exoPlayer = ExoPlayerFactory.newSimpleInstance(Thinachariyai.this,trackSelector);
-
-                                                    DefaultHttpDataSourceFactory defaultHttpDataSourceFactory = new DefaultHttpDataSourceFactory(descriptionLoader.getName());
-                                                    ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
-                                                    MediaSource source = new ExtractorMediaSource(uri,defaultHttpDataSourceFactory,extractorsFactory,null,null);
-                                                    exoPlayerView.setPlayer(exoPlayer);
-                                                    exoPlayer.prepare(source);
-                                                    exoPlayer.setPlayWhenReady(true);
-                                                    exoPlayer.addListener(new Player.EventListener() {
-                                                        @Override
-                                                        public void onTimelineChanged(Timeline timeline, @Nullable Object manifest, int reason) {
-
-                                                        }
-
-                                                        @Override
-                                                        public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
-
-                                                        }
-
-                                                        @Override
-                                                        public void onLoadingChanged(boolean isLoading) {
-
-                                                        }
-
-                                                        @Override
-                                                        public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-
-                                                            if(playWhenReady && playbackState == ExoPlayer.STATE_READY)
-                                                                progressBar.setVisibility(View.GONE);
-                                                            if(playWhenReady && playbackState == ExoPlayer.STATE_BUFFERING)
-                                                                progressBar.setVisibility(View.VISIBLE);
-                                                            if(playWhenReady && playbackState == ExoPlayer.STATE_ENDED)
-                                                                progressBar.setVisibility(View.GONE);
-
-                                                        }
-
-                                                        @Override
-                                                        public void onRepeatModeChanged(int repeatMode) {
-
-                                                        }
-
-                                                        @Override
-                                                        public void onShuffleModeEnabledChanged(boolean shuffleModeEnabled) {
-
-                                                        }
-
-                                                        @Override
-                                                        public void onPlayerError(ExoPlaybackException error) {
-
-                                                            //Toast.makeText(getApplicationContext(),"Player Error",Toast.LENGTH_SHORT).show();
-                                                            dialog = new AlertDialog.Builder(Thinachariyai.this);
-                                                            dialog.setMessage("Couldn't play video");
-                                                            dialog.setTitle("Player Error");
-
-                                                            dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                                                @Override
-                                                                public void onClick(DialogInterface dialog, int which) {
-                                                                    EventVideoPlayer.dismiss();
-                                                                    return;
-                                                                }
-                                                            });
-
-                                                            alertDialog = dialog.create();
-                                                            alertDialog.show();
-                                                            progressBar.setVisibility(View.GONE);
-
-                                                        }
-
-                                                        @Override
-                                                        public void onPositionDiscontinuity(int reason) {
-
-                                                        }
-
-                                                        @Override
-                                                        public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
-
-                                                        }
-
-                                                        @Override
-                                                        public void onSeekProcessed() {
-
-                                                        }
-                                                    });
-                                                }
-                                                catch (Exception e)
-                                                {
-                                                    e.printStackTrace();
-                                                }
-
-                                                EventVideoPlayer.show();
-                                                EventVideoPlayer.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                                                    @Override
-                                                    public void onDismiss(DialogInterface dialog) {
-                                                        exoPlayer.stop();
-                                                    }
-                                                });
-                                            }
-                                        });
-                                    }
-                                }
-
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                }
-                            });
-                        }
-                        else
-                        {
-                            Description.setText("Description Not Available");
-                            video.setText("Video Not Available");
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });*/
             }
         });
     }
@@ -618,8 +515,8 @@ public class Thinachariyai extends AppCompatActivity implements NavigationView.O
                 nextActivity = new Intent(this,AboutUs.class);
                 startActivity(nextActivity);
                 break;
-            case R.id.others:
-                nextActivity = new Intent(this,Others.class);
+            case R.id.events:
+                nextActivity = new Intent(this,Events.class);
                 startActivity(nextActivity);
                 break;
             case R.id.Gallery:
@@ -738,5 +635,160 @@ public class Thinachariyai extends AppCompatActivity implements NavigationView.O
                 break;
         }
         return false;
+    }
+
+    private void PlayAudio(String url,String audioName)
+    {
+        playingNow.setText(audioName);
+        isPlaying = false;
+        seekBar.setMax(100);
+        PlayPause.setImageDrawable(getResources().getDrawable(R.drawable.pause_music));
+        topPlayPause.setImageDrawable(getResources().getDrawable(R.drawable.pause_music));
+
+        mediaPlayer.reset();
+        try {
+            mediaPlayer.setDataSource(Thinachariyai.this,Uri.parse(url));
+            //mediaPlayer.prepare();
+            mediaPlayer.prepareAsync();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                int duration = mediaPlayer.getDuration();
+                totalTime.setText(milliSecondsToTimer(duration));
+                seekBar.setMax(duration);
+                mediaPlayer.start();
+                changeSeek();
+            }
+        });
+
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if (fromUser) {
+                    mediaPlayer.seekTo(progress);
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+        mediaPlayer.setOnInfoListener(new MediaPlayer.OnInfoListener() {
+            @Override
+            public boolean onInfo(MediaPlayer mp, int what, int extra) {
+
+                if (what == MediaPlayer.MEDIA_INFO_BUFFERING_START) {
+                    musicProgress.setVisibility(View.VISIBLE);
+                }
+                if (what == MediaPlayer.MEDIA_INFO_BUFFERING_END) {
+                    musicProgress.setVisibility(View.GONE);
+                }
+                return false;
+            }
+        });
+
+        topPlayPause.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!isPlaying)
+                {
+                    PlayPause.setImageDrawable(getResources().getDrawable(R.drawable.play_er));
+                    topPlayPause.setImageDrawable(getResources().getDrawable(R.drawable.play_er));
+                    isPlaying = true;
+                    mediaPlayer.pause();
+                }
+                else {
+                    topPlayPause.setImageDrawable(getResources().getDrawable(R.drawable.pause_music));
+                    PlayPause.setImageDrawable(getResources().getDrawable(R.drawable.pause_music));
+                    mediaPlayer.start();
+                    changeSeek();
+                    isPlaying = false;
+                }
+            }
+        });
+
+        PlayPause.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!isPlaying)
+                {
+                    PlayPause.setImageDrawable(getResources().getDrawable(R.drawable.play_er));
+                    topPlayPause.setImageDrawable(getResources().getDrawable(R.drawable.play_er));
+                    isPlaying = true;
+                    mediaPlayer.pause();
+                }
+                else {
+                    topPlayPause.setImageDrawable(getResources().getDrawable(R.drawable.pause_music));
+                    PlayPause.setImageDrawable(getResources().getDrawable(R.drawable.pause_music));
+                    mediaPlayer.start();
+                    changeSeek();
+                    isPlaying = false;
+                }
+            }
+        });
+        fastForward.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mediaPlayer.seekTo(mediaPlayer.getCurrentPosition() + 10000);
+            }
+        });
+
+        fastRewind.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mediaPlayer.seekTo(mediaPlayer.getCurrentPosition() - 10000);
+            }
+        });
+    }
+
+    private void changeSeek() {
+        int currentPosition = mediaPlayer.getCurrentPosition();
+        seekBar.setProgress(currentPosition);
+        currentTime.setText(milliSecondsToTimer(currentPosition));
+        if (mediaPlayer.isPlaying())
+        {
+            runnable = new Runnable() {
+                @Override
+                public void run() {
+                    changeSeek();
+                }
+            };
+            handler.postDelayed(runnable, 1000);
+        }
+    }
+
+    private String milliSecondsToTimer(long milliSeconds)
+    {
+        String timerString = "";
+        String secondsString;
+
+        int hours = (int) (milliSeconds / (1000*60*60));
+        int minutes = (int) (milliSeconds % (1000 * 60*60)) / (1000*60);
+        int seconds = (int) ((milliSeconds % (1000*60*60)) % (1000*60)/1000);
+
+        if (hours > 0)
+        {
+            timerString = hours + ":";
+        }
+        if (seconds < 10)
+        {
+            secondsString = "0" + seconds;
+        }
+        else {
+            secondsString = "" + seconds;
+        }
+
+        timerString = timerString + minutes + ":" + secondsString;
+        return timerString;
     }
 }

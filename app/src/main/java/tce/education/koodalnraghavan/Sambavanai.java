@@ -10,6 +10,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -18,9 +19,23 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.koodalnraghavan.R;
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import es.dmoral.toasty.Toasty;
@@ -46,6 +61,8 @@ public class Sambavanai extends AppCompatActivity {
     private Dialog floatBanner;
 
     private UUID uuid;
+
+    private String PAYMENT_MARKER_URL = "https://tpvs.tce.edu/restricted/koodal_app/sambavanai_payment.php";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -216,11 +233,14 @@ public class Sambavanai extends AppCompatActivity {
             {
                 Toasty.success(Sambavanai.this, "Transaction Successful", Toast.LENGTH_SHORT).show();
                 Log.d("UPI","responseStr : " + approvalRefNo);
+
+                NotePayment(PayeeName,approvalRefNo,Amount,Note);
                 //uuid = UUID.randomUUID();
 
             }
             else if ("Payment cancelled by user.".equals(paymentCancel))
             {
+                //NotePayment(PayeeName,"1233d435fd",Amount,Note);
                 Toasty.warning(Sambavanai.this,"Payment cancelled by the user",Toast.LENGTH_SHORT).show();
             }
             else {
@@ -231,6 +251,69 @@ public class Sambavanai extends AppCompatActivity {
         {
             Toasty.info(Sambavanai.this,"Internet connection not Available",Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void NotePayment(String name, String approvalRefNo, String amount, String note) {
+
+        Date date = Calendar.getInstance().getTime();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+
+        String dateFormulated = simpleDateFormat.format(date);
+
+        StringRequest request = new StringRequest(Request.Method.POST, PAYMENT_MARKER_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+
+                            String result = jsonObject.getString("transaction");
+
+                            if (result.equals("1"))
+                            {
+                                Toast.makeText(Sambavanai.this,"Payment Noted",Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        })
+        {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+
+                Map<String,String> params = new HashMap<>();
+
+                params.put("name",name);
+                params.put("reference",approvalRefNo);
+                params.put("amount",amount);
+                params.put("note",note);
+                params.put("date",dateFormulated);
+
+                return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String,String> headers = new HashMap<>();
+                String username = "tpvsuser1";
+                String password = "tpvs@userONE";
+                String credentials = username + ":" + password;
+                String auth = "Basic " + Base64.encodeToString(credentials.getBytes(),Base64.URL_SAFE|Base64.NO_WRAP);
+                headers.put("authorization",auth);
+                return headers;
+            }
+        };
+
+        RequestQueue queue = Volley.newRequestQueue(Sambavanai.this);
+        queue.add(request);
     }
 
     public static boolean isConnectionAvailable(Context context)

@@ -15,13 +15,21 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
-import com.example.koodalnraghavan.R;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
+
+import java.util.ArrayList;
 
 public class Azhwarmanam extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -42,6 +50,14 @@ public class Azhwarmanam extends AppCompatActivity implements NavigationView.OnN
     private AlertDialog.Builder dialog;
     private AlertDialog alertDialog;
 
+    private ToggleButton toggleButton;
+    private LinearLayout infoLayout;
+    private BottomSheetBehavior informationBottomSheet;
+    private ListView infoLister;
+    private ArrayList<String> list;
+    private ArrayList<String> url;
+    private ArrayAdapter<String> adapter;
+
     @SuppressLint("RestrictedApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +76,10 @@ public class Azhwarmanam extends AppCompatActivity implements NavigationView.OnN
         drawerLayout = findViewById(R.id.drawer);
         toolbar = findViewById(R.id.toolbar);
         navigationView = findViewById(R.id.navigationbar);
+        toggleButton = findViewById(R.id.toogleInformation);
+        infoLister = findViewById(R.id.infoLister);
+        infoLayout = findViewById(R.id.InformbottomSheet);
+        informationBottomSheet = BottomSheetBehavior.from(infoLayout);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
@@ -77,6 +97,56 @@ public class Azhwarmanam extends AppCompatActivity implements NavigationView.OnN
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Azhwarmanam.this,Sambavanai.class);
+                startActivity(intent);
+            }
+        });
+
+        toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    informationBottomSheet.setState(BottomSheetBehavior.STATE_EXPANDED);
+                }
+                else {
+                    informationBottomSheet.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                }
+            }
+        });
+
+        informationBottomSheet.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View view, int checker) {
+                if (checker == BottomSheetBehavior.STATE_EXPANDED) {
+                    toggleButton.setChecked(true);
+                }
+                if (checker == BottomSheetBehavior.STATE_COLLAPSED) {
+                    toggleButton.setChecked(false);
+                }
+            }
+
+            @Override
+            public void onSlide(@NonNull View view, float v) {
+
+            }
+        });
+
+        list = new ArrayList<>();
+        url = new ArrayList<>();
+        adapter = new ArrayAdapter<>(Azhwarmanam.this,R.layout.pdfinfo,R.id.portal,list);
+
+        list.add("108'il Azhwargalin Manam - Eng");
+        url.add("https://tpvs.tce.edu/unrestricted/30-7-2020%20new/108il...%20Front%20page%20-Eng.pdf");
+        list.add("108'il Azhwargalin Manam - Tamil");
+        url.add("https://tpvs.tce.edu/unrestricted/30-7-2020%20new/108il...%20Front%20page-%20Tam.pdf");
+
+        infoLister.setAdapter(adapter);
+        infoLister.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(Azhwarmanam.this,PdfViewer.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("url",url.get(position));
+                intent.putExtras(bundle);
                 startActivity(intent);
             }
         });
@@ -126,8 +196,8 @@ public class Azhwarmanam extends AppCompatActivity implements NavigationView.OnN
                 nextActivity = new Intent(this, AboutUs.class);
                 startActivity(nextActivity);
                 break;
-            case R.id.others:
-                nextActivity = new Intent(this,Others.class);
+            case R.id.events:
+                nextActivity = new Intent(this,Events.class);
                 startActivity(nextActivity);
                 break;
             case R.id.Gallery:

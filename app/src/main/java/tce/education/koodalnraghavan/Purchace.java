@@ -19,7 +19,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.koodalnraghavan.R;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
@@ -58,7 +57,7 @@ public class Purchace extends AppCompatActivity implements NavigationView.OnNavi
         viewPager = findViewById(R.id.viewpager);
 
         TitleTootlbar = findViewById(R.id.titleId);
-        TitleTootlbar.setText("Free Downloads");
+        TitleTootlbar.setText("My Purchases");
         TitleTootlbar.setSelected(true);
 
         drawerLayout = findViewById(R.id.drawer);
@@ -125,8 +124,8 @@ public class Purchace extends AppCompatActivity implements NavigationView.OnNavi
                 nextActivity = new Intent(this,AboutUs.class);
                 startActivity(nextActivity);
                 break;
-            case R.id.others:
-                nextActivity = new Intent(this,Others.class);
+            case R.id.events:
+                nextActivity = new Intent(this,Events.class);
                 startActivity(nextActivity);
                 break;
             case R.id.Gallery:

@@ -19,16 +19,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
-import com.example.koodalnraghavan.R;
-
-import org.json.JSONObject;
-
 public class MainActivity extends AppCompatActivity {
 
     private ImageView mainImagae;
@@ -42,10 +32,7 @@ public class MainActivity extends AppCompatActivity {
     private AlertDialog alertDialog;
 
     private Animation animation;
-
-    private final String JSON_URL = "";
-    private RequestQueue queue;
-    private JsonObjectRequest request;
+    
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -63,18 +50,6 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
-        queue = Volley.newRequestQueue(MainActivity.this);
-        request = new JsonObjectRequest(Request.Method.GET, JSON_URL, null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-        });
 
         Toast.makeText(getApplicationContext(),"Loading ...",Toast.LENGTH_LONG).show();
 

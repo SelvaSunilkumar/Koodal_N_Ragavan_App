@@ -15,8 +15,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.koodalnraghavan.R;
-
 import java.util.ArrayList;
 
 public class VideoFragment extends Fragment {
@@ -69,13 +67,12 @@ public class VideoFragment extends Fragment {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     //Toast.makeText(view.getContext(),list.get(position) + url.get(position),Toast.LENGTH_SHORT).show();
-                    Intent nextActivity = new Intent(view.getContext(),WebVideo.class);
+                    Intent nextActivity = new Intent(view.getContext(),VideoPlayerAuthentication.class);
 
                     Bundle bundle = new Bundle();
                     bundle.putString("list",list.get(position));
                     bundle.putString("url",url.get(position));
                     //bundle.putInt("flag",1);
-                    bundle.putBoolean("flag",true);
 
                     nextActivity.putExtras(bundle);
                     startActivity(nextActivity);

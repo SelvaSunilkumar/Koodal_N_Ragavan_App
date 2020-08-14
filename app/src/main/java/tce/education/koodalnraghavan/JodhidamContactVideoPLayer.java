@@ -18,7 +18,6 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.example.koodalnraghavan.R;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayerFactory;
@@ -46,20 +45,13 @@ import static android.os.Environment.DIRECTORY_DOWNLOADS;
 
 public class JodhidamContactVideoPLayer extends AppCompatActivity {
 
-    //private VideoView videoView;
-    private SimpleExoPlayerView exoPlayerView;
-    private SimpleExoPlayer exoPlayer;
     private TextView currentlyPlaying;
     private Button DownloadVideo;
     private TextView ContactUs;
     private ProgressBar progressBar;
 
-    private Intent intent;
     private Bundle bundle;
-    //private MediaController mediaController;
     private Uri uri;
-    private AlertDialog.Builder dialog;
-    private AlertDialog alertDialog;
 
     private String videoLink;
     private String videoName;
@@ -67,7 +59,6 @@ public class JodhidamContactVideoPLayer extends AppCompatActivity {
     private String WebsiteUrl;
 
     private SimpleExoPlayer simpleExoPlayerView;
-    //private ProgressBar progressBar;
     private ImageView fullscreen;
     private PlayerView playerView;
     LinearLayout layout;
@@ -82,7 +73,6 @@ public class JodhidamContactVideoPLayer extends AppCompatActivity {
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        //videoView = findViewById(R.id.videoplayer);
         DownloadVideo = findViewById(R.id.download);
         progressBar = findViewById(R.id.progress);
         ContactUs = findViewById(R.id.contact);
@@ -104,8 +94,6 @@ public class JodhidamContactVideoPLayer extends AppCompatActivity {
         currentlyPlaying.setText(videoName);
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
-        //Uri videoUrl = Uri.parse("https://firebasestorage.googleapis.com/v0/b/database-97af9.appspot.com/o/Jothidam%2Fmoodiya%20aalayanga%20yendru%20thirakkum.mp4?alt=media&token=2451ae2b-0912-4929-9ef2-4848e941edca");
 
         Uri videoUrl = Uri.parse(videoLink);
 

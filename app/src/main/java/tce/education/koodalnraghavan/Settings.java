@@ -19,7 +19,6 @@ import android.widget.Button;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import com.example.koodalnraghavan.R;
 import com.google.android.material.navigation.NavigationView;
 
 public class Settings extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -135,8 +134,8 @@ public class Settings extends AppCompatActivity implements NavigationView.OnNavi
                 nextActivity = new Intent(this,AboutUs.class);
                 startActivity(nextActivity);
                 break;
-            case R.id.others:
-                nextActivity = new Intent(this,Others.class);
+            case R.id.events:
+                nextActivity = new Intent(this,Events.class);
                 startActivity(nextActivity);
                 break;
             case R.id.Gallery:

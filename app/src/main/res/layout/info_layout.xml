@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/InformbottomSheet"
+    android:background="#fff"
+    android:orientation="vertical"
+    app:layout_behavior="@string/bottom_sheet_behavior"
+    app:behavior_peekHeight="?actionBarSize"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:background="@color/icon_background"
+        android:paddingEnd="8dp"
+        android:paddingStart="8dp">
+
+        <ToggleButton
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:text=""
+            android:textOn=""
+            android:textOff=""
+            android:id="@+id/toogleInformation"
+            android:background="@drawable/expand_or_not"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="Description"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:id="@+id/information"/>
+        </LinearLayout>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ListView
+            android:id="@+id/infoLister"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
+</LinearLayout>

@@ -14,6 +14,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:background="@color/icon_background"
             android:fadingEdge="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -62,106 +63,177 @@
                             android:layout_height="match_parent">
 
                             <androidx.cardview.widget.CardView
+                                android:background="@drawable/borderfile"
+                                app:cardBackgroundColor="@color/icon_background"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 app:cardUseCompatPadding="true"
                                 app:cardCornerRadius="10dp">
                                 <LinearLayout
+                                    android:background="@drawable/ripple_effect"
                                     android:id="@+id/ThinamOrukural"
                                     android:clickable="true"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:orientation="vertical">
-                                    <ImageView
+                                    <androidx.cardview.widget.CardView
+                                        android:layout_margin="2dp"
                                         android:layout_width="wrap_content"
-                                        android:layout_height="120dp"
-                                        android:src="@drawable/client_thinam_oru_nalvarthai"/>
+                                        android:layout_height="wrap_content"
+                                        app:cardCornerRadius="10dp">
+                                        <ImageView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="120dp"
+                                            android:src="@drawable/client_thinam_oru_nalvarthai"/>
+                                    </androidx.cardview.widget.CardView>
                                     <TextView
                                         android:gravity="center"
                                         android:layout_width="match_parent"
                                         android:layout_height="40dp"
                                         android:id="@+id/dhinamoru"
-                                        android:text="Thinam oru nalvarthai"
+                                        android:text="@string/thinamorukural"
                                         android:textAlignment="center"/>
                                 </LinearLayout>
                             </androidx.cardview.widget.CardView>
 
                             <androidx.cardview.widget.CardView
+                                android:background="@drawable/borderfile"
+                                app:cardBackgroundColor="@color/icon_background"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 app:cardCornerRadius="10dp"
                                 app:cardUseCompatPadding="true">
 
                                 <LinearLayout
+                                    android:background="@drawable/ripple_effect"
                                     android:id="@+id/azhwargalinManam"
                                     android:clickable="true"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:orientation="vertical">
-                                    <ImageView
-                                        android:layout_marginTop="10dp"
+                                    <androidx.cardview.widget.CardView
+                                        android:layout_margin="2dp"
                                         android:layout_width="wrap_content"
-                                        android:layout_height="120dp"
-                                        android:src="@drawable/client_alwargalin_manam"/>
+                                        android:layout_height="wrap_content"
+                                        app:cardCornerRadius="10dp">
+                                        <ImageView
+                                            android:layout_marginTop="10dp"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="120dp"
+                                            android:src="@drawable/client_alwargalin_manam"/>
+                                    </androidx.cardview.widget.CardView>
                                     <TextView
                                         android:gravity="center"
                                         android:layout_width="match_parent"
                                         android:layout_height="40dp"
                                         android:id="@+id/alvars"
-                                        android:text="108 Azhwargalin manam"
+                                        android:text="@string/alwargalinManam_en"
                                         android:textAlignment="center"/>
                                 </LinearLayout>
 
                             </androidx.cardview.widget.CardView>
 
                             <androidx.cardview.widget.CardView
+                                android:background="@drawable/borderfile"
+                                app:cardBackgroundColor="@color/icon_background"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 app:cardUseCompatPadding="true"
                                 app:cardCornerRadius="10dp">
                                 <LinearLayout
+                                    android:background="@drawable/ripple_effect"
                                     android:id="@+id/KadhaiKekumNeram"
                                     android:clickable="true"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:orientation="vertical">
-                                    <ImageView
-                                        android:layout_marginTop="10dp"
+                                    <androidx.cardview.widget.CardView
+                                        android:layout_margin="2dp"
                                         android:layout_width="wrap_content"
-                                        android:layout_height="120dp"
-                                        android:src="@drawable/client_kadhai_kekum_neram"/>
+                                        android:layout_height="wrap_content"
+                                        app:cardCornerRadius="10dp">
+
+                                        <ImageView
+                                            android:layout_marginTop="10dp"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="120dp"
+                                            android:src="@drawable/client_kadhai_kekum_neram"/>
+                                    </androidx.cardview.widget.CardView>
                                     <TextView
                                         android:gravity="center"
                                         android:layout_width="match_parent"
                                         android:layout_height="40dp"
                                         android:id="@+id/storytime"
-                                        android:text="Kadhai ketkum neram"
+                                        android:text="@string/kadhai"
                                         android:textAlignment="center"/>
                                 </LinearLayout>
                             </androidx.cardview.widget.CardView>
 
                             <androidx.cardview.widget.CardView
+                                android:background="@drawable/borderfile"
+                                app:cardBackgroundColor="@color/icon_background"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 app:cardCornerRadius="10dp"
                                 app:cardUseCompatPadding="true">
                                 <LinearLayout
+                                    android:background="@drawable/ripple_effect"
                                     android:id="@+id/babyname"
                                     android:clickable="true"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:orientation="vertical">
-                                    <ImageView
+                                    <androidx.cardview.widget.CardView
+                                        android:layout_margin="2dp"
                                         android:layout_width="wrap_content"
-                                        android:layout_height="120dp"
-                                        android:layout_marginTop="10dp"
-                                        android:src="@drawable/client_baby_names" />
+                                        android:layout_height="wrap_content"
+                                        app:cardCornerRadius="10dp">
+                                        <ImageView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="120dp"
+                                            android:layout_marginTop="10dp"
+                                            android:src="@drawable/client_baby_names" />
+                                    </androidx.cardview.widget.CardView>
                                     <TextView
                                         android:gravity="center"
                                         android:layout_width="match_parent"
                                         android:layout_height="40dp"
                                         android:id="@+id/nameBaby"
-                                        android:text="Baby Names"
+                                        android:text="@string/babyName_en"
+                                        android:textAlignment="center"/>
+                                </LinearLayout>
+                            </androidx.cardview.widget.CardView>
+                            <androidx.cardview.widget.CardView
+                                android:background="@drawable/borderfile"
+                                app:cardBackgroundColor="@color/icon_background"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:cardCornerRadius="10dp"
+                                app:cardUseCompatPadding="true">
+                                <LinearLayout
+                                    android:background="@drawable/ripple_effect"
+                                    android:id="@+id/othersUpanyasam"
+                                    android:clickable="true"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical">
+                                    <androidx.cardview.widget.CardView
+                                        android:layout_margin="2dp"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        app:cardCornerRadius="10dp">
+                                        <ImageView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="120dp"
+                                            android:layout_marginTop="10dp"
+                                            android:src="@drawable/others_and_upanyasam" />
+                                    </androidx.cardview.widget.CardView>
+                                    <TextView
+                                        android:gravity="center"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="40dp"
+                                        android:id="@+id/othersUpanyasamText"
+                                        android:text="@string/other_en"
                                         android:textAlignment="center"/>
                                 </LinearLayout>
                             </androidx.cardview.widget.CardView>
@@ -174,106 +246,177 @@
                             android:layout_height="match_parent">
 
                             <androidx.cardview.widget.CardView
+                                android:background="@drawable/borderfile"
+                                app:cardBackgroundColor="@color/icon_background"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 app:cardUseCompatPadding="true"
                                 app:cardCornerRadius="10dp">
                                 <LinearLayout
+                                    android:background="@drawable/ripple_effect"
                                     android:clickable="true"
                                     android:id="@+id/Jodhidam"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:orientation="vertical">
-                                    <ImageView
+                                    <androidx.cardview.widget.CardView
+                                        android:layout_margin="2dp"
                                         android:layout_width="wrap_content"
-                                        android:layout_height="120dp"
-                                        android:src="@drawable/client_jodhidam"/>
+                                        android:layout_height="wrap_content"
+                                        app:cardCornerRadius="10dp">
+                                        <ImageView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="120dp"
+                                            android:src="@drawable/client_jodhidam"/>
+                                    </androidx.cardview.widget.CardView>
                                     <TextView
                                         android:gravity="center"
                                         android:layout_width="match_parent"
                                         android:layout_height="40dp"
                                         android:id="@+id/astrology"
-                                        android:text="Jodhidam"
+                                        android:text="@string/jodhidam_en"
                                         android:textAlignment="center"/>
                                 </LinearLayout>
                             </androidx.cardview.widget.CardView>
 
                             <androidx.cardview.widget.CardView
+                                android:background="@drawable/borderfile"
+                                app:cardBackgroundColor="@color/icon_background"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 app:cardCornerRadius="10dp"
                                 app:cardUseCompatPadding="true">
                                 <LinearLayout
+                                    android:background="@drawable/ripple_effect"
                                     android:clickable="true"
                                     android:id="@+id/ebooks"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:orientation="vertical">
-                                    <ImageView
+                                    <androidx.cardview.widget.CardView
+                                        android:layout_margin="2dp"
                                         android:layout_width="wrap_content"
-                                        android:layout_height="120dp"
-                                        android:layout_marginTop="10dp"
-                                        android:src="@drawable/client_ebooks" />
+                                        android:layout_height="wrap_content"
+                                        app:cardCornerRadius="10dp">
+                                        <ImageView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="120dp"
+                                            android:layout_marginTop="10dp"
+                                            android:src="@drawable/client_ebooks" />
+                                    </androidx.cardview.widget.CardView>
                                     <TextView
                                         android:id="@+id/books"
                                         android:gravity="center"
                                         android:layout_width="match_parent"
                                         android:layout_height="40dp"
                                         android:textAlignment="center"
-                                        android:text="Sambavanai"/>
+                                        android:text="@string/ebooks_en"/>
 
                                 </LinearLayout>
                             </androidx.cardview.widget.CardView>
 
                             <androidx.cardview.widget.CardView
+                                android:background="@drawable/borderfile"
+                                app:cardBackgroundColor="@color/icon_background"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 app:cardCornerRadius="10dp"
                                 app:cardUseCompatPadding="true">
                                 <LinearLayout
+                                    android:background="@drawable/ripple_effect"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:orientation="vertical"
                                     android:clickable="true"
                                     android:id="@+id/thinahiriyai">
-                                    <ImageView
-                                        android:layout_marginTop="10dp"
+                                    <androidx.cardview.widget.CardView
+                                        android:layout_margin="2dp"
                                         android:layout_width="wrap_content"
-                                        android:layout_height="120dp"
-                                        android:src="@drawable/client_dhinacharyai"/>
+                                        android:layout_height="wrap_content"
+                                        app:cardCornerRadius="10dp">
+                                        <ImageView
+                                            android:layout_marginTop="10dp"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="120dp"
+                                            android:src="@drawable/client_dhinacharyai"/>
+                                    </androidx.cardview.widget.CardView>
                                     <TextView
                                         android:gravity="center"
                                         android:id="@+id/routine"
                                         android:layout_width="match_parent"
                                         android:layout_height="40dp"
-                                        android:text="Thinachariyai"
+                                        android:text="@string/thinachariyai"
                                         android:textAlignment="center"/>
                                 </LinearLayout>
                             </androidx.cardview.widget.CardView>
 
                             <androidx.cardview.widget.CardView
+                                android:background="@drawable/borderfile"
+                                app:cardBackgroundColor="@color/icon_background"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 app:cardUseCompatPadding="true"
                                 app:cardCornerRadius="10dp">
                                 <LinearLayout
+                                    android:background="@drawable/ripple_effect"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:orientation="vertical"
                                     android:id="@+id/dance"
                                     android:clickable="true">
-                                    <ImageView
+                                    <androidx.cardview.widget.CardView
+                                        android:layout_margin="2dp"
                                         android:layout_width="wrap_content"
-                                        android:layout_height="120dp"
-                                        android:layout_marginTop="10dp"
-                                        android:src="@drawable/client_dance"/>
+                                        android:layout_height="wrap_content"
+                                        app:cardCornerRadius="10dp">
+                                        <ImageView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="120dp"
+                                            android:layout_marginTop="10dp"
+                                            android:src="@drawable/client_dance"/>
+                                    </androidx.cardview.widget.CardView>
                                     <TextView
                                         android:id="@+id/danceId"
                                         android:gravity="center"
                                         android:layout_width="match_parent"
                                         android:layout_height="40dp"
                                         android:textAlignment="center"
-                                        android:text="Sambavanai"/>
+                                        android:text="@string/dance_en"/>
+                                </LinearLayout>
+                            </androidx.cardview.widget.CardView>
+
+                            <androidx.cardview.widget.CardView
+                                android:background="@drawable/borderfile"
+                                app:cardBackgroundColor="@color/icon_background"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:cardUseCompatPadding="true"
+                                app:cardCornerRadius="10dp">
+                                <LinearLayout
+                                    android:background="@drawable/ripple_effect"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical"
+                                    android:id="@+id/prasadham"
+                                    android:clickable="true">
+                                    <androidx.cardview.widget.CardView
+                                        android:layout_margin="2dp"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        app:cardCornerRadius="10dp">
+                                        <ImageView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="120dp"
+                                            android:layout_marginTop="10dp"
+                                            android:src="@drawable/prasadham_icon"/>
+                                    </androidx.cardview.widget.CardView>
+                                    <TextView
+                                        android:id="@+id/prasadhamId"
+                                        android:gravity="center"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="40dp"
+                                        android:textAlignment="center"
+                                        android:text="@string/prasadham_en"/>
                                 </LinearLayout>
                             </androidx.cardview.widget.CardView>
 
